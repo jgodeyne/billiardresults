@@ -102,6 +102,12 @@ Multiple graph pages accessible via pager/tabs:
 - Filter by adversary
 - Sortable by date (default)
 
+### 5.4 Total Sum Display
+- Display the sum of all total points from results that match the current filter criteria
+- Position: Right side above the list, on the same level as the filter criteria
+- Label: "Total"
+- Updates dynamically when filter criteria change
+
 ## 6. Result Entry & Management
 
 ### 6.1 Adding Results
