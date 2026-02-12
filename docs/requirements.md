@@ -1,7 +1,7 @@
 # Billiard Results Tracker - Requirements Document
 
 ## 1. Overview
-A mobile application for billiards players to track competition results and statistics across multiple disciplines.
+A mobile application for billiards players to track competition results and statistics across multiple disciplines and per season.
 
 **Platform:** iOS and Android
 
@@ -9,30 +9,45 @@ A mobile application for billiards players to track competition results and stat
 
 **Connectivity:** App must work completely offline
 
+**Languages:** Multi-language support (Dutch, French, English)
+
 **No Notifications/Reminders:** App does not send any notifications or reminders
 
 ## 2. User Profile & Settings
 
-### 2.1 First-Time Setup
+### 2.1 First-Time Setup (Onboarding)
+- **Required on first launch:** Dedicated onboarding screen that must be completed before using the app
 - User must provide their name
-- User can optionally provide their official classification level per billiard discipline (range: minimum-maximum average)
+- User must provide season start date (day and month only, e.g., "September 1st")
+  - This date will be used to automatically calculate season boundaries each year
+  - Cannot be skipped - required to use the app
+- Classification levels are optional and can be set later per discipline
+
 
 ### 2.2 Profile Management
 - Users can change their name after initial setup
-- Users can track results for multiple disciplines simultaneously
-- Users can update their classification level over time as they improve
+- Users can change their season start date in settings
+- Users can track results for multiple user-defined disciplines simultaneously
+- Users can set classification levels per discipline
+  - Each unique discipline name can have its own classification level
+  - Format: Two number fields (minimum and maximum average)
+  - Example: Min: 1.5, Max: 2.0
+  - Optional: Can be set/updated at any time in settings
 
 ### 2.3 Settings Page
 Settings page includes:
 - Edit name
+- Edit season start date (day and month)
+- Language selection (Dutch, French, English)
 - Update classification levels (min-max average per discipline)
-- Cloud sync settings (if premium)
 - Data management options (delete all data with confirmation)
+
+**Note:** Cloud sync and premium features are out-of-scope for initial version
 
 ## 3. Main Page (Dashboard)
 
 ### 3.1 Display Elements
-- Player's name
+- Player's name & current season displayed at top
 - One card per discipline (only shown if there are results for the current season)
 - Cards appear in user-defined order (drag-and-drop directly on cards)
 
@@ -41,9 +56,12 @@ Settings page includes:
 
 ### 3.3 Card Content (Current Season)
 Each discipline card displays:
-- Current average
-- Highest run (across all matches in the season)
-- Number of won/lost/draw matches
+- Current average (centrally displayed, large font)
+- Highest run (across all matches in the season) (below average, little smaller font)
+- Total points made (top left corner, small font)
+- Total innings played (top right corner, small font)
+- Number of won/lost/draw matches (bottom center, small font)
+  - Shows counts for won/lost/draw/unknown (unknown marked with '?' for results without outcome)
 - Background: graph showing average per match over time (line chart)
 - Comparison to target average (from official classification level):
   - Green indicator when above maximum target
@@ -51,11 +69,15 @@ Each discipline card displays:
   - No color when within range
   - Hidden if classification level not provided
 
+### 3.6 Card Interaction
+- **Tap card:** Navigate to discipline detail view (graphs and statistics)
+
 ### 3.4 Performance Trends
 - Display trend arrows (up/down/stable) based on last 5 matches
 
 ### 3.5 Actions
-- **Add Result Button (+)**: Opens a form to record a single result
+- **Add Result Button (+)**: Global floating action button that opens form to record a result
+  - User selects discipline within the form
 - **Season Filter**: Allows switching between different seasons (if multiple seasons exist)
   - Always defaults to current season on app launch (does not remember last selection)
 
@@ -78,7 +100,7 @@ Multiple graph pages accessible via pager/tabs:
 
 ### 4.4 Timeframe Selection
 - Default: Current season only
-- User can select custom timeframe or view all seasons
+- User can select other seasons or view all seasons
 
 ### 4.5 Graph Interaction
 - Clicking any graph navigates to result list view
@@ -86,6 +108,9 @@ Multiple graph pages accessible via pager/tabs:
 ### 4.6 Performance Trends
 - Display performance trends over the selected timeframe
 - Trend based on last 5 matches (arrows: up/down/stable)
+
+### 4.7 Navigation to Result List
+- **Tap any graph:** Navigate to result list view for that discipline
 
 ## 5. Result List View
 
@@ -98,25 +123,37 @@ Multiple graph pages accessible via pager/tabs:
 - Delete result directly from list (with confirmation dialog)
 
 ### 5.3 Filtering & Sorting
-- Filter by competition
-- Filter by adversary
+- **Filter UI:** Filter icon/button that opens a filter sheet/modal
+  - Filter by competition
+  - Filter by adversary
 - Sortable by date (default)
+
+### 5.4 Navigation
+- Accessible from discipline detail view by tapping any graph
+- Displays results for the selected discipline and timeframe
 
 ## 6. Result Entry & Management
 
 ### 6.1 Adding Results
-Users can record a single result via the + button with the following fields:
+Users can record a single result via the global + button with the following fields:
 
 **Required fields:**
-- Date (multiple results can be entered for the same date)
-- Points made (must be > 0)
+- **Discipline** (free text with auto-complete suggestions)
+  - User can type any discipline name
+  - Auto-complete suggests known disciplines as user types (e.g., "Free game", "1-cushion", "3-cushion - Small table", "3-cushion - Match table", "Balkline 38/2 - Small table", etc.)
+  - Multiple results can be entered for the same discipline on the same date
+- Date (allows multiple results per date per discipline)
+- Points made (must be >= 0)
+  - Warning shown for unusually high values (e.g., > 500) but still allowed
 - Number of innings (must be > 0)
-- Highest run (must be ≤ points made)
+  - Warning shown for unusually high values (e.g., > 200) but still allowed
+- Highest run (must be >= 0 and ≤ points made)
 
 **Optional fields:**
-- Adversary name (free text, no auto-suggestions)
+- Adversary name (free text, no auto-suggestions/auto-fill)
 - Match outcome (won/lost/draw) - user determines the outcome
-- Competition name (free text, no auto-suggestions)
+  - If not provided, result is counted as "unknown" in statistics
+- Competition name (free text, no auto-suggestions/auto-fill)
 
 ### 6.2 Form Behavior
 - No auto-fill or suggestions from previous entries
@@ -128,32 +165,46 @@ Users can record a single result via the + button with the following fields:
 - Confirmation dialogs for all destructive actions
 
 ### 6.4 Validation Rules
-- Points made cannot be negative
-- Number of innings cannot be zero
-- Highest run cannot exceed points made
+- Points made must be >= 0 (zero is allowed)
+- Number of innings must be > 0 (cannot be zero)
+- Highest run must be >= 0 and cannot exceed points made
+- No hard maximum limits on values
+- Show warning (but allow entry) for unusually high values:
+  - Points made > 500
+  - Number of innings > 200
+  - Highest run > 300
 
 ## 7. Data Definitions
 
 ### 7.1 Season
-- Start: Last Monday of August
-- End: Last Sunday of August the following year
-- Seasons are automatically created by the app
+- **Start:** User-defined date (day and month only) configured during first-time setup
+  - Example: If user sets "September 1st", every season starts on September 1st
+- **End:** Day before the next season start date (August 31st in the example above)
+- **Automatic Creation:** Seasons are automatically created by the app based on the user-defined start date
+- **Year Calculation:** Season year is based on the start date (e.g., "Season 2025" starts Sept 1, 2025 and ends Aug 31, 2026)
 - No manual custom seasons
+- **Historical Access:** Users can view and edit results from any past season
 
 ### 7.2 Average Calculation
-- Formula: Points made ÷ Number of innings
+- Formula: Points made ÷ Number of innings (3 decimal places)
 
 ### 7.3 Billiard Disciplines
-Each discipline with different table sizes is tracked separately:
+**User-Defined:** Disciplines are free-text fields that users can define however they prefer.
 
-- **Free game**
-- **1-cushion**
-- **3-cushion**
-  - Small table
-  - Match table
-- **Balkline**
-  - Small table: 38/2, 57/2
-  - Match table: 47/2, 47/1, 71/2
+**Suggested Disciplines:** The app provides auto-complete suggestions based on common billiard disciplines:
+- Free game - Small table
+- Free game - Match table
+- 1-cushion - Small table
+- 1-cushion - Match table
+- 3-cushion - Small table
+- 3-cushion - Match table
+- Balkline 38/2 - Small table
+- Balkline 57/2 - Small table
+- Balkline 47/2 - Match table
+- Balkline 47/1 - Match table
+- Balkline 71/2 - Match table
+
+**Note:** Each unique discipline name is tracked separately (e.g., "3-cushion - Small table" and "3-cushion - Match table" are different disciplines)
 
 ### 7.4 Highest Run
 - Display both highest run in a single match AND highest run across all matches
@@ -181,51 +232,110 @@ Each discipline with different table sizes is tracked separately:
 - All data stored locally with no automatic cleanup
 - Data retained indefinitely unless manually deleted by user
 - Users can completely reset/delete all their data via settings
+- Use SQLite for structured data storage
 
 ### 9.2 Error Handling - Local Storage
 - If local storage fails or becomes corrupted: Display error message with recovery options
+- If device storage is full: Show error message suggesting to delete old data or free up device storage
 
-### 9.3 Cloud Storage (Premium Feature)
-- Optional cloud backup/sync feature
-- One-time payment: €5-10
-- No trial period
-- Enables syncing across multiple devices
+### 9.3 Premium Features - OUT OF SCOPE
+**Note:** Cloud storage, cloud sync, premium payment, and sharing features are out-of-scope for the initial version of the app.
 
-### 9.4 Cloud Sync Behavior
-- Automatic synchronization when internet available
-- Sync status indicator (synced, syncing, not synced)
-- Conflict resolution: Most recent edit wins
-- If sync fails: Automatically retry and queue changes for next sync
+The initial version includes:
+- Local storage only
+- No data export/import
+- No sharing capabilities
 
-## 10. Premium Features
+## 10. Premium Features (Future Enhancement - Out of Scope)
 
-### 10.1 Payment Model
+The following features are planned for future versions but NOT included in the initial build:
+
+### 10.1 Payment Model (Future)
 - One-time payment for premium features
 - Price range: €5-10
+- No trial period
 
-### 10.2 Premium Feature List
+### 10.2 Premium Feature List (Future)
 - Cloud storage and sync across devices
-- Share statistics with others (generate shareable image/screenshot of specific graphs)
+- Share statistics with others (generate shareable image/screenshot)
+- Conflict resolution: Most recent edit wins
 
-### 10.3 Sharing Feature
-- Generate shareable image/screenshot (initial implementation)
-- Can share specific graphs
-- Only available with premium
-
-### 10.4 Free Features
+### 10.3 Free Version (Current Scope)
+- Local storage only
+- No cloud backup
 - No data export (CSV, PDF)
 - No data import from other sources
+- No sharing capabilities
 
-## 11. Additional Features & Constraints
+## 11. Navigation Flow
 
-### 11.1 Multi-Season View
+### 11.1 Screen Hierarchy
+```
+First Launch
+└─> Onboarding (required)
+    └─> Dashboard (Main Page)
+        ├─> + Button → Add Result Form
+        ├─> Tap Discipline Card → Discipline Detail View (Graphs)
+        │   └─> Tap Graph → Result List View
+        │       ├─> Tap Result → Edit Result Form
+        │       └─> Delete → Confirmation Dialog
+        └─> Bottom Nav
+            ├─> Dashboard
+            ├─> [Future: All Results]
+            └─> Settings
+```
+
+### 11.2 Navigation Details
+- **First Launch:** Show onboarding screen (name + season date setup)
+- **Main Navigation:** Bottom navigation bar (Dashboard, Results, Settings)
+- **Add Result:** Global floating action button (+) accessible from dashboard
+- **View Discipline Details:** Tap any discipline card on dashboard
+- **View Results List:** Tap any graph in discipline detail view
+- **Edit/Delete Result:** Available from result list view
+- **Back Navigation:** Standard back button/gesture on all screens
+
+## 12. Additional Features & Constraints
+
+### 12.1 Multi-Season View
 - Option to view graphs across all seasons (not just current season)
 - User-selectable timeframe for all statistics and graphs
+- All past seasons are accessible and editable
 
-### 11.2 No Help/Tutorial Section
+### 12.2 No Help/Tutorial Section
 - No about/help section with instructions
 
-### 11.3 Data Privacy
+### 12.3 Data Privacy
 - No specific data privacy or compliance requirements
 - No GDPR compliance needed
 - No privacy policy required
+
+## 13. Internationalization (i18n)
+
+### 13.1 Supported Languages
+- Dutch (Nederlands)
+- French (Français)
+- English
+
+### 13.2 Language Selection
+- Default language: Device system language (if supported), otherwise English
+- User can change language in Settings
+- Language preference saved locally
+- All UI text, labels, and messages must be translatable
+
+### 13.3 Localization Scope
+- All static UI text and labels
+- All error messages and dialogs
+- All hints and placeholder text
+- Graph labels and axis titles
+- Confirmation dialogs
+
+### 13.4 Non-Localized Content
+- User-entered data (discipline names, adversary names, competition names)
+- Dates follow device locale formatting
+- Numbers follow device locale formatting (decimal separators)
+
+## 14. Design & UI
+### 12.1 Color Scheme
+- I want a light pastel color scheme with a clean and modern design
+- The colors related to carom billiards (blue, red, orange,white) can be used as accent colors for specific elements (e.g., indicators, buttons)
+- Overall, the design should be visually appealing and user-friendly, with a focus on simplicity and ease of use.
