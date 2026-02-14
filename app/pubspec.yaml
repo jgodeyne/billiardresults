@@ -52,6 +52,7 @@ dependencies:
   
   # Drag and drop
   reorderable_grid_view: ^2.2.8
+  path: ^1.9.1
 
 dev_dependencies:
   flutter_test:
