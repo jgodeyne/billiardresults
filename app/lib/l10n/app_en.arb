@@ -1,0 +1,19 @@
+{
+  "@@locale": "en",
+  "appTitle": "Billiard Results",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "dashboard": "Dashboard",
+  "@dashboard": {
+    "description": "Dashboard tab label"
+  },
+  "results": "Results",
+  "@results": {
+    "description": "Results tab label"
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings tab label"
+  }
+}
