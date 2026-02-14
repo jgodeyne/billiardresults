@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
 import 'utils/app_theme.dart';
 import 'screens/dashboard_screen.dart';
 import 'screens/settings_screen.dart';
+import 'screens/onboarding_screen.dart';
 import 'l10n/app_localizations.dart';
+import 'services/database_service.dart';
+import 'models/user_settings.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,22 +18,101 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Billiard Results',
-      theme: AppTheme.lightTheme,
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [
-        Locale('en'), // English
-        Locale('nl'), // Dutch
-        Locale('fr'), // French
-      ],
-      home: const MyHomePage(),
+    return ChangeNotifierProvider(
+      create: (_) => AppState(),
+      child: Consumer<AppState>(
+        builder: (context, appState, _) {
+          return MaterialApp(
+            title: 'Billiard Results',
+            theme: AppTheme.lightTheme,
+            locale: appState.locale,
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('en'), // English
+              Locale('nl'), // Dutch
+              Locale('fr'), // French
+            ],
+            home: const InitialScreen(),
+            routes: {
+              '/home': (context) => const MyHomePage(),
+              '/onboarding': (context) => const OnboardingScreen(),
+            },
+          );
+        },
+      ),
     );
+  }
+}
+
+/// Initial screen that determines whether to show onboarding or main app
+class InitialScreen extends StatelessWidget {
+  const InitialScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<bool>(
+      future: DatabaseService.instance.hasUserSettings(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+
+        if (snapshot.hasError) {
+          return Scaffold(
+            body: Center(
+              child: Text('Error: ${snapshot.error}'),
+            ),
+          );
+        }
+
+        final hasSettings = snapshot.data ?? false;
+
+        // Load settings into app state if they exist
+        if (hasSettings) {
+          WidgetsBinding.instance.addPostFrameCallback((_) async {
+            final settings = await DatabaseService.instance.getUserSettings();
+            if (settings != null && context.mounted) {
+              context.read<AppState>().updateSettings(settings);
+            }
+          });
+          return const MyHomePage();
+        } else {
+          return const OnboardingScreen();
+        }
+      },
+    );
+  }
+}
+
+/// Global app state for managing user settings and locale
+class AppState extends ChangeNotifier {
+  UserSettings? _settings;
+  Locale? _locale;
+
+  Locale? get locale => _locale;
+  UserSettings? get settings => _settings;
+
+  void updateSettings(UserSettings settings) {
+    _settings = settings;
+    _locale = Locale(settings.language);
+    notifyListeners();
+  }
+
+  void updateLanguage(String languageCode) {
+    if (_settings != null) {
+      _settings = _settings!.copyWith(language: languageCode);
+      _locale = Locale(languageCode);
+      notifyListeners();
+    }
   }
 }
 

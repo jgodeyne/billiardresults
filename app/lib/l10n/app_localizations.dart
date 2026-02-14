@@ -123,6 +123,300 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Settings'**
   String get settings;
+
+  /// No description provided for @onboardingWelcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Billiard Results!'**
+  String get onboardingWelcome;
+
+  /// No description provided for @onboardingSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s set up your profile'**
+  String get onboardingSubtitle;
+
+  /// No description provided for @nameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Name'**
+  String get nameLabel;
+
+  /// No description provided for @nameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your name'**
+  String get nameHint;
+
+  /// No description provided for @nameError.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your name'**
+  String get nameError;
+
+  /// No description provided for @seasonStartLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Season Start Date'**
+  String get seasonStartLabel;
+
+  /// No description provided for @seasonStartHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select day and month'**
+  String get seasonStartHint;
+
+  /// No description provided for @seasonStartError.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a season start date'**
+  String get seasonStartError;
+
+  /// No description provided for @getStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get getStarted;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// No description provided for @confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
+
+  /// No description provided for @editProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Profile'**
+  String get editProfile;
+
+  /// No description provided for @languageLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get languageLabel;
+
+  /// No description provided for @english.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get english;
+
+  /// No description provided for @dutch.
+  ///
+  /// In en, this message translates to:
+  /// **'Dutch'**
+  String get dutch;
+
+  /// No description provided for @french.
+  ///
+  /// In en, this message translates to:
+  /// **'French'**
+  String get french;
+
+  /// No description provided for @classificationLevels.
+  ///
+  /// In en, this message translates to:
+  /// **'Classification Levels'**
+  String get classificationLevels;
+
+  /// No description provided for @classificationLevelsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set target average ranges per discipline'**
+  String get classificationLevelsSubtitle;
+
+  /// No description provided for @noDisciplines.
+  ///
+  /// In en, this message translates to:
+  /// **'No disciplines yet. Add results to set classification levels.'**
+  String get noDisciplines;
+
+  /// No description provided for @minimumAverage.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum Average'**
+  String get minimumAverage;
+
+  /// No description provided for @maximumAverage.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum Average'**
+  String get maximumAverage;
+
+  /// No description provided for @averageRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Average Range'**
+  String get averageRange;
+
+  /// No description provided for @notSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not set'**
+  String get notSet;
+
+  /// No description provided for @dataManagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Management'**
+  String get dataManagement;
+
+  /// No description provided for @deleteAllData.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete All Data'**
+  String get deleteAllData;
+
+  /// No description provided for @deleteAllDataConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete All Data?'**
+  String get deleteAllDataConfirmTitle;
+
+  /// No description provided for @deleteAllDataConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This will permanently delete all your results, classification levels, and settings. This action cannot be undone.'**
+  String get deleteAllDataConfirmMessage;
+
+  /// No description provided for @deleteClassificationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Classification?'**
+  String get deleteClassificationTitle;
+
+  /// No description provided for @deleteClassificationMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove classification level for {discipline}?'**
+  String deleteClassificationMessage(String discipline);
+
+  /// No description provided for @dataDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'All data has been deleted'**
+  String get dataDeleted;
+
+  /// No description provided for @settingsSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings saved successfully'**
+  String get settingsSaved;
+
+  /// No description provided for @classificationSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Classification level saved'**
+  String get classificationSaved;
+
+  /// No description provided for @classificationDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Classification level deleted'**
+  String get classificationDeleted;
+
+  /// No description provided for @errorSavingSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Error saving settings'**
+  String get errorSavingSettings;
+
+  /// No description provided for @errorLoadingSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading settings'**
+  String get errorLoadingSettings;
+
+  /// No description provided for @january.
+  ///
+  /// In en, this message translates to:
+  /// **'January'**
+  String get january;
+
+  /// No description provided for @february.
+  ///
+  /// In en, this message translates to:
+  /// **'February'**
+  String get february;
+
+  /// No description provided for @march.
+  ///
+  /// In en, this message translates to:
+  /// **'March'**
+  String get march;
+
+  /// No description provided for @april.
+  ///
+  /// In en, this message translates to:
+  /// **'April'**
+  String get april;
+
+  /// No description provided for @may.
+  ///
+  /// In en, this message translates to:
+  /// **'May'**
+  String get may;
+
+  /// No description provided for @june.
+  ///
+  /// In en, this message translates to:
+  /// **'June'**
+  String get june;
+
+  /// No description provided for @july.
+  ///
+  /// In en, this message translates to:
+  /// **'July'**
+  String get july;
+
+  /// No description provided for @august.
+  ///
+  /// In en, this message translates to:
+  /// **'August'**
+  String get august;
+
+  /// No description provided for @september.
+  ///
+  /// In en, this message translates to:
+  /// **'September'**
+  String get september;
+
+  /// No description provided for @october.
+  ///
+  /// In en, this message translates to:
+  /// **'October'**
+  String get october;
+
+  /// No description provided for @november.
+  ///
+  /// In en, this message translates to:
+  /// **'November'**
+  String get november;
+
+  /// No description provided for @december.
+  ///
+  /// In en, this message translates to:
+  /// **'December'**
+  String get december;
 }
 
 class _AppLocalizationsDelegate

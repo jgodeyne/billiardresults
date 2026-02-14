@@ -15,5 +15,61 @@
   "settings": "Settings",
   "@settings": {
     "description": "Settings tab label"
-  }
+  },
+  "onboardingWelcome": "Welcome to Billiard Results!",
+  "onboardingSubtitle": "Let's set up your profile",
+  "nameLabel": "Your Name",
+  "nameHint": "Enter your name",
+  "nameError": "Please enter your name",
+  "seasonStartLabel": "Season Start Date",
+  "seasonStartHint": "Select day and month",
+  "seasonStartError": "Please select a season start date",
+  "getStarted": "Get Started",
+  "save": "Save",
+  "cancel": "Cancel",
+  "delete": "Delete",
+  "confirm": "Confirm",
+  "editProfile": "Edit Profile",
+  "languageLabel": "Language",
+  "english": "English",
+  "dutch": "Dutch",
+  "french": "French",
+  "classificationLevels": "Classification Levels",
+  "classificationLevelsSubtitle": "Set target average ranges per discipline",
+  "noDisciplines": "No disciplines yet. Add results to set classification levels.",
+  "minimumAverage": "Minimum Average",
+  "maximumAverage": "Maximum Average",
+  "averageRange": "Average Range",
+  "notSet": "Not set",
+  "dataManagement": "Data Management",
+  "deleteAllData": "Delete All Data",
+  "deleteAllDataConfirmTitle": "Delete All Data?",
+  "deleteAllDataConfirmMessage": "This will permanently delete all your results, classification levels, and settings. This action cannot be undone.",
+  "deleteClassificationTitle": "Delete Classification?",
+  "deleteClassificationMessage": "Remove classification level for {discipline}?",
+  "@deleteClassificationMessage": {
+    "placeholders": {
+      "discipline": {
+        "type": "String"
+      }
+    }
+  },
+  "dataDeleted": "All data has been deleted",
+  "settingsSaved": "Settings saved successfully",
+  "classificationSaved": "Classification level saved",
+  "classificationDeleted": "Classification level deleted",
+  "errorSavingSettings": "Error saving settings",
+  "errorLoadingSettings": "Error loading settings",
+  "january": "January",
+  "february": "February",
+  "march": "March",
+  "april": "April",
+  "may": "May",
+  "june": "June",
+  "july": "July",
+  "august": "August",
+  "september": "September",
+  "october": "October",
+  "november": "November",
+  "december": "December"
 }

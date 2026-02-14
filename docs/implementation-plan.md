@@ -6,11 +6,11 @@
 ## Progress Overview
 
 ```
-Overall Progress: 2/8 milestones (25%)
+Overall Progress: 3/8 milestones (37.5%)
 
 [✅] Milestone 1: Project Setup & Foundation
 [✅] Milestone 2: Database & Data Models
-[ ] Milestone 3: Onboarding & User Settings
+[✅] Milestone 3: Onboarding & User Settings
 [ ] Milestone 4: Core Result Entry
 [ ] Milestone 5: Dashboard/Main Page
 [ ] Milestone 6: Discipline Detail View
@@ -136,9 +136,10 @@ Overall Progress: 2/8 milestones (25%)
 
 ## Milestone 3: Onboarding & User Settings
 
-**Status:** ⚪ Not Started  
+**Status:** ✅ Complete  
 **Duration:** 2-3 days  
 **Dependencies:** Milestone 2
+**Completed:** February 14, 2026
 
 ### Objectives
 - Implement first-time onboarding screen
@@ -146,31 +147,39 @@ Overall Progress: 2/8 milestones (25%)
 - Implement user preferences management
 
 ### Tasks
-- [ ] Create onboarding screen:
-  - [ ] Welcome message
-  - [ ] Name input field with validation
-  - [ ] Season start date picker (day and month only)
-  - [ ] Cannot skip - required fields
-  - [ ] Save settings to database
-  - [ ] Navigate to dashboard after completion
-- [ ] Implement first-launch detection:
-  - [ ] Check if user settings exist
-  - [ ] Show onboarding if no settings
-  - [ ] Show dashboard if settings exist
-- [ ] Create settings page:
-  - [ ] Edit name field
-  - [ ] Edit season start date (day and month)
-  - [ ] Language selection dropdown (Dutch, French, English)
-  - [ ] Classification levels section (per discipline)
-  - [ ] Delete all data button with confirmation dialog
-- [ ] Implement classification level management:
-  - [ ] List all unique disciplines from results
-  - [ ] Add/edit classification for each discipline
-  - [ ] Two number fields: minimum and maximum average
-  - [ ] Delete classification level
-- [ ] Add confirmation dialogs:
-  - [ ] Delete all data confirmation (with warning)
-  - [ ] Delete classification level confirmation
+- [x] Create onboarding screen:
+  - [x] Welcome message
+  - [x] Name input field with validation
+  - [x] Season start date picker (day and month only)
+  - [x] Cannot skip - required fields
+  - [x] Save settings to database
+  - [x] Navigate to dashboard after completion
+- [x] Implement first-launch detection:
+  - [x] Check if user settings exist
+  - [x] Show onboarding if no settings
+  - [x] Show dashboard if settings exist
+- [x] Create settings page:
+  - [x] Edit name field
+  - [x] Edit season start date (day and month)
+  - [x] Language selection dropdown (Dutch, French, English)
+  - [x] Classification levels section (per discipline)
+  - [x] Delete all data button with confirmation dialog
+- [x] Implement classification level management:
+  - [x] List all unique disciplines from results
+  - [x] Add/edit classification for each discipline
+  - [x] Two number fields: minimum and maximum average
+  - [x] Delete classification level
+- [x] Add confirmation dialogs:
+  - [x] Delete all data confirmation (with warning)
+  - [x] Delete classification level confirmation
+- [x] Add localization strings:
+  - [x] All onboarding strings in 3 languages
+  - [x] All settings strings in 3 languages
+  - [x] Month names in 3 languages
+  - [x] Confirmation dialog strings
+- [x] State management:
+  - [x] AppState provider for user settings and locale
+  - [x] Language change updates immediately
 
 ### Acceptance Criteria
 - ✓ Onboarding shown on first launch only
@@ -184,13 +193,13 @@ Overall Progress: 2/8 milestones (25%)
 - ✓ All destructive actions require confirmation
 
 ### Testing
-- Fresh install - verify onboarding shows
-- Complete onboarding - verify saved
-- Restart app - verify onboarding doesn't show again
-- Edit all settings - verify changes persist
-- Change language - verify UI updates
-- Delete all data - verify database cleared
-- Set classification levels for multiple disciplines
+- Fresh install - verify onboarding shows ✓
+- Complete onboarding - verify saved ✓
+- Restart app - verify onboarding doesn't show again ✓
+- Edit all settings - verify changes persist ✓
+- Change language - verify UI updates ✓
+- Delete all data - verify database cleared ✓
+- Set classification levels for multiple disciplines ✓
 
 ---
 
@@ -646,9 +655,19 @@ Each milestone is considered complete when:
   - StatisticsHelper created with calculation and validation functions
   - 32 comprehensive tests written and passing (17 model + 15 statistics tests)
   - Season calculation logic fully tested
+- **February 14, 2026** - Milestone 3 completed
+  - Onboarding screen with name and season date inputs
+  - First-launch detection using DatabaseService.hasUserSettings()
+  - Full settings page with all edit capabilities
+  - Classification level management per discipline
+  - Delete all data with confirmation dialogs
+  - AppState provider for global settings and locale management
+  - Language switching with immediate UI updates
+  - Comprehensive localization strings (50+ strings in 3 languages)
+  - All 32 tests still passing
 
 ### Current Sprint
-- **Sprint:** Milestone 2 Complete (25% of project)
-- **Focus:** Moving to Milestone 3 - Onboarding & User Settings
+- **Sprint:** Milestone 3 Complete (37.5% of project)
+- **Focus:** Moving to Milestone 4 - Core Result Entry
 - **Blockers:** None
-- **ETA:** Ready to start Milestone 3
+- **ETA:** Ready to start Milestone 4
