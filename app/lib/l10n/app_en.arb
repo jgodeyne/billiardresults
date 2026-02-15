@@ -71,5 +71,73 @@
   "september": "September",
   "october": "October",
   "november": "November",
-  "december": "December"
+  "december": "December",
+  "addResult": "Add Result",
+  "editResult": "Edit Result",
+  "disciplineLabel": "Discipline",
+  "disciplineHint": "Select or enter discipline",
+  "disciplineError": "Please enter a discipline",
+  "dateLabel": "Date",
+  "dateHint": "Select date",
+  "pointsMadeLabel": "Points Made",
+  "pointsMadeHint": "Enter points made",
+  "pointsMadeError": "Points must be 0 or greater",
+  "inningsLabel": "Number of Innings",
+  "inningsHint": "Enter number of innings",
+  "inningsError": "Innings must be greater than 0",
+  "highestRunLabel": "Highest Run",
+  "highestRunHint": "Enter highest run",
+  "highestRunError": "Highest run must be between 0 and points made",
+  "adversaryLabel": "Adversary (Optional)",
+  "adversaryHint": "Enter opponent name",
+  "outcomeLabel": "Match Outcome (Optional)",
+  "outcomeWon": "Won",
+  "outcomeLost": "Lost",
+  "outcomeDraw": "Draw",
+  "outcomeUnknown": "Unknown",
+  "competitionLabel": "Competition (Optional)",
+  "competitionHint": "Enter competition name",
+  "resultSaved": "Result saved successfully",
+  "resultDeleted": "Result deleted",
+  "errorSavingResult": "Error saving result",
+  "deleteResultTitle": "Delete Result?",
+  "deleteResultMessage": "This will permanently delete this result.",
+  "warningHighPoints": "Warning: Points value seems high (>{limit}). Please verify.",
+  "@warningHighPoints": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
+  "warningHighInnings": "Warning: Innings value seems high (>{limit}). Please verify.",
+  "@warningHighInnings": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
+  "warningHighRun": "Warning: Highest run seems high (>{limit}). Please verify.",
+  "@warningHighRun": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
+  "requiredFields": "Required fields",
+  "optionalFields": "Optional fields",
+  "average": "Average",
+  "disciplineFreeSmall": "Free game - Small table",
+  "disciplineFreeMatch": "Free game - Match table",
+  "discipline1CushionSmall": "1-cushion - Small table",
+  "discipline1CushionMatch": "1-cushion - Match table",
+  "discipline3CushionSmall": "3-cushion - Small table",
+  "discipline3CushionMatch": "3-cushion - Match table",
+  "disciplineBalkline382Small": "Balkline 38/2 - Small table",
+  "disciplineBalkline572Small": "Balkline 57/2 - Small table",
+  "disciplineBalkline472Match": "Balkline 47/2 - Match table",
+  "disciplineBalkline471Match": "Balkline 47/1 - Match table",
+  "disciplineBalkline712Match": "Balkline 71/2 - Match table"
 }

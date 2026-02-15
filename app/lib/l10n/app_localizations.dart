@@ -417,6 +417,288 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'December'**
   String get december;
+
+  /// No description provided for @addResult.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Result'**
+  String get addResult;
+
+  /// No description provided for @editResult.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Result'**
+  String get editResult;
+
+  /// No description provided for @disciplineLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Discipline'**
+  String get disciplineLabel;
+
+  /// No description provided for @disciplineHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select or enter discipline'**
+  String get disciplineHint;
+
+  /// No description provided for @disciplineError.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a discipline'**
+  String get disciplineError;
+
+  /// No description provided for @dateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get dateLabel;
+
+  /// No description provided for @dateHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select date'**
+  String get dateHint;
+
+  /// No description provided for @pointsMadeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Points Made'**
+  String get pointsMadeLabel;
+
+  /// No description provided for @pointsMadeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter points made'**
+  String get pointsMadeHint;
+
+  /// No description provided for @pointsMadeError.
+  ///
+  /// In en, this message translates to:
+  /// **'Points must be 0 or greater'**
+  String get pointsMadeError;
+
+  /// No description provided for @inningsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of Innings'**
+  String get inningsLabel;
+
+  /// No description provided for @inningsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter number of innings'**
+  String get inningsHint;
+
+  /// No description provided for @inningsError.
+  ///
+  /// In en, this message translates to:
+  /// **'Innings must be greater than 0'**
+  String get inningsError;
+
+  /// No description provided for @highestRunLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Highest Run'**
+  String get highestRunLabel;
+
+  /// No description provided for @highestRunHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter highest run'**
+  String get highestRunHint;
+
+  /// No description provided for @highestRunError.
+  ///
+  /// In en, this message translates to:
+  /// **'Highest run must be between 0 and points made'**
+  String get highestRunError;
+
+  /// No description provided for @adversaryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Adversary (Optional)'**
+  String get adversaryLabel;
+
+  /// No description provided for @adversaryHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter opponent name'**
+  String get adversaryHint;
+
+  /// No description provided for @outcomeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Match Outcome (Optional)'**
+  String get outcomeLabel;
+
+  /// No description provided for @outcomeWon.
+  ///
+  /// In en, this message translates to:
+  /// **'Won'**
+  String get outcomeWon;
+
+  /// No description provided for @outcomeLost.
+  ///
+  /// In en, this message translates to:
+  /// **'Lost'**
+  String get outcomeLost;
+
+  /// No description provided for @outcomeDraw.
+  ///
+  /// In en, this message translates to:
+  /// **'Draw'**
+  String get outcomeDraw;
+
+  /// No description provided for @outcomeUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get outcomeUnknown;
+
+  /// No description provided for @competitionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Competition (Optional)'**
+  String get competitionLabel;
+
+  /// No description provided for @competitionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter competition name'**
+  String get competitionHint;
+
+  /// No description provided for @resultSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Result saved successfully'**
+  String get resultSaved;
+
+  /// No description provided for @resultDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Result deleted'**
+  String get resultDeleted;
+
+  /// No description provided for @errorSavingResult.
+  ///
+  /// In en, this message translates to:
+  /// **'Error saving result'**
+  String get errorSavingResult;
+
+  /// No description provided for @deleteResultTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Result?'**
+  String get deleteResultTitle;
+
+  /// No description provided for @deleteResultMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This will permanently delete this result.'**
+  String get deleteResultMessage;
+
+  /// No description provided for @warningHighPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'Warning: Points value seems high (>{limit}). Please verify.'**
+  String warningHighPoints(int limit);
+
+  /// No description provided for @warningHighInnings.
+  ///
+  /// In en, this message translates to:
+  /// **'Warning: Innings value seems high (>{limit}). Please verify.'**
+  String warningHighInnings(int limit);
+
+  /// No description provided for @warningHighRun.
+  ///
+  /// In en, this message translates to:
+  /// **'Warning: Highest run seems high (>{limit}). Please verify.'**
+  String warningHighRun(int limit);
+
+  /// No description provided for @requiredFields.
+  ///
+  /// In en, this message translates to:
+  /// **'Required fields'**
+  String get requiredFields;
+
+  /// No description provided for @optionalFields.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional fields'**
+  String get optionalFields;
+
+  /// No description provided for @average.
+  ///
+  /// In en, this message translates to:
+  /// **'Average'**
+  String get average;
+
+  /// No description provided for @disciplineFreeSmall.
+  ///
+  /// In en, this message translates to:
+  /// **'Free game - Small table'**
+  String get disciplineFreeSmall;
+
+  /// No description provided for @disciplineFreeMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Free game - Match table'**
+  String get disciplineFreeMatch;
+
+  /// No description provided for @discipline1CushionSmall.
+  ///
+  /// In en, this message translates to:
+  /// **'1-cushion - Small table'**
+  String get discipline1CushionSmall;
+
+  /// No description provided for @discipline1CushionMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'1-cushion - Match table'**
+  String get discipline1CushionMatch;
+
+  /// No description provided for @discipline3CushionSmall.
+  ///
+  /// In en, this message translates to:
+  /// **'3-cushion - Small table'**
+  String get discipline3CushionSmall;
+
+  /// No description provided for @discipline3CushionMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'3-cushion - Match table'**
+  String get discipline3CushionMatch;
+
+  /// No description provided for @disciplineBalkline382Small.
+  ///
+  /// In en, this message translates to:
+  /// **'Balkline 38/2 - Small table'**
+  String get disciplineBalkline382Small;
+
+  /// No description provided for @disciplineBalkline572Small.
+  ///
+  /// In en, this message translates to:
+  /// **'Balkline 57/2 - Small table'**
+  String get disciplineBalkline572Small;
+
+  /// No description provided for @disciplineBalkline472Match.
+  ///
+  /// In en, this message translates to:
+  /// **'Balkline 47/2 - Match table'**
+  String get disciplineBalkline472Match;
+
+  /// No description provided for @disciplineBalkline471Match.
+  ///
+  /// In en, this message translates to:
+  /// **'Balkline 47/1 - Match table'**
+  String get disciplineBalkline471Match;
+
+  /// No description provided for @disciplineBalkline712Match.
+  ///
+  /// In en, this message translates to:
+  /// **'Balkline 71/2 - Match table'**
+  String get disciplineBalkline712Match;
 }
 
 class _AppLocalizationsDelegate

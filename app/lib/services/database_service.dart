@@ -125,10 +125,16 @@ class DatabaseService {
       final id = await db.insert('user_settings', settings.toMap());
       return settings.copyWith(id: id);
     } else {
-      // Update existing settings
+      // Update existing settings - don't include id field
+      final updateMap = {
+        'name': settings.name,
+        'season_start_day': settings.seasonStartDay,
+        'season_start_month': settings.seasonStartMonth,
+        'language': settings.language,
+      };
       await db.update(
         'user_settings',
-        settings.toMap(),
+        updateMap,
         where: 'id = ?',
         whereArgs: [existing.first['id']],
       );
@@ -283,9 +289,20 @@ class DatabaseService {
   /// Update a result
   Future<int> updateResult(Result result) async {
     final db = await database;
+    // Don't include id field in update
+    final updateMap = {
+      'discipline': result.discipline,
+      'date': result.date.toIso8601String(),
+      'points_made': result.pointsMade,
+      'innings': result.innings,
+      'highest_run': result.highestRun,
+      'adversary': result.adversary,
+      'outcome': result.outcome,
+      'competition': result.competition,
+    };
     return await db.update(
       'results',
-      result.toMap(),
+      updateMap,
       where: 'id = ?',
       whereArgs: [result.id],
     );
@@ -325,9 +342,15 @@ class DatabaseService {
       final id = await db.insert('classification_levels', level.toMap());
       return level.copyWith(id: id);
     } else {
+      // For update, don't include id field
+      final updateMap = {
+        'discipline': level.discipline,
+        'min_average': level.minAverage,
+        'max_average': level.maxAverage,
+      };
       await db.update(
         'classification_levels',
-        level.toMap(),
+        updateMap,
         where: 'discipline = ?',
         whereArgs: [level.discipline],
       );

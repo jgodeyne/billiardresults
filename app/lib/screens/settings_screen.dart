@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../l10n/app_localizations.dart';
 import '../models/user_settings.dart';
@@ -209,27 +210,35 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(discipline),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: minController,
-              decoration: InputDecoration(
-                labelText: l10n.minimumAverage,
-                border: const OutlineInputBorder(),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: minController,
+                decoration: InputDecoration(
+                  labelText: l10n.minimumAverage,
+                  border: const OutlineInputBorder(),
+                ),
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d*[.,]?\d*')),
+                ],
               ),
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: maxController,
-              decoration: InputDecoration(
-                labelText: l10n.maximumAverage,
-                border: const OutlineInputBorder(),
+              const SizedBox(height: 16),
+              TextField(
+                controller: maxController,
+                decoration: InputDecoration(
+                  labelText: l10n.maximumAverage,
+                  border: const OutlineInputBorder(),
+                ),
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d*[.,]?\d*')),
+                ],
               ),
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            ),
-          ],
+            ],
+          ),
         ),
         actions: [
           if (existing != null)
@@ -243,8 +252,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           FilledButton(
             onPressed: () {
-              final min = double.tryParse(minController.text);
-              final max = double.tryParse(maxController.text);
+              // Replace comma with period for parsing (European number format)
+              final min = double.tryParse(minController.text.replaceAll(',', '.'));
+              final max = double.tryParse(maxController.text.replaceAll(',', '.'));
               
               if (min != null && max != null && min < max) {
                 Navigator.pop(
@@ -263,8 +273,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
 
-    minController.dispose();
-    maxController.dispose();
+    // Dispose controllers after a small delay to let dialog animation complete
+    Future.delayed(const Duration(milliseconds: 100), () {
+      minController.dispose();
+      maxController.dispose();
+    });
 
     if (!mounted) return;
 

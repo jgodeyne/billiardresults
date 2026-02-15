@@ -171,4 +171,151 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get december => 'December';
+
+  @override
+  String get addResult => 'Add Result';
+
+  @override
+  String get editResult => 'Edit Result';
+
+  @override
+  String get disciplineLabel => 'Discipline';
+
+  @override
+  String get disciplineHint => 'Select or enter discipline';
+
+  @override
+  String get disciplineError => 'Please enter a discipline';
+
+  @override
+  String get dateLabel => 'Date';
+
+  @override
+  String get dateHint => 'Select date';
+
+  @override
+  String get pointsMadeLabel => 'Points Made';
+
+  @override
+  String get pointsMadeHint => 'Enter points made';
+
+  @override
+  String get pointsMadeError => 'Points must be 0 or greater';
+
+  @override
+  String get inningsLabel => 'Number of Innings';
+
+  @override
+  String get inningsHint => 'Enter number of innings';
+
+  @override
+  String get inningsError => 'Innings must be greater than 0';
+
+  @override
+  String get highestRunLabel => 'Highest Run';
+
+  @override
+  String get highestRunHint => 'Enter highest run';
+
+  @override
+  String get highestRunError => 'Highest run must be between 0 and points made';
+
+  @override
+  String get adversaryLabel => 'Adversary (Optional)';
+
+  @override
+  String get adversaryHint => 'Enter opponent name';
+
+  @override
+  String get outcomeLabel => 'Match Outcome (Optional)';
+
+  @override
+  String get outcomeWon => 'Won';
+
+  @override
+  String get outcomeLost => 'Lost';
+
+  @override
+  String get outcomeDraw => 'Draw';
+
+  @override
+  String get outcomeUnknown => 'Unknown';
+
+  @override
+  String get competitionLabel => 'Competition (Optional)';
+
+  @override
+  String get competitionHint => 'Enter competition name';
+
+  @override
+  String get resultSaved => 'Result saved successfully';
+
+  @override
+  String get resultDeleted => 'Result deleted';
+
+  @override
+  String get errorSavingResult => 'Error saving result';
+
+  @override
+  String get deleteResultTitle => 'Delete Result?';
+
+  @override
+  String get deleteResultMessage => 'This will permanently delete this result.';
+
+  @override
+  String warningHighPoints(int limit) {
+    return 'Warning: Points value seems high (>$limit). Please verify.';
+  }
+
+  @override
+  String warningHighInnings(int limit) {
+    return 'Warning: Innings value seems high (>$limit). Please verify.';
+  }
+
+  @override
+  String warningHighRun(int limit) {
+    return 'Warning: Highest run seems high (>$limit). Please verify.';
+  }
+
+  @override
+  String get requiredFields => 'Required fields';
+
+  @override
+  String get optionalFields => 'Optional fields';
+
+  @override
+  String get average => 'Average';
+
+  @override
+  String get disciplineFreeSmall => 'Free game - Small table';
+
+  @override
+  String get disciplineFreeMatch => 'Free game - Match table';
+
+  @override
+  String get discipline1CushionSmall => '1-cushion - Small table';
+
+  @override
+  String get discipline1CushionMatch => '1-cushion - Match table';
+
+  @override
+  String get discipline3CushionSmall => '3-cushion - Small table';
+
+  @override
+  String get discipline3CushionMatch => '3-cushion - Match table';
+
+  @override
+  String get disciplineBalkline382Small => 'Balkline 38/2 - Small table';
+
+  @override
+  String get disciplineBalkline572Small => 'Balkline 57/2 - Small table';
+
+  @override
+  String get disciplineBalkline472Match => 'Balkline 47/2 - Match table';
+
+  @override
+  String get disciplineBalkline471Match => 'Balkline 47/1 - Match table';
+
+  @override
+  String get disciplineBalkline712Match => 'Balkline 71/2 - Match table';
 }

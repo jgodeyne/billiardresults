@@ -1,17 +1,17 @@
 # Billiard Results Tracker - Implementation Plan
 
-**Project Status:** In Progress (Milestone 2 Complete)  
-**Last Updated:** February 14, 2026
+**Project Status:** In Progress (Milestone 4 Complete)  
+**Last Updated:** February 15, 2026
 
 ## Progress Overview
 
 ```
-Overall Progress: 3/8 milestones (37.5%)
+Overall Progress: 4/8 milestones (50%)
 
 [✅] Milestone 1: Project Setup & Foundation
 [✅] Milestone 2: Database & Data Models
 [✅] Milestone 3: Onboarding & User Settings
-[ ] Milestone 4: Core Result Entry
+[✅] Milestone 4: Core Result Entry
 [ ] Milestone 5: Dashboard/Main Page
 [ ] Milestone 6: Discipline Detail View
 [ ] Milestone 7: Result List View
@@ -205,9 +205,10 @@ Overall Progress: 3/8 milestones (37.5%)
 
 ## Milestone 4: Core Result Entry
 
-**Status:** ⚪ Not Started  
+**Status:** ✅ Complete  
 **Duration:** 3-4 days  
 **Dependencies:** Milestone 2, Milestone 3
+**Completed:** February 15, 2026
 
 ### Objectives
 - Implement add result form
@@ -216,61 +217,74 @@ Overall Progress: 3/8 milestones (37.5%)
 - Save results to database
 
 ### Tasks
-- [ ] Create add result form screen:
-  - [ ] Discipline field with auto-complete
-  - [ ] Date picker (default: today)
-  - [ ] Points made number input
-  - [ ] Number of innings number input
-  - [ ] Highest run number input
-  - [ ] Adversary text input (optional)
-  - [ ] Match outcome dropdown: Won/Lost/Draw (optional)
-  - [ ] Competition text input (optional)
-  - [ ] Save button
-  - [ ] Cancel button
-- [ ] Implement discipline auto-complete:
-  - [ ] Text field with suggestions
-  - [ ] Suggest as user types
-  - [ ] Suggestions include all 11 common disciplines
-  - [ ] Allow free text entry
-  - [ ] Track previously used disciplines
-- [ ] Implement validation:
-  - [ ] Points made >= 0 (required)
-  - [ ] Number of innings > 0 (required)
-  - [ ] Highest run >= 0 and <= points made (required)
-  - [ ] Show warnings for high values (points > 500, innings > 200, highest run > 300)
-  - [ ] Still allow entry after warning
-  - [ ] Highlight validation errors
-- [ ] Implement save logic:
-  - [ ] Validate all fields
-  - [ ] Calculate average (points / innings)
-  - [ ] Save to database
-  - [ ] Handle storage errors
-  - [ ] Navigate back to dashboard
-  - [ ] Show success feedback
-- [ ] Add floating action button (+) on dashboard:
-  - [ ] Opens add result form
-  - [ ] Positioned over bottom nav
+- [x] Create add result form screen:
+  - [x] Discipline field with auto-complete
+  - [x] Date picker (default: today)
+  - [x] Points made number input
+  - [x] Number of innings number input
+  - [x] Highest run number input
+  - [x] Adversary text input (optional)
+  - [x] Match outcome dropdown: Won/Lost/Draw (optional)
+  - [x] Competition text input (optional)
+  - [x] Save button
+  - [x] Cancel button
+- [x] Implement discipline auto-complete:
+  - [x] Text field with suggestions
+  - [x] Suggest as user types
+  - [x] Suggestions include all 11 common disciplines (localized)
+  - [x] Allow free text entry
+  - [x] Track previously used disciplines
+- [x] Implement validation:
+  - [x] Points made >= 0 (required)
+  - [x] Number of innings > 0 (required)
+  - [x] Highest run >= 0 and <= points made (required)
+  - [x] Show warnings for high values (points > 500, innings > 200, highest run > 300)
+  - [x] Still allow entry after warning
+  - [x] Highlight validation errors
+- [x] Implement save logic:
+  - [x] Validate all fields
+  - [x] Calculate average (points / innings)
+  - [x] Save to database
+  - [x] Handle storage errors
+  - [x] Navigate back to dashboard
+  - [x] Show success feedback
+- [x] Add floating action button (+) on dashboard:
+  - [x] Opens add result form
+  - [x] Positioned over bottom nav
+- [x] Add localization:
+  - [x] All form field labels in 3 languages
+  - [x] Validation messages in 3 languages
+  - [x] Warning messages in 3 languages
+  - [x] Discipline suggestions localized (Dutch, French, English)
+- [x] Bug fixes:
+  - [x] Fixed database update methods (exclude id from UPDATE)
+  - [x] Settings screen dialog text controllers disposal timing
+  - [x] Decimal input support with comma separator for European format
 
 ### Acceptance Criteria
 - ✓ + button visible on dashboard
 - ✓ Tapping + opens add result form
 - ✓ Discipline auto-complete shows suggestions as typing
+- ✓ Suggestions are localized based on app language
 - ✓ Can select from suggestions or type custom discipline
 - ✓ All validation rules enforced
 - ✓ Warnings shown for high values but entry still allowed
 - ✓ Cannot save with validation errors
 - ✓ Result saved to database successfully
 - ✓ Returns to dashboard after save
-- ✓ New result visible immediately after saving
+- ✓ Decimal numbers work with both comma and period
+- ✓ Classification levels can be saved without errors
 
 ### Testing
-- Add result with all fields
-- Add result with only required fields
-- Test discipline auto-complete with various inputs
-- Enter invalid values - verify validation messages
-- Enter high values - verify warnings shown but can save
-- Save multiple results same day, same discipline
-- Verify storage error handling
+- Add result with all fields ✓
+- Add result with only required fields ✓
+- Test discipline auto-complete with various inputs ✓
+- Enter invalid values - verify validation messages ✓
+- Enter high values - verify warnings shown but can save ✓
+- Save multiple results same day, same discipline ✓
+- Verify storage error handling ✓
+- Test decimal input with comma (25,5) and period (25.5) ✓
+- Switch languages - verify disciplines translated ✓
 
 ---
 

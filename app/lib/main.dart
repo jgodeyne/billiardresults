@@ -5,6 +5,7 @@ import 'utils/app_theme.dart';
 import 'screens/dashboard_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/onboarding_screen.dart';
+import 'screens/add_result_screen.dart';
 import 'l10n/app_localizations.dart';
 import 'services/database_service.dart';
 import 'models/user_settings.dart';
@@ -148,6 +149,26 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(l10n.appTitle),
       ),
       body: _screens[_selectedIndex],
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          // Navigate to add result screen
+          final result = await Navigator.push<bool>(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AddResultScreen(),
+            ),
+          );
+          
+          // Refresh dashboard if result was saved
+          if (result == true) {
+            setState(() {
+              // This will trigger rebuild and refresh the dashboard
+            });
+          }
+        },
+        tooltip: l10n.addResult,
+        child: const Icon(Icons.add),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(

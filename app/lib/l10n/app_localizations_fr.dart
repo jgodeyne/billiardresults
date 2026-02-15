@@ -173,4 +173,154 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get december => 'Décembre';
+
+  @override
+  String get addResult => 'Ajouter Résultat';
+
+  @override
+  String get editResult => 'Modifier Résultat';
+
+  @override
+  String get disciplineLabel => 'Discipline';
+
+  @override
+  String get disciplineHint => 'Sélectionner ou entrer discipline';
+
+  @override
+  String get disciplineError => 'Veuillez entrer une discipline';
+
+  @override
+  String get dateLabel => 'Date';
+
+  @override
+  String get dateHint => 'Sélectionner la date';
+
+  @override
+  String get pointsMadeLabel => 'Points Marqués';
+
+  @override
+  String get pointsMadeHint => 'Entrez les points marqués';
+
+  @override
+  String get pointsMadeError => 'Les points doivent être 0 ou plus';
+
+  @override
+  String get inningsLabel => 'Nombre de Reprises';
+
+  @override
+  String get inningsHint => 'Entrez le nombre de reprises';
+
+  @override
+  String get inningsError => 'Les reprises doivent être supérieures à 0';
+
+  @override
+  String get highestRunLabel => 'Série Maximum';
+
+  @override
+  String get highestRunHint => 'Entrez la série maximum';
+
+  @override
+  String get highestRunError =>
+      'La série maximum doit être entre 0 et les points marqués';
+
+  @override
+  String get adversaryLabel => 'Adversaire (Optionnel)';
+
+  @override
+  String get adversaryHint => 'Entrez le nom de l\'adversaire';
+
+  @override
+  String get outcomeLabel => 'Résultat du Match (Optionnel)';
+
+  @override
+  String get outcomeWon => 'Gagné';
+
+  @override
+  String get outcomeLost => 'Perdu';
+
+  @override
+  String get outcomeDraw => 'Nul';
+
+  @override
+  String get outcomeUnknown => 'Inconnu';
+
+  @override
+  String get competitionLabel => 'Compétition (Optionnelle)';
+
+  @override
+  String get competitionHint => 'Entrez le nom de la compétition';
+
+  @override
+  String get resultSaved => 'Résultat enregistré avec succès';
+
+  @override
+  String get resultDeleted => 'Résultat supprimé';
+
+  @override
+  String get errorSavingResult =>
+      'Erreur lors de l\'enregistrement du résultat';
+
+  @override
+  String get deleteResultTitle => 'Supprimer le Résultat?';
+
+  @override
+  String get deleteResultMessage =>
+      'Cela supprimera définitivement ce résultat.';
+
+  @override
+  String warningHighPoints(int limit) {
+    return 'Attention: Valeur de points semble élevée (>$limit). Veuillez vérifier.';
+  }
+
+  @override
+  String warningHighInnings(int limit) {
+    return 'Attention: Valeur de reprises semble élevée (>$limit). Veuillez vérifier.';
+  }
+
+  @override
+  String warningHighRun(int limit) {
+    return 'Attention: Série maximum semble élevée (>$limit). Veuillez vérifier.';
+  }
+
+  @override
+  String get requiredFields => 'Champs obligatoires';
+
+  @override
+  String get optionalFields => 'Champs optionnels';
+
+  @override
+  String get average => 'Moyenne';
+
+  @override
+  String get disciplineFreeSmall => 'Partie libre - Petite table';
+
+  @override
+  String get disciplineFreeMatch => 'Partie libre - Table de match';
+
+  @override
+  String get discipline1CushionSmall => '1 bande - Petite table';
+
+  @override
+  String get discipline1CushionMatch => '1 bande - Table de match';
+
+  @override
+  String get discipline3CushionSmall => '3 bandes - Petite table';
+
+  @override
+  String get discipline3CushionMatch => '3 bandes - Table de match';
+
+  @override
+  String get disciplineBalkline382Small => 'Cadre 38/2 - Petite table';
+
+  @override
+  String get disciplineBalkline572Small => 'Cadre 57/2 - Petite table';
+
+  @override
+  String get disciplineBalkline472Match => 'Cadre 47/2 - Table de match';
+
+  @override
+  String get disciplineBalkline471Match => 'Cadre 47/1 - Table de match';
+
+  @override
+  String get disciplineBalkline712Match => 'Cadre 71/2 - Table de match';
 }
