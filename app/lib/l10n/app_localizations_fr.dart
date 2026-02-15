@@ -323,4 +323,44 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get disciplineBalkline712Match => 'Cadre 71/2 - Table de match';
+
+  @override
+  String get currentSeason => 'Saison Actuelle';
+
+  @override
+  String get selectSeason => 'Sélectionner la Saison';
+
+  @override
+  String get noResultsYet => 'Aucun résultat pour l\'instant';
+
+  @override
+  String get addFirstResult =>
+      'Appuyez sur le bouton + pour ajouter votre premier résultat';
+
+  @override
+  String get noResultsThisSeason => 'Aucun résultat pour cette saison';
+
+  @override
+  String get totalPoints => 'Points Totaux';
+
+  @override
+  String get totalInnings => 'Reprises Totales';
+
+  @override
+  String get highestRun => 'Série Maximum';
+
+  @override
+  String get matches => 'Parties';
+
+  @override
+  String get won => 'G';
+
+  @override
+  String get lost => 'P';
+
+  @override
+  String get draw => 'N';
+
+  @override
+  String get unknown => '?';
 }

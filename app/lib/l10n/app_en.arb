@@ -139,5 +139,18 @@
   "disciplineBalkline572Small": "Balkline 57/2 - Small table",
   "disciplineBalkline472Match": "Balkline 47/2 - Match table",
   "disciplineBalkline471Match": "Balkline 47/1 - Match table",
-  "disciplineBalkline712Match": "Balkline 71/2 - Match table"
+  "disciplineBalkline712Match": "Balkline 71/2 - Match table",
+  "currentSeason": "Current Season",
+  "selectSeason": "Select Season",
+  "noResultsYet": "No results yet",
+  "addFirstResult": "Tap the + button to add your first result",
+  "noResultsThisSeason": "No results for this season",
+  "totalPoints": "Total Points",
+  "totalInnings": "Total Innings",
+  "highestRun": "Highest Run",
+  "matches": "Matches",
+  "won": "W",
+  "lost": "L",
+  "draw": "D",
+  "unknown": "?"
 }

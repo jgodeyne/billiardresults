@@ -99,5 +99,18 @@
   "disciplineBalkline572Small": "Kader 57/2 - Klein biljart",
   "disciplineBalkline472Match": "Kader 47/2 - Match biljart",
   "disciplineBalkline471Match": "Kader 47/1 - Match biljart",
-  "disciplineBalkline712Match": "Kader 71/2 - Match biljart"
+  "disciplineBalkline712Match": "Kader 71/2 - Match biljart",
+  "currentSeason": "Huidig Seizoen",
+  "selectSeason": "Selecteer Seizoen",
+  "noResultsYet": "Nog geen resultaten",
+  "addFirstResult": "Tik op de + knop om je eerste resultaat toe te voegen",
+  "noResultsThisSeason": "Geen resultaten voor dit seizoen",
+  "totalPoints": "Totaal Caramboles",
+  "totalInnings": "Totaal Beurten",
+  "highestRun": "Hoogste Serie",
+  "matches": "Partijen",
+  "won": "W",
+  "lost": "V",
+  "draw": "G",
+  "unknown": "?"
 }

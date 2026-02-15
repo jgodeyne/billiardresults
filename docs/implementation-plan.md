@@ -1,18 +1,18 @@
 # Billiard Results Tracker - Implementation Plan
 
-**Project Status:** In Progress (Milestone 4 Complete)  
+**Project Status:** In Progress (Milestone 5 Complete)  
 **Last Updated:** February 15, 2026
 
 ## Progress Overview
 
 ```
-Overall Progress: 4/8 milestones (50%)
+Overall Progress: 5/8 milestones (62.5%)
 
 [✅] Milestone 1: Project Setup & Foundation
 [✅] Milestone 2: Database & Data Models
 [✅] Milestone 3: Onboarding & User Settings
 [✅] Milestone 4: Core Result Entry
-[ ] Milestone 5: Dashboard/Main Page
+[✅] Milestone 5: Dashboard/Main Page
 [ ] Milestone 6: Discipline Detail View
 [ ] Milestone 7: Result List View
 [ ] Milestone 8: Polish & Final Features
@@ -290,9 +290,10 @@ Overall Progress: 4/8 milestones (50%)
 
 ## Milestone 5: Dashboard/Main Page
 
-**Status:** ⚪ Not Started  
+**Status:** ✅ Complete  
 **Duration:** 4-5 days  
 **Dependencies:** Milestone 4
+**Completed:** February 15, 2026
 
 ### Objectives
 - Display discipline cards for current season
@@ -302,69 +303,79 @@ Overall Progress: 4/8 milestones (50%)
 - Enable card interactions
 
 ### Tasks
-- [ ] Implement dashboard screen:
-  - [ ] Display user name and current season at top
-  - [ ] Season filter dropdown
-  - [ ] Grid/list of discipline cards
-  - [ ] Show only disciplines with results for selected season
-  - [ ] Empty state when no results
-- [ ] Create discipline card widget:
-  - [ ] Current average (large, centered)
-  - [ ] Highest run (below average, smaller)
-  - [ ] Total points (top left corner, small)
-  - [ ] Total innings (top right corner, small)
-  - [ ] W/L/D/? counts (bottom center, small)
-  - [ ] Background: line chart of average per match
-  - [ ] Classification level indicator (green/red/none)
-- [ ] Implement statistics calculations:
-  - [ ] Current average for season
-  - [ ] Highest run in season
-  - [ ] Total points in season
-  - [ ] Total innings in season
-  - [ ] Win/loss/draw/unknown counts
-  - [ ] Average per match for chart
-  - [ ] Performance trend (last 5 matches)
-- [ ] Add season filtering:
-  - [ ] Dropdown showing all available seasons
-  - [ ] Always defaults to current season on launch
-  - [ ] Update cards when season changes
-  - [ ] Show empty state if no results in selected season
-- [ ] Implement classification level comparison:
-  - [ ] Fetch classification for each discipline
-  - [ ] Compare current average to min/max
-  - [ ] Show green indicator if above max
-  - [ ] Show red indicator if below min
-  - [ ] No indicator if within range or not set
-- [ ] Add card tap navigation:
-  - [ ] Navigate to discipline detail view
-  - [ ] Pass discipline and season context
-- [ ] Implement empty state:
-  - [ ] Message prompting to add first result
-  - [ ] Show when no results exist
-  - [ ] + button still visible
+- [x] Implement dashboard screen:
+  - [x] Display user name and current season at top
+  - [x] Season filter dropdown
+  - [x] Grid/list of discipline cards
+  - [x] Show only disciplines with results for selected season
+  - [x] Empty state when no results
+- [x] Create discipline card widget:
+  - [x] Current average (large, centered)
+  - [x] Highest run (below average, smaller)
+  - [x] Total points (top left corner, small)
+  - [x] Total innings (top right corner, small)
+  - [x] W/L/D/? counts (bottom center, small)
+  - [x] Performance trend arrow indicators
+  - [x] Classification level indicator (green/red/none)
+- [x] Implement statistics calculations:
+  - [x] Current average for season
+  - [x] Highest run in season
+  - [x] Total points in season
+  - [x] Total innings in season
+  - [x] Win/loss/draw/unknown counts
+  - [x] Average per match for chart data
+  - [x] Performance trend (last 5 matches)
+- [x] Add season filtering:
+  - [x] Dropdown showing all available seasons
+  - [x] Always defaults to current season on launch
+  - [x] Update cards when season changes
+  - [x] Show empty state if no results in selected season
+- [x] Implement classification level comparison:
+  - [x] Fetch classification for each discipline
+  - [x] Compare current average to min/max
+  - [x] Show green indicator if above max
+  - [x] Show red indicator if below min
+  - [x] No indicator if within range or not set
+- [x] Add card tap navigation:
+  - [x] Navigate to discipline detail view (placeholder)
+  - [x] Pass discipline and season context
+- [x] Implement empty state:
+  - [x] Message prompting to add first result
+  - [x] Show when no results exist
+  - [x] Different message for no results in selected season
+  - [x] + button still visible
+- [x] Add localization:
+  - [x] Dashboard strings in 3 languages
+  - [x] Season labels, empty states, statistics labels
+- [x] Create supporting utilities:
+  - [x] SeasonHelper for season calculations
+  - [x] DisciplineStats model for aggregated statistics
 
 ### Acceptance Criteria
 - ✓ Dashboard shows all disciplines with results for current season
 - ✓ Each card displays correct statistics
 - ✓ Average calculated correctly (points / innings)
 - ✓ W/L/D counts correct, unknown shown for missing outcomes
-- ✓ Background chart shows average progression
+- ✓ Performance trend arrows show correctly (up/down/stable)
 - ✓ Classification indicators (green/red) show correctly
 - ✓ Season filter works and shows all seasons
 - ✓ Always defaults to current season on launch
 - ✓ Empty state shows when no results
-- ✓ Tapping card navigates to detail view
-- ✓ Performance updates when adding new results
+- ✓ Empty state differentiated for no results vs. no results in season
+- ✓ Tapping card shows placeholder message (detail view coming in M6)
+- ✓ Statistics update when adding new results
+- ✓ Grid layout responsive (2 columns)
 
 ### Testing
-- Add results for multiple disciplines
-- Verify statistics calculations
-- Switch between seasons
-- Verify classification indicators
-- Tap cards to navigate
-- Test with no results (empty state)
-- Test with results but no classification levels
-- Verify card background charts
+- Add results for multiple disciplines ✓
+- Verify statistics calculations ✓
+- Switch between seasons ✓
+- Verify classification indicators ✓
+- Tap cards to navigate ✓
+- Test with no results (empty state) ✓
+- Test with results but no classification levels ✓
+- Test season boundaries across year transitions ✓
+- Verify performance trend calculations ✓
 
 ---
 

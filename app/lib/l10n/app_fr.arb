@@ -99,5 +99,18 @@
   "disciplineBalkline572Small": "Cadre 57/2 - Petite table",
   "disciplineBalkline472Match": "Cadre 47/2 - Table de match",
   "disciplineBalkline471Match": "Cadre 47/1 - Table de match",
-  "disciplineBalkline712Match": "Cadre 71/2 - Table de match"
+  "disciplineBalkline712Match": "Cadre 71/2 - Table de match",
+  "currentSeason": "Saison Actuelle",
+  "selectSeason": "Sélectionner la Saison",
+  "noResultsYet": "Aucun résultat pour l'instant",
+  "addFirstResult": "Appuyez sur le bouton + pour ajouter votre premier résultat",
+  "noResultsThisSeason": "Aucun résultat pour cette saison",
+  "totalPoints": "Points Totaux",
+  "totalInnings": "Reprises Totales",
+  "highestRun": "Série Maximum",
+  "matches": "Parties",
+  "won": "G",
+  "lost": "P",
+  "draw": "N",
+  "unknown": "?"
 }

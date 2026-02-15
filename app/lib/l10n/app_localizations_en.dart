@@ -318,4 +318,43 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get disciplineBalkline712Match => 'Balkline 71/2 - Match table';
+
+  @override
+  String get currentSeason => 'Current Season';
+
+  @override
+  String get selectSeason => 'Select Season';
+
+  @override
+  String get noResultsYet => 'No results yet';
+
+  @override
+  String get addFirstResult => 'Tap the + button to add your first result';
+
+  @override
+  String get noResultsThisSeason => 'No results for this season';
+
+  @override
+  String get totalPoints => 'Total Points';
+
+  @override
+  String get totalInnings => 'Total Innings';
+
+  @override
+  String get highestRun => 'Highest Run';
+
+  @override
+  String get matches => 'Matches';
+
+  @override
+  String get won => 'W';
+
+  @override
+  String get lost => 'L';
+
+  @override
+  String get draw => 'D';
+
+  @override
+  String get unknown => '?';
 }

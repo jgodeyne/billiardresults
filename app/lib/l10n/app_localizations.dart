@@ -699,6 +699,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Balkline 71/2 - Match table'**
   String get disciplineBalkline712Match;
+
+  /// No description provided for @currentSeason.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Season'**
+  String get currentSeason;
+
+  /// No description provided for @selectSeason.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Season'**
+  String get selectSeason;
+
+  /// No description provided for @noResultsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No results yet'**
+  String get noResultsYet;
+
+  /// No description provided for @addFirstResult.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the + button to add your first result'**
+  String get addFirstResult;
+
+  /// No description provided for @noResultsThisSeason.
+  ///
+  /// In en, this message translates to:
+  /// **'No results for this season'**
+  String get noResultsThisSeason;
+
+  /// No description provided for @totalPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Points'**
+  String get totalPoints;
+
+  /// No description provided for @totalInnings.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Innings'**
+  String get totalInnings;
+
+  /// No description provided for @highestRun.
+  ///
+  /// In en, this message translates to:
+  /// **'Highest Run'**
+  String get highestRun;
+
+  /// No description provided for @matches.
+  ///
+  /// In en, this message translates to:
+  /// **'Matches'**
+  String get matches;
+
+  /// No description provided for @won.
+  ///
+  /// In en, this message translates to:
+  /// **'W'**
+  String get won;
+
+  /// No description provided for @lost.
+  ///
+  /// In en, this message translates to:
+  /// **'L'**
+  String get lost;
+
+  /// No description provided for @draw.
+  ///
+  /// In en, this message translates to:
+  /// **'D'**
+  String get draw;
+
+  /// No description provided for @unknown.
+  ///
+  /// In en, this message translates to:
+  /// **'?'**
+  String get unknown;
 }
 
 class _AppLocalizationsDelegate

@@ -320,4 +320,44 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get disciplineBalkline712Match => 'Kader 71/2 - Match biljart';
+
+  @override
+  String get currentSeason => 'Huidig Seizoen';
+
+  @override
+  String get selectSeason => 'Selecteer Seizoen';
+
+  @override
+  String get noResultsYet => 'Nog geen resultaten';
+
+  @override
+  String get addFirstResult =>
+      'Tik op de + knop om je eerste resultaat toe te voegen';
+
+  @override
+  String get noResultsThisSeason => 'Geen resultaten voor dit seizoen';
+
+  @override
+  String get totalPoints => 'Totaal Caramboles';
+
+  @override
+  String get totalInnings => 'Totaal Beurten';
+
+  @override
+  String get highestRun => 'Hoogste Serie';
+
+  @override
+  String get matches => 'Partijen';
+
+  @override
+  String get won => 'W';
+
+  @override
+  String get lost => 'V';
+
+  @override
+  String get draw => 'G';
+
+  @override
+  String get unknown => '?';
 }
