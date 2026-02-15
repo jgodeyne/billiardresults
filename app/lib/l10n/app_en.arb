@@ -152,5 +152,58 @@
   "won": "W",
   "lost": "L",
   "draw": "D",
-  "unknown": "?"
+  "unknown": "?",
+  "detailTitle": "{discipline} Details",
+  "@detailTitle": {
+    "placeholders": {
+      "discipline": {
+        "type": "String"
+      }
+    }
+  },
+  "averageEvolution": "Average Evolution",
+  "highestRunEvolution": "Highest Run Evolution",
+  "outcomeRatio": "Win/Loss/Draw Ratio",
+  "allSeasons": "All Seasons",
+  "performanceTrend": "Performance Trend",
+  "improving": "Improving",
+  "declining": "Declining",
+  "stable": "Stable",
+  "tapToViewResults": "Tap any graph to view results",
+  "noDataAvailable": "No data available",
+  "matchNumber": "Match #{number}",
+  "@matchNumber": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "percentage": "{percent}%",
+  "@percentage": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "aboveTarget": "Above Target",
+  "belowTarget": "Below Target",
+  "withinTarget": "Within Target",
+  "resultList": "Results",
+  "filterResults": "Filter Results",
+  "filterByCompetition": "Filter by Competition",
+  "filterByAdversary": "Filter by Adversary",
+  "allCompetitions": "All Competitions",
+  "allAdversaries": "All Adversaries",
+  "applyFilters": "Apply Filters",
+  "clearFilters": "Clear Filters",
+  "noMatchingResults": "No results match the selected filters",
+  "editResult": "Edit Result",
+  "deleteResult": "Delete Result",
+  "confirmDelete": "Confirm Delete",
+  "confirmDeleteMessage": "Are you sure you want to delete this result? This action cannot be undone.",
+  "resultDeleted": "Result deleted",
+  "resultUpdated": "Result updated",
+  "average": "Average"
 }

@@ -252,6 +252,15 @@ class DatabaseService {
     return maps.map((map) => map['discipline'] as String).toList();
   }
 
+  /// Get all unique competitions
+  Future<List<String>> getAllCompetitions() async {
+    final db = await database;
+    final maps = await db.rawQuery(
+      'SELECT DISTINCT competition FROM results WHERE competition IS NOT NULL AND competition != "" ORDER BY competition',
+    );
+    return maps.map((map) => map['competition'] as String).toList();
+  }
+
   /// Get disciplines that have results in a specific season
   Future<List<String>> getDisciplinesBySeason({
     required DateTime seasonStart,

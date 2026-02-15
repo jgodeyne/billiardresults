@@ -360,4 +360,99 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get unknown => '?';
+
+  @override
+  String detailTitle(String discipline) {
+    return '$discipline Details';
+  }
+
+  @override
+  String get averageEvolution => 'Evolutie Gemiddelde';
+
+  @override
+  String get highestRunEvolution => 'Evolutie Hoogste Serie';
+
+  @override
+  String get outcomeRatio => 'Winst/Verlies/Gelijk Verhouding';
+
+  @override
+  String get allSeasons => 'Alle Seizoenen';
+
+  @override
+  String get performanceTrend => 'Prestatie Trend';
+
+  @override
+  String get improving => 'Verbeterend';
+
+  @override
+  String get declining => 'Dalend';
+
+  @override
+  String get stable => 'Stabiel';
+
+  @override
+  String get tapToViewResults => 'Tik op een grafiek om resultaten te bekijken';
+
+  @override
+  String get noDataAvailable => 'Geen gegevens beschikbaar';
+
+  @override
+  String matchNumber(int number) {
+    return 'Partij #$number';
+  }
+
+  @override
+  String percentage(String percent) {
+    return '$percent%';
+  }
+
+  @override
+  String get aboveTarget => 'Boven Doel';
+
+  @override
+  String get belowTarget => 'Onder Doel';
+
+  @override
+  String get withinTarget => 'Binnen Doel';
+
+  @override
+  String get resultList => 'Resultaten';
+
+  @override
+  String get filterResults => 'Filter Resultaten';
+
+  @override
+  String get filterByCompetition => 'Filter op Competitie';
+
+  @override
+  String get filterByAdversary => 'Filter op Tegenstander';
+
+  @override
+  String get allCompetitions => 'Alle Competities';
+
+  @override
+  String get allAdversaries => 'Alle Tegenstanders';
+
+  @override
+  String get applyFilters => 'Filters Toepassen';
+
+  @override
+  String get clearFilters => 'Filters Wissen';
+
+  @override
+  String get noMatchingResults =>
+      'Geen resultaten komen overeen met de geselecteerde filters';
+
+  @override
+  String get deleteResult => 'Resultaat Verwijderen';
+
+  @override
+  String get confirmDelete => 'Verwijdering Bevestigen';
+
+  @override
+  String get confirmDeleteMessage =>
+      'Weet u zeker dat u dit resultaat wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.';
+
+  @override
+  String get resultUpdated => 'Resultaat bijgewerkt';
 }

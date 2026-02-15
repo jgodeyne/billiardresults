@@ -126,11 +126,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
+  int _dashboardRefreshKey = 0;
 
-  static const List<Widget> _screens = <Widget>[
-    DashboardScreen(),
-    Center(child: Text('Results - Coming Soon')), // Placeholder
-    SettingsScreen(),
+  List<Widget> get _screens => <Widget>[
+    DashboardScreen(key: ValueKey(_dashboardRefreshKey)),
+    const SettingsScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -160,9 +160,9 @@ class _MyHomePageState extends State<MyHomePage> {
           );
           
           // Refresh dashboard if result was saved
-          if (result == true) {
+          if (result == true && mounted) {
             setState(() {
-              // This will trigger rebuild and refresh the dashboard
+              _dashboardRefreshKey++;
             });
           }
         },
@@ -174,10 +174,6 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(
             icon: const Icon(Icons.dashboard),
             label: l10n.dashboard,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.list),
-            label: l10n.results,
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.settings),

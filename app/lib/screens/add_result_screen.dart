@@ -31,11 +31,14 @@ class _AddResultScreenState extends State<AddResultScreen> {
   bool _isLoading = false;
   List<String> _allDisciplines = [];
   List<String> _disciplineSuggestions = [];
+  List<String> _allCompetitions = [];
+  List<String> _competitionSuggestions = [];
 
   @override
   void initState() {
     super.initState();
     _loadDisciplines();
+    _loadCompetitions();
     
     // Pre-fill form if editing
     if (widget.existingResult != null) {
@@ -52,6 +55,7 @@ class _AddResultScreenState extends State<AddResultScreen> {
     
     // Listen to discipline changes for autocomplete
     _disciplineController.addListener(_updateDisciplineSuggestions);
+    _competitionController.addListener(_updateCompetitionSuggestions);
   }
 
   @override
@@ -69,6 +73,13 @@ class _AddResultScreenState extends State<AddResultScreen> {
     final disciplines = await DatabaseService.instance.getAllDisciplines();
     setState(() {
       _allDisciplines = disciplines;
+    });
+  }
+
+  Future<void> _loadCompetitions() async {
+    final competitions = await DatabaseService.instance.getAllCompetitions();
+    setState(() {
+      _allCompetitions = competitions;
     });
   }
 
@@ -112,6 +123,25 @@ class _AddResultScreenState extends State<AddResultScreen> {
 
     setState(() {
       _disciplineSuggestions = filtered;
+    });
+  }
+
+  void _updateCompetitionSuggestions() {
+    final text = _competitionController.text.toLowerCase();
+    if (text.isEmpty) {
+      setState(() {
+        _competitionSuggestions = [];
+      });
+      return;
+    }
+
+    // Filter previously used competitions
+    final filtered = _allCompetitions
+        .where((c) => c.toLowerCase().contains(text))
+        .toList();
+
+    setState(() {
+      _competitionSuggestions = filtered;
     });
   }
 
@@ -454,16 +484,47 @@ class _AddResultScreenState extends State<AddResultScreen> {
             ),
             const SizedBox(height: 16),
 
-            // Competition
-            TextFormField(
-              controller: _competitionController,
-              decoration: InputDecoration(
-                labelText: l10n.competitionLabel,
-                hintText: l10n.competitionHint,
-                border: const OutlineInputBorder(),
-                prefixIcon: const Icon(Icons.emoji_events_outlined),
-              ),
-              textCapitalization: TextCapitalization.words,
+            // Competition with autocomplete
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextFormField(
+                  controller: _competitionController,
+                  decoration: InputDecoration(
+                    labelText: l10n.competitionLabel,
+                    hintText: l10n.competitionHint,
+                    border: const OutlineInputBorder(),
+                    prefixIcon: const Icon(Icons.emoji_events_outlined),
+                  ),
+                  textCapitalization: TextCapitalization.words,
+                ),
+                if (_competitionSuggestions.isNotEmpty)
+                  Container(
+                    margin: const EdgeInsets.only(top: 4),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: theme.colorScheme.outline),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: _competitionSuggestions.length,
+                      itemBuilder: (context, index) {
+                        final competition = _competitionSuggestions[index];
+                        return ListTile(
+                          dense: true,
+                          leading: const Icon(Icons.emoji_events_outlined, size: 20),
+                          title: Text(competition),
+                          onTap: () {
+                            _competitionController.text = competition;
+                            setState(() {
+                              _competitionSuggestions = [];
+                            });
+                          },
+                        );
+                      },
+                    ),
+                  ),
+              ],
             ),
             const SizedBox(height: 32),
 

@@ -178,7 +178,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get addResult => 'Ajouter Résultat';
 
   @override
-  String get editResult => 'Modifier Résultat';
+  String get editResult => 'Éditer le Résultat';
 
   @override
   String get disciplineLabel => 'Discipline';
@@ -363,4 +363,100 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get unknown => '?';
+
+  @override
+  String detailTitle(String discipline) {
+    return '$discipline Détails';
+  }
+
+  @override
+  String get averageEvolution => 'Évolution de la Moyenne';
+
+  @override
+  String get highestRunEvolution => 'Évolution de la Série Maximale';
+
+  @override
+  String get outcomeRatio => 'Ratio Victoire/Défaite/Égalité';
+
+  @override
+  String get allSeasons => 'Toutes les Saisons';
+
+  @override
+  String get performanceTrend => 'Tendance de Performance';
+
+  @override
+  String get improving => 'En Amélioration';
+
+  @override
+  String get declining => 'En Baisse';
+
+  @override
+  String get stable => 'Stable';
+
+  @override
+  String get tapToViewResults =>
+      'Appuyez sur n\'importe quel graphique pour voir les résultats';
+
+  @override
+  String get noDataAvailable => 'Aucune donnée disponible';
+
+  @override
+  String matchNumber(int number) {
+    return 'Partie #$number';
+  }
+
+  @override
+  String percentage(String percent) {
+    return '$percent%';
+  }
+
+  @override
+  String get aboveTarget => 'Au-dessus de l\'Objectif';
+
+  @override
+  String get belowTarget => 'En-dessous de l\'Objectif';
+
+  @override
+  String get withinTarget => 'Dans l\'Objectif';
+
+  @override
+  String get resultList => 'Résultats';
+
+  @override
+  String get filterResults => 'Filtrer les Résultats';
+
+  @override
+  String get filterByCompetition => 'Filtrer par Compétition';
+
+  @override
+  String get filterByAdversary => 'Filtrer par Adversaire';
+
+  @override
+  String get allCompetitions => 'Toutes les Compétitions';
+
+  @override
+  String get allAdversaries => 'Tous les Adversaires';
+
+  @override
+  String get applyFilters => 'Appliquer les Filtres';
+
+  @override
+  String get clearFilters => 'Effacer les Filtres';
+
+  @override
+  String get noMatchingResults =>
+      'Aucun résultat ne correspond aux filtres sélectionnés';
+
+  @override
+  String get deleteResult => 'Supprimer le Résultat';
+
+  @override
+  String get confirmDelete => 'Confirmer la Suppression';
+
+  @override
+  String get confirmDeleteMessage =>
+      'Êtes-vous sûr de vouloir supprimer ce résultat? Cette action ne peut pas être annulée.';
+
+  @override
+  String get resultUpdated => 'Résultat mis à jour';
 }

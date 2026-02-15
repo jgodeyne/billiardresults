@@ -777,6 +777,180 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'?'**
   String get unknown;
+
+  /// No description provided for @detailTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{discipline} Details'**
+  String detailTitle(String discipline);
+
+  /// No description provided for @averageEvolution.
+  ///
+  /// In en, this message translates to:
+  /// **'Average Evolution'**
+  String get averageEvolution;
+
+  /// No description provided for @highestRunEvolution.
+  ///
+  /// In en, this message translates to:
+  /// **'Highest Run Evolution'**
+  String get highestRunEvolution;
+
+  /// No description provided for @outcomeRatio.
+  ///
+  /// In en, this message translates to:
+  /// **'Win/Loss/Draw Ratio'**
+  String get outcomeRatio;
+
+  /// No description provided for @allSeasons.
+  ///
+  /// In en, this message translates to:
+  /// **'All Seasons'**
+  String get allSeasons;
+
+  /// No description provided for @performanceTrend.
+  ///
+  /// In en, this message translates to:
+  /// **'Performance Trend'**
+  String get performanceTrend;
+
+  /// No description provided for @improving.
+  ///
+  /// In en, this message translates to:
+  /// **'Improving'**
+  String get improving;
+
+  /// No description provided for @declining.
+  ///
+  /// In en, this message translates to:
+  /// **'Declining'**
+  String get declining;
+
+  /// No description provided for @stable.
+  ///
+  /// In en, this message translates to:
+  /// **'Stable'**
+  String get stable;
+
+  /// No description provided for @tapToViewResults.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap any graph to view results'**
+  String get tapToViewResults;
+
+  /// No description provided for @noDataAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No data available'**
+  String get noDataAvailable;
+
+  /// No description provided for @matchNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Match #{number}'**
+  String matchNumber(int number);
+
+  /// No description provided for @percentage.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}%'**
+  String percentage(String percent);
+
+  /// No description provided for @aboveTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'Above Target'**
+  String get aboveTarget;
+
+  /// No description provided for @belowTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'Below Target'**
+  String get belowTarget;
+
+  /// No description provided for @withinTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'Within Target'**
+  String get withinTarget;
+
+  /// No description provided for @resultList.
+  ///
+  /// In en, this message translates to:
+  /// **'Results'**
+  String get resultList;
+
+  /// No description provided for @filterResults.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter Results'**
+  String get filterResults;
+
+  /// No description provided for @filterByCompetition.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter by Competition'**
+  String get filterByCompetition;
+
+  /// No description provided for @filterByAdversary.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter by Adversary'**
+  String get filterByAdversary;
+
+  /// No description provided for @allCompetitions.
+  ///
+  /// In en, this message translates to:
+  /// **'All Competitions'**
+  String get allCompetitions;
+
+  /// No description provided for @allAdversaries.
+  ///
+  /// In en, this message translates to:
+  /// **'All Adversaries'**
+  String get allAdversaries;
+
+  /// No description provided for @applyFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply Filters'**
+  String get applyFilters;
+
+  /// No description provided for @clearFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear Filters'**
+  String get clearFilters;
+
+  /// No description provided for @noMatchingResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No results match the selected filters'**
+  String get noMatchingResults;
+
+  /// No description provided for @deleteResult.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Result'**
+  String get deleteResult;
+
+  /// No description provided for @confirmDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Delete'**
+  String get confirmDelete;
+
+  /// No description provided for @confirmDeleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this result? This action cannot be undone.'**
+  String get confirmDeleteMessage;
+
+  /// No description provided for @resultUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Result updated'**
+  String get resultUpdated;
 }
 
 class _AppLocalizationsDelegate

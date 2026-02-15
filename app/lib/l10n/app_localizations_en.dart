@@ -357,4 +357,98 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unknown => '?';
+
+  @override
+  String detailTitle(String discipline) {
+    return '$discipline Details';
+  }
+
+  @override
+  String get averageEvolution => 'Average Evolution';
+
+  @override
+  String get highestRunEvolution => 'Highest Run Evolution';
+
+  @override
+  String get outcomeRatio => 'Win/Loss/Draw Ratio';
+
+  @override
+  String get allSeasons => 'All Seasons';
+
+  @override
+  String get performanceTrend => 'Performance Trend';
+
+  @override
+  String get improving => 'Improving';
+
+  @override
+  String get declining => 'Declining';
+
+  @override
+  String get stable => 'Stable';
+
+  @override
+  String get tapToViewResults => 'Tap any graph to view results';
+
+  @override
+  String get noDataAvailable => 'No data available';
+
+  @override
+  String matchNumber(int number) {
+    return 'Match #$number';
+  }
+
+  @override
+  String percentage(String percent) {
+    return '$percent%';
+  }
+
+  @override
+  String get aboveTarget => 'Above Target';
+
+  @override
+  String get belowTarget => 'Below Target';
+
+  @override
+  String get withinTarget => 'Within Target';
+
+  @override
+  String get resultList => 'Results';
+
+  @override
+  String get filterResults => 'Filter Results';
+
+  @override
+  String get filterByCompetition => 'Filter by Competition';
+
+  @override
+  String get filterByAdversary => 'Filter by Adversary';
+
+  @override
+  String get allCompetitions => 'All Competitions';
+
+  @override
+  String get allAdversaries => 'All Adversaries';
+
+  @override
+  String get applyFilters => 'Apply Filters';
+
+  @override
+  String get clearFilters => 'Clear Filters';
+
+  @override
+  String get noMatchingResults => 'No results match the selected filters';
+
+  @override
+  String get deleteResult => 'Delete Result';
+
+  @override
+  String get confirmDelete => 'Confirm Delete';
+
+  @override
+  String get confirmDeleteMessage =>
+      'Are you sure you want to delete this result? This action cannot be undone.';
+
+  @override
+  String get resultUpdated => 'Result updated';
 }

@@ -7,6 +7,7 @@ import '../models/classification_level.dart';
 import '../services/database_service.dart';
 import '../utils/season_helper.dart';
 import '../widgets/discipline_card.dart';
+import 'discipline_detail_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -28,6 +29,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void initState() {
     super.initState();
     _loadData();
+  }
+
+  /// Public method to refresh dashboard data (called after adding/editing results)
+  Future<void> refresh() async {
+    await _loadData();
   }
 
   Future<void> _loadData() async {
@@ -273,13 +279,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return DisciplineCard(
           stats: stats,
           classification: classification,
-          onTap: () {
-            // TODO: Navigate to discipline detail view
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Coming soon: ${stats.discipline} details'),
+          onTap: () async {
+            final l10n = AppLocalizations.of(context)!;
+            final seasonLabel = _selectedSeasonStart != null && _selectedSeasonEnd != null
+                ? SeasonHelper.formatSeason(_selectedSeasonStart!, _selectedSeasonEnd!)
+                : l10n.currentSeason;
+            
+            await Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => DisciplineDetailScreen(
+                  discipline: stats.discipline,
+                  currentSeasonLabel: seasonLabel,
+                ),
               ),
             );
+            
+            // Refresh dashboard after returning (in case results were edited/deleted)
+            if (mounted) {
+              _loadData();
+            }
           },
         );
       },
