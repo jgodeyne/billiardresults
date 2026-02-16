@@ -101,6 +101,58 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dataManagement => 'Data Management';
 
   @override
+  String get importData => 'Import from CSV';
+
+  @override
+  String get importDataDescription =>
+      'Import results from a CSV file exported from Numbers or Excel';
+
+  @override
+  String get selectCsvFile => 'Select CSV File';
+
+  @override
+  String get importPreview => 'Import Preview';
+
+  @override
+  String get importResults => 'Import Results';
+
+  @override
+  String importSuccess(int count) {
+    return 'Successfully imported $count results';
+  }
+
+  @override
+  String importErrors(int errorCount) {
+    return 'Import completed with $errorCount errors';
+  }
+
+  @override
+  String get importFailed => 'Import failed';
+
+  @override
+  String get noFileSelected => 'No file selected';
+
+  @override
+  String get csvFormatHelp => 'CSV Format Help';
+
+  @override
+  String get csvFormatDescription =>
+      'Your CSV file must have these columns:\n\nRequired:\n• Date (YYYY-MM-DD, DD/MM/YYYY, or MM/DD/YYYY)\n• Discipline\n• Points\n• Innings\n• Highest Run\n\nOptional:\n• Adversary\n• Competition\n• Outcome (won/lost/draw)';
+
+  @override
+  String get downloadExample => 'Download Example CSV';
+
+  @override
+  String importConfirmTitle(int count) {
+    return 'Import $count Results?';
+  }
+
+  @override
+  String importConfirmMessage(int count) {
+    return 'This will add $count results to your database. Continue?';
+  }
+
+  @override
   String get deleteAllData => 'Delete All Data';
 
   @override

@@ -42,6 +42,48 @@
   "averageRange": "Average Range",
   "notSet": "Not set",
   "dataManagement": "Data Management",
+  "importData": "Import from CSV",
+  "importDataDescription": "Import results from a CSV file exported from Numbers or Excel",
+  "selectCsvFile": "Select CSV File",
+  "importPreview": "Import Preview",
+  "importResults": "Import Results",
+  "importSuccess": "Successfully imported {count} results",
+  "@importSuccess": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "importErrors": "Import completed with {errorCount} errors",
+  "@importErrors": {
+    "placeholders": {
+      "errorCount": {
+        "type": "int"
+      }
+    }
+  },
+  "importFailed": "Import failed",
+  "noFileSelected": "No file selected",
+  "csvFormatHelp": "CSV Format Help",
+  "csvFormatDescription": "Your CSV file must have these columns:\n\nRequired:\n• Date (YYYY-MM-DD, DD/MM/YYYY, or MM/DD/YYYY)\n• Discipline\n• Points\n• Innings\n• Highest Run\n\nOptional:\n• Adversary\n• Competition\n• Outcome (won/lost/draw)",
+  "downloadExample": "Download Example CSV",
+  "importConfirmTitle": "Import {count} Results?",
+  "@importConfirmTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "importConfirmMessage": "This will add {count} results to your database. Continue?",
+  "@importConfirmMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "deleteAllData": "Delete All Data",
   "deleteAllDataConfirmTitle": "Delete All Data?",
   "deleteAllDataConfirmMessage": "This will permanently delete all your results, classification levels, and settings. This action cannot be undone.",

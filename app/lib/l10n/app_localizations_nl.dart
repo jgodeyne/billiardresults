@@ -101,6 +101,58 @@ class AppLocalizationsNl extends AppLocalizations {
   String get dataManagement => 'Gegevensbeheer';
 
   @override
+  String get importData => 'Importeren uit CSV';
+
+  @override
+  String get importDataDescription =>
+      'Importeer resultaten uit een CSV-bestand geëxporteerd vanuit Numbers of Excel';
+
+  @override
+  String get selectCsvFile => 'Selecteer CSV-bestand';
+
+  @override
+  String get importPreview => 'Importvoorbeeld';
+
+  @override
+  String get importResults => 'Resultaten Importeren';
+
+  @override
+  String importSuccess(int count) {
+    return '$count resultaten succesvol geïmporteerd';
+  }
+
+  @override
+  String importErrors(int errorCount) {
+    return 'Import voltooid met $errorCount fouten';
+  }
+
+  @override
+  String get importFailed => 'Import mislukt';
+
+  @override
+  String get noFileSelected => 'Geen bestand geselecteerd';
+
+  @override
+  String get csvFormatHelp => 'CSV-formaathulp';
+
+  @override
+  String get csvFormatDescription =>
+      'Uw CSV-bestand moet deze kolommen hebben:\n\nVerplicht:\n• Datum (JJJJ-MM-DD, DD/MM/JJJJ, of MM/DD/JJJJ)\n• Discipline\n• Punten\n• Beurten\n• Hoogste Serie\n\nOptioneel:\n• Tegenstander\n• Competitie\n• Uitslag (won/lost/draw)';
+
+  @override
+  String get downloadExample => 'Download Voorbeeld CSV';
+
+  @override
+  String importConfirmTitle(int count) {
+    return '$count Resultaten Importeren?';
+  }
+
+  @override
+  String importConfirmMessage(int count) {
+    return 'Dit zal $count resultaten toevoegen aan uw database. Doorgaan?';
+  }
+
+  @override
   String get deleteAllData => 'Alle Gegevens Verwijderen';
 
   @override

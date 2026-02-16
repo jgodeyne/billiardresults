@@ -280,6 +280,90 @@ abstract class AppLocalizations {
   /// **'Data Management'**
   String get dataManagement;
 
+  /// No description provided for @importData.
+  ///
+  /// In en, this message translates to:
+  /// **'Import from CSV'**
+  String get importData;
+
+  /// No description provided for @importDataDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Import results from a CSV file exported from Numbers or Excel'**
+  String get importDataDescription;
+
+  /// No description provided for @selectCsvFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Select CSV File'**
+  String get selectCsvFile;
+
+  /// No description provided for @importPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Import Preview'**
+  String get importPreview;
+
+  /// No description provided for @importResults.
+  ///
+  /// In en, this message translates to:
+  /// **'Import Results'**
+  String get importResults;
+
+  /// No description provided for @importSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Successfully imported {count} results'**
+  String importSuccess(int count);
+
+  /// No description provided for @importErrors.
+  ///
+  /// In en, this message translates to:
+  /// **'Import completed with {errorCount} errors'**
+  String importErrors(int errorCount);
+
+  /// No description provided for @importFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Import failed'**
+  String get importFailed;
+
+  /// No description provided for @noFileSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'No file selected'**
+  String get noFileSelected;
+
+  /// No description provided for @csvFormatHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'CSV Format Help'**
+  String get csvFormatHelp;
+
+  /// No description provided for @csvFormatDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Your CSV file must have these columns:\n\nRequired:\n• Date (YYYY-MM-DD, DD/MM/YYYY, or MM/DD/YYYY)\n• Discipline\n• Points\n• Innings\n• Highest Run\n\nOptional:\n• Adversary\n• Competition\n• Outcome (won/lost/draw)'**
+  String get csvFormatDescription;
+
+  /// No description provided for @downloadExample.
+  ///
+  /// In en, this message translates to:
+  /// **'Download Example CSV'**
+  String get downloadExample;
+
+  /// No description provided for @importConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Import {count} Results?'**
+  String importConfirmTitle(int count);
+
+  /// No description provided for @importConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This will add {count} results to your database. Continue?'**
+  String importConfirmMessage(int count);
+
   /// No description provided for @deleteAllData.
   ///
   /// In en, this message translates to:

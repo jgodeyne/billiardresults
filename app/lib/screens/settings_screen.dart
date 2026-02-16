@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:file_picker/file_picker.dart';
 import '../l10n/app_localizations.dart';
 import '../models/user_settings.dart';
 import '../models/classification_level.dart';
 import '../services/database_service.dart';
+import '../services/csv_import_service.dart';
 import '../main.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -143,6 +145,214 @@ class _SettingsScreenState extends State<SettingsScreen> {
         );
       }
     }
+  }
+
+  Future<void> _importFromCsv() async {
+    final l10n = AppLocalizations.of(context)!;
+    
+    try {
+      // Pick CSV file
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['csv'],
+        withData: false,
+        withReadStream: false,
+      );
+
+      if (result == null || result.files.isEmpty) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(l10n.noFileSelected)),
+          );
+        }
+        return;
+      }
+
+      final filePath = result.files.first.path;
+      if (filePath == null) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(l10n.importFailed)),
+          );
+        }
+        return;
+      }
+
+      // Show loading indicator
+      if (mounted) {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => const Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      }
+
+      // Parse and validate CSV
+      final importResult = await CsvImportService.parseAndValidateCsv(filePath);
+      
+      // Close loading dialog
+      if (mounted) Navigator.of(context).pop();
+
+      if (!importResult.hasResults && importResult.hasErrors) {
+        // Show errors
+        if (mounted) {
+          _showImportErrors(importResult.errors);
+        }
+        return;
+      }
+
+      // Show preview and confirmation
+      if (mounted) {
+        final confirmed = await showDialog<bool>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text(l10n.importConfirmTitle(importResult.successCount)),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(l10n.importConfirmMessage(importResult.successCount)),
+                if (importResult.hasErrors) ...[
+                  const SizedBox(height: 16),
+                  Text(
+                    l10n.importErrors(importResult.errorCount),
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.error,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: Text(l10n.cancel),
+              ),
+              if (importResult.hasErrors)
+                TextButton(
+                  onPressed: () => _showImportErrors(importResult.errors),
+                  child: Text('View Errors'),
+                ),
+              FilledButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: Text(l10n.importResults),
+              ),
+            ],
+          ),
+        );
+
+        if (confirmed != true || !mounted) return;
+
+        // Import results to database
+        final db = DatabaseService.instance;
+        int imported = 0;
+        
+        for (final result in importResult.results) {
+          try {
+            await db.createResult(result);
+            imported++;
+          } catch (e) {
+            // Skip failed inserts
+          }
+        }
+
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(l10n.importSuccess(imported))),
+          );
+          
+          // Reload settings to refresh disciplines list
+          _loadSettings();
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        Navigator.of(context).popUntil((route) => route.isFirst);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('${l10n.importFailed}: $e')),
+        );
+      }
+    }
+  }
+
+  void _showImportErrors(List<String> errors) {
+    final l10n = AppLocalizations.of(context)!;
+    
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.importErrors(errors.length)),
+        content: SizedBox(
+          width: double.maxFinite,
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: errors.length,
+            itemBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4.0),
+              child: Text(
+                '\u2022 ${errors[index]}',
+                style: const TextStyle(fontSize: 12),
+              ),
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(l10n.cancel),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showCsvFormatHelp() {
+    final l10n = AppLocalizations.of(context)!;
+    
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.csvFormatHelp),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(l10n.csvFormatDescription),
+              const SizedBox(height: 16),
+              const Text(
+                'Example:',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text(
+                  CsvImportService.generateExampleCsv(),
+                  style: const TextStyle(
+                    fontFamily: 'monospace',
+                    fontSize: 10,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(l10n.cancel),
+          ),
+        ],
+      ),
+    );
   }
 
   Future<void> _deleteAllData() async {
@@ -500,6 +710,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
             fontWeight: FontWeight.bold,
           ),
         ),
+        const SizedBox(height: 16),
+        
+        // Import from CSV
+        ListTile(
+          leading: const Icon(Icons.upload_file),
+          title: Text(l10n.importData),
+          subtitle: Text(l10n.importDataDescription),
+          onTap: _importFromCsv,
+        ),
+        const SizedBox(height: 8),
+        
+        // CSV Format Help
+        OutlinedButton.icon(
+          onPressed: _showCsvFormatHelp,
+          icon: const Icon(Icons.help_outline),
+          label: Text(l10n.csvFormatHelp),
+        ),
+        
+        const SizedBox(height: 24),
+        const Divider(),
         const SizedBox(height: 16),
         
         OutlinedButton(

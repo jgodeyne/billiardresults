@@ -102,6 +102,58 @@ class AppLocalizationsFr extends AppLocalizations {
   String get dataManagement => 'Gestion des Données';
 
   @override
+  String get importData => 'Importer depuis CSV';
+
+  @override
+  String get importDataDescription =>
+      'Importez les résultats depuis un fichier CSV exporté depuis Numbers ou Excel';
+
+  @override
+  String get selectCsvFile => 'Sélectionner le Fichier CSV';
+
+  @override
+  String get importPreview => 'Aperçu de l\'Importation';
+
+  @override
+  String get importResults => 'Importer les Résultats';
+
+  @override
+  String importSuccess(int count) {
+    return '$count résultats importés avec succès';
+  }
+
+  @override
+  String importErrors(int errorCount) {
+    return 'Importation terminée avec $errorCount erreurs';
+  }
+
+  @override
+  String get importFailed => 'Échec de l\'importation';
+
+  @override
+  String get noFileSelected => 'Aucun fichier sélectionné';
+
+  @override
+  String get csvFormatHelp => 'Aide sur le Format CSV';
+
+  @override
+  String get csvFormatDescription =>
+      'Votre fichier CSV doit avoir ces colonnes:\n\nObligatoire:\n• Date (AAAA-MM-JJ, JJ/MM/AAAA, ou MM/JJ/AAAA)\n• Discipline\n• Points\n• Manches\n• Série la Plus Élevée\n\nOptionnel:\n• Adversaire\n• Compétition\n• Résultat (won/lost/draw)';
+
+  @override
+  String get downloadExample => 'Télécharger Exemple CSV';
+
+  @override
+  String importConfirmTitle(int count) {
+    return 'Importer $count Résultats?';
+  }
+
+  @override
+  String importConfirmMessage(int count) {
+    return 'Cela ajoutera $count résultats à votre base de données. Continuer?';
+  }
+
+  @override
   String get deleteAllData => 'Supprimer Toutes les Données';
 
   @override

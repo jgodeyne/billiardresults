@@ -6,6 +6,7 @@ A Flutter mobile application for billiards players to track competition results 
 
 ### Core Functionality
 - **Result Entry**: Track points made, number of innings, highest run, adversary, outcome (won/lost/draw), and competition
+- **CSV Import**: Import existing results from Numbers or Excel via CSV export
 - **Statistics Dashboard**: View aggregated statistics per discipline with visual indicators
 - **Detailed Graphs**: Three chart types showing average evolution, highest run progression, and win/loss/draw ratio
 - **Result Management**: Filter, edit, and delete results with confirmation dialogs
@@ -110,6 +111,31 @@ The app suggests 11 common billiard disciplines (localized):
 
 Users can also enter custom discipline names.
 
+## Importing Data
+
+### CSV Import
+You can import existing results from Numbers, Excel, or other spreadsheet applications:
+
+1. **Export your data** to CSV format from Numbers or Excel
+2. Go to **Settings** → **Data Management** → **Import from CSV**
+3. Select your CSV file and review the import preview
+4. Confirm to import all valid results
+
+**Required CSV columns**: Date, Discipline, Points, Innings, Highest Run  
+**Optional columns**: Adversary, Competition, Outcome
+
+Supported date formats: `YYYY-MM-DD`, `DD/MM/YYYY`, `MM/DD/YYYY`
+
+For detailed instructions and a sample CSV file, see:
+- [CSV Import Guide](../docs/csv-import-guide.md)
+- [Sample CSV](../docs/sample-import.csv)
+
+The import feature:
+- Validates all data before importing
+- Shows clear error messages for invalid rows
+- Imports valid rows even if some rows have errors
+- Supports multiple language variations for column names
+
 ## Validation Rules
 
 - Points made: ≥ 0 (warning if > 500)
@@ -120,7 +146,7 @@ Users can also enter custom discipline names.
 ## Known Limitations
 
 ### Current Version
-- No cloud sync or data export
+- No cloud sync or data export (CSV import supported)
 - No drag-and-drop card reordering (deferred to future version)
 - No dark mode support
 - No graph zoom/pan interactions

@@ -53,6 +53,10 @@ dependencies:
   # Drag and drop
   reorderable_grid_view: ^2.2.8
   path: ^1.9.1
+  
+  # CSV import
+  file_picker: ^8.1.6
+  csv: ^6.0.0
 
 dev_dependencies:
   flutter_test:
