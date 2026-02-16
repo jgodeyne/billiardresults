@@ -78,6 +78,9 @@ class CsvImportService {
       if (highestRunIndex == -1) {
         errors.add('Required column "Highest Run" not found in CSV');
       }
+      if (competitionIndex == -1) {
+        errors.add('Required column "Competition" not found in CSV');
+      }
 
       if (errors.isNotEmpty) {
         return CsvImportResult(
@@ -105,6 +108,7 @@ class CsvImportService {
           final pointsStr = row[pointsIndex].toString().trim();
           final inningsStr = row[inningsIndex].toString().trim();
           final highestRunStr = row[highestRunIndex].toString().trim();
+          final competition = row[competitionIndex].toString().trim();
 
           if (dateStr.isEmpty) {
             errors.add('Row $rowNum: Date is required');
@@ -112,6 +116,10 @@ class CsvImportService {
           }
           if (discipline.isEmpty) {
             errors.add('Row $rowNum: Discipline is required');
+            continue;
+          }
+          if (competition.isEmpty) {
+            errors.add('Row $rowNum: Competition is required');
             continue;
           }
 
@@ -170,12 +178,6 @@ class CsvImportService {
           if (adversaryIndex != -1 && adversaryIndex < row.length) {
             final value = row[adversaryIndex].toString().trim();
             adversary = value.isEmpty ? null : value;
-          }
-
-          String? competition;
-          if (competitionIndex != -1 && competitionIndex < row.length) {
-            final value = row[competitionIndex].toString().trim();
-            competition = value.isEmpty ? null : value;
           }
 
           String? outcome;

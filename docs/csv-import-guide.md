@@ -47,15 +47,15 @@ Your CSV file must include these columns (column names are case-insensitive):
   - Cannot exceed the total points
   - Example: `8`
 
+- **Competition**: Name of the competition/tournament
+  - Example: `Winter League 2025`
+  - Any text is accepted
+
 ### Optional Columns
 These columns are optional but recommended:
 
 - **Adversary**: Name of your opponent
   - Example: `John Doe`
-  - Leave empty if not applicable
-
-- **Competition**: Name of the competition/tournament
-  - Example: `Winter League 2025`
   - Leave empty if not applicable
 
 - **Outcome**: Result of the match

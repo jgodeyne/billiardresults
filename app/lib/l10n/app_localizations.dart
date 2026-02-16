@@ -787,7 +787,7 @@ abstract class AppLocalizations {
   /// No description provided for @competitionLabel.
   ///
   /// In en, this message translates to:
-  /// **'Competition (Optional)'**
+  /// **'Competition'**
   String get competitionLabel;
 
   /// No description provided for @competitionHint.
@@ -795,6 +795,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter competition name'**
   String get competitionHint;
+
+  /// No description provided for @competitionError.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a competition name'**
+  String get competitionError;
 
   /// No description provided for @resultSaved.
   ///

@@ -373,10 +373,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get outcomeUnknown => 'Inconnu';
 
   @override
-  String get competitionLabel => 'Compétition (Optionnelle)';
+  String get competitionLabel => 'Compétition';
 
   @override
   String get competitionHint => 'Entrez le nom de la compétition';
+
+  @override
+  String get competitionError => 'Veuillez entrer un nom de compétition';
 
   @override
   String get resultSaved => 'Résultat enregistré avec succès';

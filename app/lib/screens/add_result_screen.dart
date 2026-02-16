@@ -204,6 +204,14 @@ class _AddResultScreenState extends State<AddResultScreen> {
     return null;
   }
 
+  String? _validateCompetition(String? value) {
+    final l10n = AppLocalizations.of(context)!;
+    if (value == null || value.trim().isEmpty) {
+      return l10n.competitionError;
+    }
+    return null;
+  }
+
   Future<void> _showWarnings() async {
     final l10n = AppLocalizations.of(context)!;
     final warnings = <String>[];
@@ -282,9 +290,7 @@ class _AddResultScreenState extends State<AddResultScreen> {
             ? null
             : _adversaryController.text.trim(),
         outcome: _selectedOutcome,
-        competition: _competitionController.text.trim().isEmpty
-            ? null
-            : _competitionController.text.trim(),
+        competition: _competitionController.text.trim(), // Required field, validated
       );
 
       if (widget.existingResult != null) {
@@ -344,6 +350,51 @@ class _AddResultScreenState extends State<AddResultScreen> {
                 fontWeight: FontWeight.bold,
                 color: theme.colorScheme.primary,
               ),
+            ),
+            const SizedBox(height: 16),
+
+            // Competition with autocomplete
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextFormField(
+                  controller: _competitionController,
+                  decoration: InputDecoration(
+                    labelText: l10n.competitionLabel,
+                    hintText: l10n.competitionHint,
+                    border: const OutlineInputBorder(),
+                    prefixIcon: const Icon(Icons.emoji_events_outlined),
+                  ),
+                  textCapitalization: TextCapitalization.words,
+                  validator: _validateCompetition,
+                ),
+                if (_competitionSuggestions.isNotEmpty)
+                  Container(
+                    margin: const EdgeInsets.only(top: 4),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: theme.colorScheme.outline),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: _competitionSuggestions.length,
+                      itemBuilder: (context, index) {
+                        final competition = _competitionSuggestions[index];
+                        return ListTile(
+                          dense: true,
+                          leading: const Icon(Icons.emoji_events_outlined, size: 20),
+                          title: Text(competition),
+                          onTap: () {
+                            _competitionController.text = competition;
+                            setState(() {
+                              _competitionSuggestions = [];
+                            });
+                          },
+                        );
+                      },
+                    ),
+                  ),
+              ],
             ),
             const SizedBox(height: 16),
 
@@ -490,50 +541,6 @@ class _AddResultScreenState extends State<AddResultScreen> {
                   _selectedOutcome = value;
                 });
               },
-            ),
-            const SizedBox(height: 16),
-
-            // Competition with autocomplete
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextFormField(
-                  controller: _competitionController,
-                  decoration: InputDecoration(
-                    labelText: l10n.competitionLabel,
-                    hintText: l10n.competitionHint,
-                    border: const OutlineInputBorder(),
-                    prefixIcon: const Icon(Icons.emoji_events_outlined),
-                  ),
-                  textCapitalization: TextCapitalization.words,
-                ),
-                if (_competitionSuggestions.isNotEmpty)
-                  Container(
-                    margin: const EdgeInsets.only(top: 4),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: theme.colorScheme.outline),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: _competitionSuggestions.length,
-                      itemBuilder: (context, index) {
-                        final competition = _competitionSuggestions[index];
-                        return ListTile(
-                          dense: true,
-                          leading: const Icon(Icons.emoji_events_outlined, size: 20),
-                          title: Text(competition),
-                          onTap: () {
-                            _competitionController.text = competition;
-                            setState(() {
-                              _competitionSuggestions = [];
-                            });
-                          },
-                        );
-                      },
-                    ),
-                  ),
-              ],
             ),
             const SizedBox(height: 32),
 

@@ -148,15 +148,16 @@ Users can record a single result via the global + button with the following fiel
 - Number of innings (must be > 0)
   - Warning shown for unusually high values (e.g., > 200) but still allowed
 - Highest run (must be >= 0 and ≤ points made)
+- **Competition name** (free text with auto-suggestions based on previously entered competitions)
 
 **Optional fields:**
 - Adversary name (free text, no auto-suggestions/auto-fill)
 - Match outcome (won/lost/draw) - user determines the outcome
   - If not provided, result is counted as "unknown" in statistics
-- Competition name (free text, no auto-suggestions/auto-fill)
 
 ### 6.2 Form Behavior
-- No auto-fill or suggestions from previous entries
+- Auto-suggestions for discipline (from common disciplines) and competition (from previously entered competitions)
+- No auto-suggestions for adversary names
 - No pattern-based auto-completion
 
 ### 6.3 Managing Results
@@ -216,7 +217,8 @@ Users can record a single result via the global + button with the following fiel
 - Show performance metrics per opponent
 
 ### 8.2 Competition Statistics
-- If competition name is provided, track competition-specific statistics
+- Competition name is required for all results
+- Track competition-specific statistics
 - Show performance metrics per competition
 
 ### 8.3 Performance Tracking

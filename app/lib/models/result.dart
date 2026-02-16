@@ -8,7 +8,7 @@ class Result {
   final int highestRun;
   final String? adversary; // Optional
   final String? outcome; // 'won', 'lost', 'draw', or null
-  final String? competition; // Optional
+  final String? competition; // Required (nullable for backward compatibility with existing data)
 
   Result({
     this.id,

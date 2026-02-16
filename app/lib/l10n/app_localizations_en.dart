@@ -369,10 +369,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get outcomeUnknown => 'Unknown';
 
   @override
-  String get competitionLabel => 'Competition (Optional)';
+  String get competitionLabel => 'Competition';
 
   @override
   String get competitionHint => 'Enter competition name';
+
+  @override
+  String get competitionError => 'Please enter a competition name';
 
   @override
   String get resultSaved => 'Result saved successfully';

@@ -371,10 +371,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get outcomeUnknown => 'Onbekend';
 
   @override
-  String get competitionLabel => 'Competitie (Optioneel)';
+  String get competitionLabel => 'Competitie';
 
   @override
   String get competitionHint => 'Voer competitie naam in';
+
+  @override
+  String get competitionError => 'Voer een competitie naam in';
 
   @override
   String get resultSaved => 'Resultaat succesvol opgeslagen';

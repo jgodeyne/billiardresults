@@ -57,11 +57,11 @@ Disciplines are **user-defined free text** with auto-complete suggestions for c 
 - Points made (>= 0, warning for values > 500)
 - Number of innings (> 0, warning for values > 200)
 - Highest run (>= 0, <= points made, warning for values > 300)
+- Competition (free text with auto-suggestions based on previously entered competitions)
 
 **Optional fields:**
 - Adversary (free text, no auto-suggestions)
 - Match outcome (won/lost/draw - user determined, shows as "unknown" if not provided)
-- Competition (free text, no auto-suggestions)
 
 ### Classification Levels
 - Format: Two number fields (Min-Max average range)
@@ -100,7 +100,8 @@ Disciplines are **user-defined free text** with auto-complete suggestions for c 
 ### User Interactions
 - Confirmation dialogs for ALL destructive actions
 - Auto-complete for discipline names as user types
-- No auto-suggestions for adversary or competition names
+- Auto-suggestions for competition names based on previously entered competitions
+- No auto-suggestions for adversary names
 - Trend indicators as arrows (up/down/stable)
 - Warnings for unusually high values (but still allow entry)
 
@@ -135,7 +136,8 @@ Disciplines are **user-defined free text** with auto-complete suggestions for c 
 - Automatic if adversary name provided
 - Track performance metrics per opponent
 
-### Competition Tracking
+##Required field for all results
+- Auto-suggestions based on previously entered competitions
 - Automatic if competition name provided
 - Track performance metrics per competition
 
@@ -155,7 +157,9 @@ Include:
 
 ## Code Guidelines
 
-### Validation Rules
+##Discipline is required
+- Competition is required
+- # Validation Rules
 Always enforce:
 - Points made >= 0
 - Number of innings > 0
@@ -190,8 +194,10 @@ Always enforce:
 - Test with insufficient data (1-2 results)
 - Test validation rules strictly
 
-## Important Notes
-- User determines match outcome (won/lost/draw) - no automatic calculation
+##Competition is a required field for all results
+- No notifications, reminders, or help sections
+- Forms auto-suggest for discipline (from common disciplines) and competition (from previously entered)
+- Adversary field does not auto-suggest
 - Each unique discipline name is tracked separately
 - No notifications, reminders, or help sections
 - Forms never auto-suggest or remember previous entries except discipline (which has auto-complete)
