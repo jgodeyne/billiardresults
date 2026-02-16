@@ -127,10 +127,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // Welcome icon
-                  Icon(
-                    Icons.sports_baseball,
-                    size: 80,
-                    color: theme.colorScheme.primary,
+                  Image.asset(
+                    'assets/CaromStats.png',
+                    width: 120,
+                    height: 120,
                   ),
                   const SizedBox(height: 24),
                   
