@@ -13,6 +13,7 @@ class DisciplineDetailScreen extends StatefulWidget {
   final String currentSeasonLabel;
   final DateTime? selectedSeasonStart;
   final DateTime? selectedSeasonEnd;
+  final bool isAllSeasonsView;
 
   const DisciplineDetailScreen({
     super.key,
@@ -20,6 +21,7 @@ class DisciplineDetailScreen extends StatefulWidget {
     required this.currentSeasonLabel,
     this.selectedSeasonStart,
     this.selectedSeasonEnd,
+    this.isAllSeasonsView = false,
   });
 
   @override
@@ -49,17 +51,25 @@ class _DisciplineDetailScreenState extends State<DisciplineDetailScreen> {
     DateTime? seasonStart;
     DateTime? seasonEnd;
     
+    // If in all seasons view, load all results for this discipline
+    if (widget.isAllSeasonsView) {
+      results = await db.getResultsByDiscipline(widget.discipline);
+      seasonStart = null;
+      seasonEnd = null;
+    }
     // Use the season passed from the dashboard, or fall back to current season
-    if (widget.selectedSeasonStart != null && widget.selectedSeasonEnd != null) {
+    else if (widget.selectedSeasonStart != null && widget.selectedSeasonEnd != null) {
       seasonStart = widget.selectedSeasonStart;
       seasonEnd = widget.selectedSeasonEnd;
+      results = await db.getResultsByDisciplineAndSeason(
+        discipline: widget.discipline,
+        seasonStart: seasonStart!,
+        seasonEnd: seasonEnd!,
+      );
     } else if (settings != null) {
       final season = SeasonHelper.getCurrentSeason(settings);
       seasonStart = season.$1;
       seasonEnd = season.$2;
-    }
-    
-    if (seasonStart != null && seasonEnd != null) {
       results = await db.getResultsByDisciplineAndSeason(
         discipline: widget.discipline,
         seasonStart: seasonStart,
@@ -81,6 +91,50 @@ class _DisciplineDetailScreenState extends State<DisciplineDetailScreen> {
       _currentSeasonEnd = seasonEnd;
       _isLoading = false;
     });
+  }
+
+  /// Aggregate results by season for chart display
+  /// Returns list of (seasonLabel, average, highestRun) tuples
+  Future<List<(String seasonLabel, double average, int highestRun)>> _aggregateResultsBySeason() async {
+    if (_results.isEmpty) return [];
+    
+    final db = DatabaseService.instance;
+    final settings = await db.getUserSettings();
+    if (settings == null) return [];
+
+    // Group results by season
+    final Map<String, List<Result>> resultsBySeason = {};
+    for (final result in _results) {
+      final season = SeasonHelper.getSeasonForDate(settings, result.date);
+      final seasonLabel = SeasonHelper.formatSeason(season.$1, season.$2);
+      resultsBySeason.putIfAbsent(seasonLabel, () => []).add(result);
+    }
+
+    // Sort season labels chronologically
+    final sortedSeasonLabels = resultsBySeason.keys.toList()..sort();
+
+    // Calculate aggregated stats for each season
+    final aggregatedData = <(String, double, int)>[];
+    for (final seasonLabel in sortedSeasonLabels) {
+      final seasonResults = resultsBySeason[seasonLabel]!;
+      
+      int totalPoints = 0;
+      int totalInnings = 0;
+      int maxHighestRun = 0;
+
+      for (final result in seasonResults) {
+        totalPoints += result.pointsMade;
+        totalInnings += result.innings;
+        if (result.highestRun > maxHighestRun) {
+          maxHighestRun = result.highestRun;
+        }
+      }
+
+      final seasonAverage = totalInnings > 0 ? totalPoints / totalInnings : 0.0;
+      aggregatedData.add((seasonLabel, seasonAverage, maxHighestRun));
+    }
+
+    return aggregatedData;
   }
 
   String _getTrendText() {
@@ -335,82 +389,121 @@ class _DisciplineDetailScreenState extends State<DisciplineDetailScreen> {
   Widget _buildAverageEvolutionChart() {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: LineChart(
-          LineChartData(
-            gridData: const FlGridData(show: true),
-            titlesData: FlTitlesData(
-              leftTitles: AxisTitles(
-                sideTitles: SideTitles(
-                  showTitles: true,
-                  reservedSize: 40,
-                  getTitlesWidget: (value, meta) {
-                    return Text(
-                      value.toStringAsFixed(1),
-                      style: const TextStyle(fontSize: 10),
-                    );
-                  },
+      child: FutureBuilder<List<(String, double, int)>>(
+        future: widget.isAllSeasonsView ? _aggregateResultsBySeason() : Future.value([]),
+        builder: (context, snapshot) {
+          // Build chart data based on mode
+          List<FlSpot> spots;
+          int dataPointCount;
+          List<String>? xAxisLabels;
+          
+          if (widget.isAllSeasonsView && snapshot.hasData && snapshot.data!.isNotEmpty) {
+            // Season-aggregated mode
+            final seasonData = snapshot.data!;
+            spots = seasonData.asMap().entries.map((entry) {
+              return FlSpot(entry.key.toDouble(), entry.value.$2);
+            }).toList();
+            dataPointCount = seasonData.length;
+            xAxisLabels = seasonData.map((d) => d.$1).toList();
+          } else {
+            // Match-by-match mode
+            spots = _results.asMap().entries.map((entry) {
+              final index = entry.key;
+              final result = entry.value;
+              final average = result.pointsMade / result.innings;
+              return FlSpot(index.toDouble(), average);
+            }).toList();
+            dataPointCount = _results.length;
+          }
+
+          return LineChart(
+            LineChartData(
+              gridData: const FlGridData(show: true),
+              titlesData: FlTitlesData(
+                leftTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    reservedSize: 40,
+                    getTitlesWidget: (value, meta) {
+                      return Text(
+                        value.toStringAsFixed(1),
+                        style: const TextStyle(fontSize: 10),
+                      );
+                    },
+                  ),
+                ),
+                bottomTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    reservedSize: xAxisLabels != null ? 50 : 30,
+                    getTitlesWidget: (value, meta) {
+                      final index = value.toInt();
+                      if (index < 0 || index >= dataPointCount) {
+                        return const SizedBox.shrink();
+                      }
+                      if (xAxisLabels != null) {
+                        // Show season labels
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Transform.rotate(
+                            angle: -0.5,
+                            child: Text(
+                              xAxisLabels[index],
+                              style: const TextStyle(fontSize: 9),
+                            ),
+                          ),
+                        );
+                      } else {
+                        // Show match numbers
+                        return Text(
+                          '${index + 1}',
+                          style: const TextStyle(fontSize: 10),
+                        );
+                      }
+                    },
+                  ),
+                ),
+                topTitles: const AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
+                rightTitles: const AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
                 ),
               ),
-              bottomTitles: AxisTitles(
-                sideTitles: SideTitles(
-                  showTitles: true,
-                  reservedSize: 30,
-                  getTitlesWidget: (value, meta) {
-                    final index = value.toInt();
-                    if (index < 0 || index >= _results.length) {
-                      return const SizedBox.shrink();
-                    }
-                    return Text(
-                      '${index + 1}',
-                      style: const TextStyle(fontSize: 10),
-                    );
-                  },
-                ),
-              ),
-              topTitles: const AxisTitles(
-                sideTitles: SideTitles(showTitles: false),
-              ),
-              rightTitles: const AxisTitles(
-                sideTitles: SideTitles(showTitles: false),
-              ),
-            ),
-            borderData: FlBorderData(show: true),
-            lineBarsData: [
-              LineChartBarData(
-                spots: _results.asMap().entries.map((entry) {
-                  final index = entry.key;
-                  final result = entry.value;
-                  final average = result.pointsMade / result.innings;
-                  return FlSpot(index.toDouble(), average);
-                }).toList(),
-                isCurved: true,
-                color: Theme.of(context).colorScheme.primary,
-                barWidth: 3,
-                dotData: const FlDotData(show: true),
-                belowBarData: BarAreaData(
-                  show: true,
-                  color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
-                ),
-              ),
-              // Add target line if classification is set
-              if (_classificationLevel != null)
+              borderData: FlBorderData(show: true),
+              lineBarsData: [
                 LineChartBarData(
-                  spots: [
-                    FlSpot(0, _classificationLevel!.maxAverage),
-                    FlSpot(
-                      (_results.length - 1).toDouble(),
-                      _classificationLevel!.maxAverage,
-                    ),
-                  ],
-                  isCurved: false,
-                  color: Colors.green.withValues(alpha: 0.5),
-                  barWidth: 2,
-                  dotData: const FlDotData(show: false),
-                  dashArray: [5, 5],
+                  spots: spots,
+                  isCurved: true,
+                  color: Theme.of(context).colorScheme.primary,
+                  barWidth: 3,
+                  dotData: const FlDotData(show: true),
+                  belowBarData: BarAreaData(
+                    show: true,
+                    color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+                  ),
                 ),
-            ],
-          ),
-        ),
+                // Add target line if classification is set
+                if (_classificationLevel != null && dataPointCount > 0)
+                  LineChartBarData(
+                    spots: [
+                      FlSpot(0, _classificationLevel!.maxAverage),
+                      FlSpot(
+                        (dataPointCount - 1).toDouble(),
+                        _classificationLevel!.maxAverage,
+                      ),
+                    ],
+                    isCurved: false,
+                    color: Colors.green.withValues(alpha: 0.5),
+                    barWidth: 2,
+                    dotData: const FlDotData(show: false),
+                    dashArray: [5, 5],
+                  ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -422,71 +515,109 @@ class _DisciplineDetailScreenState extends State<DisciplineDetailScreen> {
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: LineChart(
-          LineChartData(
-            gridData: const FlGridData(show: true),
-            titlesData: FlTitlesData(
-              leftTitles: AxisTitles(
-                sideTitles: SideTitles(
-                  showTitles: true,
-                  reservedSize: 40,
-                  getTitlesWidget: (value, meta) {
-                    return Text(
-                      value.toInt().toString(),
-                      style: const TextStyle(fontSize: 10),
-                    );
-                  },
-                ),
-              ),
-              bottomTitles: AxisTitles(
-                sideTitles: SideTitles(
-                  showTitles: true,
-                  reservedSize: 30,
-                  getTitlesWidget: (value, meta) {
-                    final index = value.toInt();
-                    if (index < 0 || index >= _results.length) {
-                      return const SizedBox.shrink();
-                    }
-                    return Text(
-                      '${index + 1}',
-                      style: const TextStyle(fontSize: 10),
-                    );
-                  },
-                ),
-              ),
-              topTitles: const AxisTitles(
-                sideTitles: SideTitles(showTitles: false),
-              ),
-              rightTitles: const AxisTitles(
-                sideTitles: SideTitles(showTitles: false),
-              ),
-            ),
-            borderData: FlBorderData(show: true),
-            lineBarsData: [
-              LineChartBarData(
-                spots: _results.asMap().entries.map((entry) {
-                  final index = entry.key;
-                  final result = entry.value;
-                  return FlSpot(index.toDouble(), result.highestRun.toDouble());
-                }).toList(),
-                isCurved: true,
-                color: Theme.of(context).colorScheme.secondary,
-                barWidth: 3,
-                dotData: FlDotData(
-                  show: true,
-                  checkToShowDot: (spot, barData) {
-                    // Highlight all-time high
-                    return spot.y == allTimeHigh;
-                  },
-                ),
-                belowBarData: BarAreaData(
-                  show: true,
-                  color: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.1),
-                ),
-              ),
-            ],
-          ),
+      child: FutureBuilder<List<(String, double, int)>>(
+        future: widget.isAllSeasonsView ? _aggregateResultsBySeason() : Future.value([]),
+        builder: (context, snapshot) {
+          // Build chart data based on mode
+          List<FlSpot> spots;
+          int dataPointCount;
+          List<String>? xAxisLabels;
+          
+          if (widget.isAllSeasonsView && snapshot.hasData && snapshot.data!.isNotEmpty) {
+            // Season-aggregated mode
+            final seasonData = snapshot.data!;
+            spots = seasonData.asMap().entries.map((entry) {
+              return FlSpot(entry.key.toDouble(), entry.value.$3.toDouble());
+            }).toList();
+            dataPointCount = seasonData.length;
+            xAxisLabels = seasonData.map((d) => d.$1).toList();
+          } else {
+            // Match-by-match mode
+            spots = _results.asMap().entries.map((entry) {
+              final index = entry.key;
+              final result = entry.value;
+              return FlSpot(index.toDouble(), result.highestRun.toDouble());
+            }).toList();
+            dataPointCount = _results.length;
+          }
 
+          return LineChart(
+            LineChartData(
+              gridData: const FlGridData(show: true),
+              titlesData: FlTitlesData(
+                leftTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    reservedSize: 40,
+                    getTitlesWidget: (value, meta) {
+                      return Text(
+                        value.toInt().toString(),
+                        style: const TextStyle(fontSize: 10),
+                      );
+                    },
+                  ),
+                ),
+                bottomTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    reservedSize: xAxisLabels != null ? 50 : 30,
+                    getTitlesWidget: (value, meta) {
+                      final index = value.toInt();
+                      if (index < 0 || index >= dataPointCount) {
+                        return const SizedBox.shrink();
+                      }
+                      if (xAxisLabels != null) {
+                        // Show season labels
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Transform.rotate(
+                            angle: -0.5,
+                            child: Text(
+                              xAxisLabels[index],
+                              style: const TextStyle(fontSize: 9),
+                            ),
+                          ),
+                        );
+                      } else {
+                        // Show match numbers
+                        return Text(
+                          '${index + 1}',
+                          style: const TextStyle(fontSize: 10),
+                        );
+                      }
+                    },
+                  ),
+                ),
+                topTitles: const AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
+                rightTitles: const AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
+              ),
+              borderData: FlBorderData(show: true),
+              lineBarsData: [
+                LineChartBarData(
+                  spots: spots,
+                  isCurved: true,
+                  color: Theme.of(context).colorScheme.secondary,
+                  barWidth: 3,
+                  dotData: FlDotData(
+                    show: true,
+                    checkToShowDot: (spot, barData) {
+                      // Highlight all-time high
+                      return spot.y == allTimeHigh;
+                    },
+                  ),
+                  belowBarData: BarAreaData(
+                    show: true,
+                    color: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.1),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
