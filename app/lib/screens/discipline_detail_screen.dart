@@ -160,6 +160,13 @@ class _DisciplineDetailScreenState extends State<DisciplineDetailScreen> {
       appBar: AppBar(
         title: Text(l10n.detailTitle(widget.discipline)),
       ),
+      floatingActionButton: _results.isNotEmpty
+          ? FloatingActionButton.extended(
+              onPressed: _navigateToResultList,
+              icon: const Icon(Icons.list),
+              label: Text(l10n.resultList),
+            )
+          : null,
       body: Column(
         children: [
           // Timeframe selector
@@ -228,18 +235,6 @@ class _DisciplineDetailScreenState extends State<DisciplineDetailScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            // Tap hint at top
-                            Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Text(
-                                l10n.tapToViewResults,
-                                style: theme.textTheme.bodySmall?.copyWith(
-                                  color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                            
                             // Average Evolution Chart
                             _buildChartSection(
                               l10n.averageEvolution,
@@ -345,11 +340,9 @@ class _DisciplineDetailScreenState extends State<DisciplineDetailScreen> {
   }
 
   Widget _buildAverageEvolutionChart() {
-    return GestureDetector(
-      onTap: _navigateToResultList,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: LineChart(
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: LineChart(
           LineChartData(
             gridData: const FlGridData(show: true),
             titlesData: FlTitlesData(
@@ -425,7 +418,6 @@ class _DisciplineDetailScreenState extends State<DisciplineDetailScreen> {
             ],
           ),
         ),
-      ),
     );
   }
 
@@ -435,11 +427,9 @@ class _DisciplineDetailScreenState extends State<DisciplineDetailScreen> {
       (max, r) => r.highestRun > max ? r.highestRun.toDouble() : max,
     );
 
-    return GestureDetector(
-      onTap: _navigateToResultList,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: LineChart(
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: LineChart(
           LineChartData(
             gridData: const FlGridData(show: true),
             titlesData: FlTitlesData(
@@ -503,7 +493,7 @@ class _DisciplineDetailScreenState extends State<DisciplineDetailScreen> {
               ),
             ],
           ),
-        ),
+
       ),
     );
   }
@@ -579,16 +569,13 @@ class _DisciplineDetailScreenState extends State<DisciplineDetailScreen> {
       ));
     }
 
-    return GestureDetector(
-      onTap: _navigateToResultList,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: PieChart(
-          PieChartData(
-            sections: sections,
-            sectionsSpace: 2,
-            centerSpaceRadius: 0,
-          ),
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: PieChart(
+        PieChartData(
+          sections: sections,
+          sectionsSpace: 2,
+          centerSpaceRadius: 0,
         ),
       ),
     );
