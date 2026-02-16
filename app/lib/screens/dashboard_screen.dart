@@ -22,6 +22,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Map<String, ClassificationLevel> _classifications = {};
   DateTime? _selectedSeasonStart;
   DateTime? _selectedSeasonEnd;
+  DateTime? _currentSeasonStart;
+  DateTime? _currentSeasonEnd;
   List<(DateTime, DateTime)> _availableSeasons = [];
   bool _isLoading = true;
   bool _isAllSeasonsView = false;
@@ -89,6 +91,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           _settings = settings;
           _selectedSeasonStart = currentSeason.$1;
           _selectedSeasonEnd = currentSeason.$2;
+          _currentSeasonStart = currentSeason.$1;
+          _currentSeasonEnd = currentSeason.$2;
           _availableSeasons = availableSeasons;
           _disciplineStats = disciplineStats;
           _classifications = classifications;
@@ -344,8 +348,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     // Individual seasons
                     ..._availableSeasons.map((season) {
                       final seasonStr = SeasonHelper.formatSeason(season.$1, season.$2);
-                      final isCurrentSeason = _selectedSeasonStart == season.$1 &&
-                          _selectedSeasonEnd == season.$2;
+                      final isCurrentSeason = _currentSeasonStart == season.$1 &&
+                          _currentSeasonEnd == season.$2;
                       return DropdownMenuItem(
                         value: seasonStr,
                         child: Text(
