@@ -166,7 +166,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       children: [
         // Header with user name and season selector
         Container(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           color: theme.colorScheme.inversePrimary.withValues(alpha: 0.3),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -174,12 +174,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
               Center(
                 child: Text(
                   _settings!.name,
-                  style: theme.textTheme.headlineSmall?.copyWith(
+                  style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-              const SizedBox(height: 12),
+              if (_availableSeasons.isNotEmpty) const SizedBox(height: 8),
 
               // Season selector
               if (_availableSeasons.isNotEmpty)
