@@ -156,8 +156,18 @@
   "averageEvolution": "Evolutie Gemiddelde",
   "highestRunEvolution": "Evolutie Hoogste Serie",
   "outcomeRatio": "Winst/Verlies/Gelijk Verhouding",
-  "allSeasons": "Alle Seizoenen",
-  "performanceTrend": "Prestatie Trend",
+  "allSeasons": "Alle Seizoenen",  "viewBy": "Bekijken per",
+  "viewByDiscipline": "Discipline",
+  "viewByCompetition": "Competitie",
+  "competitions": "Competities",
+  "competitionDetails": "{competition} Details",
+  "@competitionDetails": {
+    "placeholders": {
+      "competition": {
+        "type": "String"
+      }
+    }
+  },  "performanceTrend": "Prestatie Trend",
   "improving": "Verbeterend",
   "declining": "Dalend",
   "stable": "Stabiel",

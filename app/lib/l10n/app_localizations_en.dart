@@ -506,6 +506,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get allSeasons => 'All Seasons';
 
   @override
+  String get viewBy => 'View by';
+
+  @override
+  String get viewByDiscipline => 'Discipline';
+
+  @override
+  String get viewByCompetition => 'Competition';
+
+  @override
+  String get competitions => 'Competitions';
+
+  @override
+  String competitionDetails(String competition) {
+    return '$competition Details';
+  }
+
+  @override
   String get performanceTrend => 'Performance Trend';
 
   @override

@@ -1042,6 +1042,36 @@ abstract class AppLocalizations {
   /// **'All Seasons'**
   String get allSeasons;
 
+  /// No description provided for @viewBy.
+  ///
+  /// In en, this message translates to:
+  /// **'View by'**
+  String get viewBy;
+
+  /// No description provided for @viewByDiscipline.
+  ///
+  /// In en, this message translates to:
+  /// **'Discipline'**
+  String get viewByDiscipline;
+
+  /// No description provided for @viewByCompetition.
+  ///
+  /// In en, this message translates to:
+  /// **'Competition'**
+  String get viewByCompetition;
+
+  /// No description provided for @competitions.
+  ///
+  /// In en, this message translates to:
+  /// **'Competitions'**
+  String get competitions;
+
+  /// No description provided for @competitionDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'{competition} Details'**
+  String competitionDetails(String competition);
+
   /// No description provided for @performanceTrend.
   ///
   /// In en, this message translates to:

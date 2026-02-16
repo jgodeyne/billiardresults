@@ -513,6 +513,23 @@ class AppLocalizationsFr extends AppLocalizations {
   String get allSeasons => 'Toutes les Saisons';
 
   @override
+  String get viewBy => 'Afficher par';
+
+  @override
+  String get viewByDiscipline => 'Discipline';
+
+  @override
+  String get viewByCompetition => 'Compétition';
+
+  @override
+  String get competitions => 'Compétitions';
+
+  @override
+  String competitionDetails(String competition) {
+    return '$competition Détails';
+  }
+
+  @override
   String get performanceTrend => 'Tendance de Performance';
 
   @override

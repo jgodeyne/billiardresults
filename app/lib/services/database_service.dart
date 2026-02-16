@@ -284,6 +284,38 @@ class DatabaseService {
     return maps.map((map) => map['competition'] as String).toList();
   }
 
+  /// Get results by competition
+  Future<List<Result>> getResultsByCompetition(String competition) async {
+    final db = await database;
+    final maps = await db.query(
+      'results',
+      where: 'competition = ?',
+      whereArgs: [competition],
+      orderBy: 'date DESC',
+    );
+    return maps.map((map) => Result.fromMap(map)).toList();
+  }
+
+  /// Get results by competition and season
+  Future<List<Result>> getResultsByCompetitionAndSeason({
+    required String competition,
+    required DateTime seasonStart,
+    required DateTime seasonEnd,
+  }) async {
+    final db = await database;
+    final maps = await db.query(
+      'results',
+      where: 'competition = ? AND date >= ? AND date <= ?',
+      whereArgs: [
+        competition,
+        seasonStart.toIso8601String(),
+        seasonEnd.toIso8601String(),
+      ],
+      orderBy: 'date DESC',
+    );
+    return maps.map((map) => Result.fromMap(map)).toList();
+  }
+
   /// Get disciplines that have results in a specific season
   Future<List<String>> getDisciplinesBySeason({
     required DateTime seasonStart,

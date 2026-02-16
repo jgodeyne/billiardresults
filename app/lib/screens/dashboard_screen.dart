@@ -3,11 +3,15 @@ import '../l10n/app_localizations.dart';
 import '../models/user_settings.dart';
 import '../models/result.dart';
 import '../models/discipline_stats.dart';
+import '../models/competition_stats.dart';
 import '../models/classification_level.dart';
 import '../services/database_service.dart';
 import '../utils/season_helper.dart';
-import '../widgets/discipline_card.dart';
+import '../widgets/stats_card.dart';
 import 'discipline_detail_screen.dart';
+import 'competition_detail_screen.dart';
+
+enum DashboardViewMode { discipline, competition }
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -19,6 +23,7 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   UserSettings? _settings;
   List<DisciplineStats> _disciplineStats = [];
+  List<CompetitionStats> _competitionStats = [];
   Map<String, ClassificationLevel> _classifications = {};
   DateTime? _selectedSeasonStart;
   DateTime? _selectedSeasonEnd;
@@ -27,6 +32,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   List<(DateTime, DateTime)> _availableSeasons = [];
   bool _isLoading = true;
   bool _isAllSeasonsView = false;
+  DashboardViewMode _viewMode = DashboardViewMode.discipline;
 
   @override
   void initState() {
@@ -80,6 +86,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
       // Sort by discipline name
       disciplineStats.sort((a, b) => a.discipline.compareTo(b.discipline));
 
+      // Group by competition and calculate stats
+      final Map<String, List<Result>> resultsByCompetition = {};
+      for (final result in results) {
+        final competition = result.competition ?? '';
+        if (competition.isNotEmpty) {
+          resultsByCompetition.putIfAbsent(competition, () => []).add(result);
+        }
+      }
+
+      final competitionStats = resultsByCompetition.entries
+          .map((entry) => CompetitionStats.fromResults(entry.key, entry.value))
+          .toList();
+
+      // Sort by competition name
+      competitionStats.sort((a, b) => a.competition.compareTo(b.competition));
+
       // Get classification levels
       final classificationsList = await DatabaseService.instance.getAllClassificationLevels();
       final classifications = {
@@ -95,6 +117,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           _currentSeasonEnd = currentSeason.$2;
           _availableSeasons = availableSeasons;
           _disciplineStats = disciplineStats;
+          _competitionStats = competitionStats;
           _classifications = classifications;
           _isLoading = false;
         });
@@ -135,11 +158,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
       // Sort by discipline name
       disciplineStats.sort((a, b) => a.discipline.compareTo(b.discipline));
 
+      // Group by competition and calculate stats
+      final Map<String, List<Result>> resultsByCompetition = {};
+      for (final result in results) {
+        final competition = result.competition ?? '';
+        if (competition.isNotEmpty) {
+          resultsByCompetition.putIfAbsent(competition, () => []).add(result);
+        }
+      }
+
+      final competitionStats = resultsByCompetition.entries
+          .map((entry) => CompetitionStats.fromResults(entry.key, entry.value))
+          .toList();
+
+      // Sort by competition name
+      competitionStats.sort((a, b) => a.competition.compareTo(b.competition));
+
       if (mounted) {
         setState(() {
           _selectedSeasonStart = season.$1;
           _selectedSeasonEnd = season.$2;
           _disciplineStats = disciplineStats;
+          _competitionStats = competitionStats;
           _isAllSeasonsView = false;
           _isLoading = false;
         });
@@ -168,6 +208,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         if (mounted) {
           setState(() {
             _disciplineStats = [];
+            _competitionStats = [];
             _isAllSeasonsView = true;
             _selectedSeasonStart = null;
             _selectedSeasonEnd = null;
@@ -273,9 +314,108 @@ class _DashboardScreenState extends State<DashboardScreen> {
       // Sort by discipline name
       disciplineStats.sort((a, b) => a.discipline.compareTo(b.discipline));
 
+      // Now do the same for competitions
+      final Map<String, List<Result>> resultsByCompetition = {};
+      for (final result in allResults) {
+        final competition = result.competition ?? '';
+        if (competition.isNotEmpty) {
+          resultsByCompetition.putIfAbsent(competition, () => []).add(result);
+        }
+      }
+
+      final competitionStats = <CompetitionStats>[];
+      for (final entry in resultsByCompetition.entries) {
+        final competition = entry.key;
+        final results = entry.value;
+
+        // Group results by season
+        final Map<String, List<Result>> resultsBySeason = {};
+        for (final result in results) {
+          final season = SeasonHelper.getSeasonForDate(_settings!, result.date);
+          final seasonKey = SeasonHelper.formatSeason(season.$1, season.$2);
+          resultsBySeason.putIfAbsent(seasonKey, () => []).add(result);
+        }
+
+        // Create season-aggregated stats
+        final seasonAverages = <double>[];
+        int totalPoints = 0;
+        int totalInnings = 0;
+        int highestRunOverall = 0;
+        int wonCount = 0;
+        int lostCount = 0;
+        int drawCount = 0;
+        int unknownCount = 0;
+
+        // Sort seasons chronologically
+        final sortedSeasons = resultsBySeason.keys.toList()..sort();
+
+        for (final seasonKey in sortedSeasons) {
+          final seasonResults = resultsBySeason[seasonKey]!;
+          
+          // Calculate season totals
+          int seasonPoints = 0;
+          int seasonInnings = 0;
+          int seasonHighestRun = 0;
+
+          for (final result in seasonResults) {
+            seasonPoints += result.pointsMade;
+            seasonInnings += result.innings;
+            if (result.highestRun > seasonHighestRun) {
+              seasonHighestRun = result.highestRun;
+            }
+            if (result.highestRun > highestRunOverall) {
+              highestRunOverall = result.highestRun;
+            }
+
+            // Count outcomes
+            switch (result.outcome?.toLowerCase()) {
+              case 'won':
+                wonCount++;
+                break;
+              case 'lost':
+                lostCount++;
+                break;
+              case 'draw':
+                drawCount++;
+                break;
+              default:
+                unknownCount++;
+            }
+          }
+
+          totalPoints += seasonPoints;
+          totalInnings += seasonInnings;
+
+          // Calculate season average
+          final seasonAverage = seasonInnings > 0 ? seasonPoints / seasonInnings : 0.0;
+          seasonAverages.add(seasonAverage);
+        }
+
+        final currentAverage = totalInnings > 0 ? totalPoints / totalInnings : 0.0;
+
+        competitionStats.add(CompetitionStats(
+          competition: competition,
+          results: results,
+          currentAverage: currentAverage,
+          highestRun: highestRunOverall,
+          totalPoints: totalPoints,
+          totalInnings: totalInnings,
+          matchCount: results.length,
+          wonCount: wonCount,
+          lostCount: lostCount,
+          drawCount: drawCount,
+          unknownCount: unknownCount,
+          averagesPerMatch: seasonAverages, // These are now season averages
+        ));
+      }
+
+      // Sort by competition name
+      competitionStats.sort((a, b) => a.competition.compareTo(b.competition));
+
       if (mounted) {
         setState(() {
           _disciplineStats = disciplineStats;
+          _competitionStats = competitionStats;
           _isAllSeasonsView = true;
           _selectedSeasonStart = null;
           _selectedSeasonEnd = null;
@@ -372,18 +512,54 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     }
                   },
                 ),
+              
+              // View mode toggle
+              if (_availableSeasons.isNotEmpty) const SizedBox(height: 12),
+              if (_availableSeasons.isNotEmpty)
+                SegmentedButton<DashboardViewMode>(
+                  selected: {_viewMode},
+                  onSelectionChanged: (Set<DashboardViewMode> newSelection) {
+                    setState(() {
+                      _viewMode = newSelection.first;
+                    });
+                  },
+                  segments: [
+                    ButtonSegment<DashboardViewMode>(
+                      value: DashboardViewMode.discipline,
+                      label: Text(l10n.viewByDiscipline),
+                      icon: const Icon(Icons.sports),
+                    ),
+                    ButtonSegment<DashboardViewMode>(
+                      value: DashboardViewMode.competition,
+                      label: Text(l10n.viewByCompetition),
+                      icon: const Icon(Icons.emoji_events),
+                    ),
+                  ],
+                ),
             ],
           ),
         ),
 
         // Content
         Expanded(
-          child: _disciplineStats.isEmpty
-              ? _buildEmptyState(l10n)
-              : _buildDisciplineGrid(),
+          child: _buildContent(l10n),
         ),
       ],
     );
+  }
+
+  Widget _buildContent(AppLocalizations l10n) {
+    final hasData = _viewMode == DashboardViewMode.discipline
+        ? _disciplineStats.isNotEmpty
+        : _competitionStats.isNotEmpty;
+
+    if (!hasData) {
+      return _buildEmptyState(l10n);
+    }
+
+    return _viewMode == DashboardViewMode.discipline
+        ? _buildStatsGrid(_disciplineStats)
+        : _buildStatsGrid(_competitionStats);
   }
 
   Widget _buildEmptyState(AppLocalizations l10n) {
@@ -416,7 +592,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Widget _buildDisciplineGrid() {
+  Widget _buildStatsGrid(List<dynamic> statsList) {
     return GridView.builder(
       padding: const EdgeInsets.all(16.0),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -425,40 +601,83 @@ class _DashboardScreenState extends State<DashboardScreen> {
         crossAxisSpacing: 12,
         mainAxisSpacing: 12,
       ),
-      itemCount: _disciplineStats.length,
+      itemCount: statsList.length,
       itemBuilder: (context, index) {
-        final stats = _disciplineStats[index];
-        final classification = _classifications[stats.discipline];
+        final stats = statsList[index];
+        
+        if (stats is DisciplineStats) {
+          return _buildDisciplineCard(stats);
+        } else if (stats is CompetitionStats) {
+          return _buildCompetitionCard(stats);
+        }
+        
+        return const SizedBox.shrink();
+      },
+    );
+  }
 
-        return DisciplineCard(
-          stats: stats,
-          classification: classification,
-          onTap: () async {
-            final l10n = AppLocalizations.of(context)!;
-            final seasonLabel = _isAllSeasonsView
-                ? l10n.allSeasons
-                : (_selectedSeasonStart != null && _selectedSeasonEnd != null
-                    ? SeasonHelper.formatSeason(_selectedSeasonStart!, _selectedSeasonEnd!)
-                    : l10n.currentSeason);
-            
-            await Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => DisciplineDetailScreen(
-                  discipline: stats.discipline,
-                  currentSeasonLabel: seasonLabel,
-                  selectedSeasonStart: _selectedSeasonStart,
-                  selectedSeasonEnd: _selectedSeasonEnd,
-                  isAllSeasonsView: _isAllSeasonsView,
-                ),
-              ),
-            );
-            
-            // Refresh dashboard after returning (in case results were edited/deleted)
-            if (mounted) {
-              _loadData();
-            }
-          },
+  Widget _buildDisciplineCard(DisciplineStats stats) {
+    final classification = _classifications[stats.discipline];
+    final l10n = AppLocalizations.of(context)!;
+    
+    return StatsCard.fromDiscipline(
+      stats: stats,
+      classification: classification,
+      onTap: () async {
+        final seasonLabel = _isAllSeasonsView
+            ? l10n.allSeasons
+            : (_selectedSeasonStart != null && _selectedSeasonEnd != null
+                ? SeasonHelper.formatSeason(_selectedSeasonStart!, _selectedSeasonEnd!)
+                : l10n.currentSeason);
+        
+        await Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => DisciplineDetailScreen(
+              discipline: stats.discipline,
+              currentSeasonLabel: seasonLabel,
+              selectedSeasonStart: _selectedSeasonStart,
+              selectedSeasonEnd: _selectedSeasonEnd,
+              isAllSeasonsView: _isAllSeasonsView,
+            ),
+          ),
         );
+        
+        // Refresh dashboard after returning (in case results were edited/deleted)
+        if (mounted) {
+          _loadData();
+        }
+      },
+    );
+  }
+
+  Widget _buildCompetitionCard(CompetitionStats stats) {
+    final l10n = AppLocalizations.of(context)!;
+    
+    return StatsCard.fromCompetition(
+      stats: stats,
+      onTap: () async {
+        final seasonLabel = _isAllSeasonsView
+            ? l10n.allSeasons
+            : (_selectedSeasonStart != null && _selectedSeasonEnd != null
+                ? SeasonHelper.formatSeason(_selectedSeasonStart!, _selectedSeasonEnd!)
+                : l10n.currentSeason);
+        
+        await Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => CompetitionDetailScreen(
+              competition: stats.competition,
+              currentSeasonLabel: seasonLabel,
+              selectedSeasonStart: _selectedSeasonStart,
+              selectedSeasonEnd: _selectedSeasonEnd,
+              isAllSeasonsView: _isAllSeasonsView,
+            ),
+          ),
+        );
+        
+        // Refresh dashboard after returning (in case results were edited/deleted)
+        if (mounted) {
+          _loadData();
+        }
       },
     );
   }

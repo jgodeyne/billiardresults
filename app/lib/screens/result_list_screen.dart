@@ -7,16 +7,19 @@ import '../widgets/background_wrapper.dart';
 import 'add_result_screen.dart';
 
 class ResultListScreen extends StatefulWidget {
-  final String discipline;
+  final String? discipline;
+  final String? competition;
   final DateTime? seasonStart;
   final DateTime? seasonEnd;
 
   const ResultListScreen({
     super.key,
-    required this.discipline,
+    this.discipline,
+    this.competition,
     this.seasonStart,
     this.seasonEnd,
-  });
+  }) : assert(discipline != null || competition != null, 
+         'Either discipline or competition must be provided');
 
   @override
   State<ResultListScreen> createState() => _ResultListScreenState();
@@ -45,14 +48,29 @@ class _ResultListScreenState extends State<ResultListScreen> {
     final db = DatabaseService.instance;
     List<Result> results;
 
-    if (widget.seasonStart != null && widget.seasonEnd != null) {
-      results = await db.getResultsByDisciplineAndSeason(
-        discipline: widget.discipline,
-        seasonStart: widget.seasonStart!,
-        seasonEnd: widget.seasonEnd!,
-      );
+    // Load results based on discipline or competition
+    if (widget.discipline != null) {
+      if (widget.seasonStart != null && widget.seasonEnd != null) {
+        results = await db.getResultsByDisciplineAndSeason(
+          discipline: widget.discipline!,
+          seasonStart: widget.seasonStart!,
+          seasonEnd: widget.seasonEnd!,
+        );
+      } else {
+        results = await db.getResultsByDiscipline(widget.discipline!);
+      }
+    } else if (widget.competition != null) {
+      if (widget.seasonStart != null && widget.seasonEnd != null) {
+        results = await db.getResultsByCompetitionAndSeason(
+          competition: widget.competition!,
+          seasonStart: widget.seasonStart!,
+          seasonEnd: widget.seasonEnd!,
+        );
+      } else {
+        results = await db.getResultsByCompetition(widget.competition!);
+      }
     } else {
-      results = await db.getResultsByDiscipline(widget.discipline);
+      results = [];
     }
 
     // Sort by date descending (newest first)
@@ -247,10 +265,11 @@ class _ResultListScreenState extends State<ResultListScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final titlePrefix = widget.discipline ?? widget.competition ?? '';
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('${widget.discipline} - ${l10n.resultList}'),
+        title: Text('$titlePrefix - ${l10n.resultList}'),
         actions: [
           if (_competitions.isNotEmpty || _adversaries.isNotEmpty)
             IconButton(

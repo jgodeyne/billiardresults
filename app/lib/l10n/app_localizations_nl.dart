@@ -510,6 +510,23 @@ class AppLocalizationsNl extends AppLocalizations {
   String get allSeasons => 'Alle Seizoenen';
 
   @override
+  String get viewBy => 'Bekijken per';
+
+  @override
+  String get viewByDiscipline => 'Discipline';
+
+  @override
+  String get viewByCompetition => 'Competitie';
+
+  @override
+  String get competitions => 'Competities';
+
+  @override
+  String competitionDetails(String competition) {
+    return '$competition Details';
+  }
+
+  @override
   String get performanceTrend => 'Prestatie Trend';
 
   @override

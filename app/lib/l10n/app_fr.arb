@@ -156,8 +156,18 @@
   "averageEvolution": "Évolution de la Moyenne",
   "highestRunEvolution": "Évolution de la Série Maximale",
   "outcomeRatio": "Ratio Victoire/Défaite/Égalité",
-  "allSeasons": "Toutes les Saisons",
-  "performanceTrend": "Tendance de Performance",
+  "allSeasons": "Toutes les Saisons",  "viewBy": "Afficher par",
+  "viewByDiscipline": "Discipline",
+  "viewByCompetition": "Compétition",
+  "competitions": "Compétitions",
+  "competitionDetails": "{competition} Détails",
+  "@competitionDetails": {
+    "placeholders": {
+      "competition": {
+        "type": "String"
+      }
+    }
+  },  "performanceTrend": "Tendance de Performance",
   "improving": "En Amélioration",
   "declining": "En Baisse",
   "stable": "Stable",

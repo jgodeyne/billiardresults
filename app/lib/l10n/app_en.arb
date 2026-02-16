@@ -239,6 +239,18 @@
   "highestRunEvolution": "Highest Run Evolution",
   "outcomeRatio": "Win/Loss/Draw Ratio",
   "allSeasons": "All Seasons",
+  "viewBy": "View by",
+  "viewByDiscipline": "Discipline",
+  "viewByCompetition": "Competition",
+  "competitions": "Competitions",
+  "competitionDetails": "{competition} Details",
+  "@competitionDetails": {
+    "placeholders": {
+      "competition": {
+        "type": "String"
+      }
+    }
+  },
   "performanceTrend": "Performance Trend",
   "improving": "Improving",
   "declining": "Declining",
