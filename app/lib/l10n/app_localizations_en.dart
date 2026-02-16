@@ -45,6 +45,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get seasonStartError => 'Please select a season start date';
 
   @override
+  String get selectMonth => 'Select month';
+
+  @override
+  String get selectDay => 'Select day';
+
+  @override
+  String get selectMonthFirst => 'Please select a month first';
+
+  @override
   String get getStarted => 'Get Started';
 
   @override

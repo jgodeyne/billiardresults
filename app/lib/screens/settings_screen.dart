@@ -108,6 +108,87 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
+  int _getMaxDaysInMonth(int month) {
+    switch (month) {
+      case 2:
+        return 29; // February (allowing for leap years)
+      case 4:
+      case 6:
+      case 9:
+      case 11:
+        return 30;
+      default:
+        return 31;
+    }
+  }
+
+  Future<void> _showDayPicker(BuildContext context) async {
+    if (_seasonStartMonth == null) {
+      final l10n = AppLocalizations.of(context)!;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.selectMonthFirst)),
+      );
+      return;
+    }
+
+    final maxDays = _getMaxDaysInMonth(_seasonStartMonth!);
+    final initialDay = _seasonStartDay ?? 1;
+    
+    await showDialog<int>(
+      context: context,
+      builder: (BuildContext context) {
+        int tempDay = initialDay > maxDays ? maxDays : initialDay;
+        
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context)!.selectDay),
+          content: SizedBox(
+            height: 250,
+            width: 100,
+            child: ListWheelScrollView.useDelegate(
+              itemExtent: 50,
+              diameterRatio: 1.5,
+              physics: const FixedExtentScrollPhysics(),
+              controller: FixedExtentScrollController(
+                initialItem: tempDay - 1,
+              ),
+              onSelectedItemChanged: (index) {
+                tempDay = index + 1;
+              },
+              childDelegate: ListWheelChildBuilderDelegate(
+                builder: (context, index) {
+                  if (index < 0 || index >= maxDays) return null;
+                  final day = index + 1;
+                  return Center(
+                    child: Text(
+                      '$day',
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                  );
+                },
+                childCount: maxDays,
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(AppLocalizations.of(context)!.cancel),
+            ),
+            FilledButton(
+              onPressed: () {
+                setState(() {
+                  _seasonStartDay = tempDay;
+                });
+                Navigator.of(context).pop();
+              },
+              child: Text(AppLocalizations.of(context)!.confirm),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> _saveSettings() async {
     final l10n = AppLocalizations.of(context)!;
     
@@ -856,39 +937,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         const SizedBox(height: 16),
         
-        // Season start - Day dropdown
+        // Season start - Month dropdown (first)
         DropdownButtonFormField<int>(
-          initialValue: _seasonStartDay,
+          value: _seasonStartMonth,
           decoration: InputDecoration(
             labelText: l10n.seasonStartLabel,
             border: const OutlineInputBorder(),
-            prefixIcon: const Icon(Icons.calendar_today),
+            prefixIcon: const Icon(Icons.calendar_month),
           ),
-          hint: const Text('Day'),
-          items: List.generate(31, (index) {
-            final day = index + 1;
-            return DropdownMenuItem(
-              value: day,
-              child: Text('$day'),
-            );
-          }),
-          onChanged: (value) {
-            setState(() {
-              _seasonStartDay = value;
-            });
-          },
-        ),
-        const SizedBox(height: 16),
-        
-        // Season start - Month dropdown
-        DropdownButtonFormField<int>(
-          initialValue: _seasonStartMonth,
-          decoration: const InputDecoration(
-            labelText: 'Month',
-            border: OutlineInputBorder(),
-            prefixIcon: Icon(Icons.calendar_month),
-          ),
-          hint: const Text('Month'),
+          hint: Text(l10n.selectMonth),
           items: List.generate(12, (index) {
             final month = index + 1;
             return DropdownMenuItem(
@@ -899,8 +956,37 @@ class _SettingsScreenState extends State<SettingsScreen> {
           onChanged: (value) {
             setState(() {
               _seasonStartMonth = value;
+              // Adjust day if it exceeds max days for new month
+              if (_seasonStartDay != null && value != null) {
+                final maxDays = _getMaxDaysInMonth(value);
+                if (_seasonStartDay! > maxDays) {
+                  _seasonStartDay = maxDays;
+                }
+              }
             });
           },
+        ),
+        const SizedBox(height: 16),
+        
+        // Season start - Day spinner (second)
+        InkWell(
+          onTap: () => _showDayPicker(context),
+          child: InputDecorator(
+            decoration: InputDecoration(
+              labelText: l10n.selectDay,
+              border: const OutlineInputBorder(),
+              prefixIcon: const Icon(Icons.calendar_today),
+              suffixIcon: const Icon(Icons.arrow_drop_down),
+            ),
+            child: Text(
+              _seasonStartDay != null ? '$_seasonStartDay' : l10n.selectDay,
+              style: _seasonStartDay != null
+                  ? Theme.of(context).textTheme.bodyLarge
+                  : Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: Theme.of(context).hintColor,
+                    ),
+            ),
+          ),
         ),
         const SizedBox(height: 16),
         

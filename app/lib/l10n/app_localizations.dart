@@ -172,6 +172,24 @@ abstract class AppLocalizations {
   /// **'Please select a season start date'**
   String get seasonStartError;
 
+  /// No description provided for @selectMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Select month'**
+  String get selectMonth;
+
+  /// No description provided for @selectDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Select day'**
+  String get selectDay;
+
+  /// No description provided for @selectMonthFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a month first'**
+  String get selectMonthFirst;
+
   /// No description provided for @getStarted.
   ///
   /// In en, this message translates to:

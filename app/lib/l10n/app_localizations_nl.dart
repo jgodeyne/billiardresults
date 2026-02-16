@@ -45,6 +45,15 @@ class AppLocalizationsNl extends AppLocalizations {
   String get seasonStartError => 'Selecteer een seizoen startdatum';
 
   @override
+  String get selectMonth => 'Selecteer maand';
+
+  @override
+  String get selectDay => 'Selecteer dag';
+
+  @override
+  String get selectMonthFirst => 'Selecteer eerst een maand';
+
+  @override
   String get getStarted => 'Aan de slag';
 
   @override

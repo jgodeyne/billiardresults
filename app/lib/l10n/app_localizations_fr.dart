@@ -46,6 +46,15 @@ class AppLocalizationsFr extends AppLocalizations {
       'Veuillez sélectionner une date de début de saison';
 
   @override
+  String get selectMonth => 'Sélectionner le mois';
+
+  @override
+  String get selectDay => 'Sélectionner le jour';
+
+  @override
+  String get selectMonthFirst => 'Veuillez d\'abord sélectionner un mois';
+
+  @override
   String get getStarted => 'Commencer';
 
   @override
