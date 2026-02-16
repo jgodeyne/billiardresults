@@ -21,9 +21,7 @@ class DisciplineDetailScreen extends StatefulWidget {
   State<DisciplineDetailScreen> createState() => _DisciplineDetailScreenState();
 }
 
-class _DisciplineDetailScreenState extends State<DisciplineDetailScreen>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+class _DisciplineDetailScreenState extends State<DisciplineDetailScreen> {
   String _selectedTimeframe = 'current';
   List<Result> _results = [];
   ClassificationLevel? _classificationLevel;
@@ -34,14 +32,7 @@ class _DisciplineDetailScreenState extends State<DisciplineDetailScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
     _loadData();
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
   }
 
   Future<void> _loadData() async {
@@ -168,14 +159,6 @@ class _DisciplineDetailScreenState extends State<DisciplineDetailScreen>
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.detailTitle(widget.discipline)),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: [
-            Tab(text: l10n.averageEvolution),
-            Tab(text: l10n.highestRunEvolution),
-            Tab(text: l10n.outcomeRatio),
-          ],
-        ),
       ),
       body: Column(
         children: [
@@ -235,34 +218,82 @@ class _DisciplineDetailScreenState extends State<DisciplineDetailScreen>
 
           const Divider(),
 
-          // Tab view with graphs
+          // Scrollable graphs
           Expanded(
             child: _isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : _results.isEmpty
                     ? Center(child: Text(l10n.noDataAvailable))
-                    : TabBarView(
-                        controller: _tabController,
-                        children: [
-                          _buildAverageEvolutionChart(),
-                          _buildHighestRunChart(),
-                          _buildOutcomeRatioChart(),
-                        ],
+                    : SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            // Tap hint at top
+                            Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Text(
+                                l10n.tapToViewResults,
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            
+                            // Average Evolution Chart
+                            _buildChartSection(
+                              l10n.averageEvolution,
+                              _buildAverageEvolutionChart(),
+                              theme,
+                            ),
+                            
+                            const Divider(height: 32),
+                            
+                            // Highest Run Chart
+                            _buildChartSection(
+                              l10n.highestRunEvolution,
+                              _buildHighestRunChart(),
+                              theme,
+                            ),
+                            
+                            const Divider(height: 32),
+                            
+                            // Outcome Ratio Chart
+                            _buildChartSection(
+                              l10n.outcomeRatio,
+                              _buildOutcomeRatioChart(),
+                              theme,
+                            ),
+                            
+                            const SizedBox(height: 16),
+                          ],
+                        ),
                       ),
-          ),
-
-          // Tap hint
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              l10n.tapToViewResults,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-              ),
-            ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildChartSection(String title, Widget chart, ThemeData theme) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text(
+            title,
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        SizedBox(
+          height: 300,
+          child: chart,
+        ),
+      ],
     );
   }
 
