@@ -179,5 +179,16 @@
   "confirmDeleteMessage": "Weet u zeker dat u dit resultaat wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
   "resultDeleted": "Resultaat verwijderd",
   "resultUpdated": "Resultaat bijgewerkt",
-  "average": "Gemiddelde"
+  "average": "Gemiddelde",
+  "autoBackupEnabled": "Automatische Back-up Ingeschakeld",
+  "autoBackupEnabledDescription": "Maak automatisch een back-up van uw gegevens naar de cloud",
+  "autoBackupFrequency": "Frequentie Automatische Back-up",
+  "autoBackupResultCount": "Back-up na Resultaten",
+  "backupAfter": "Back-up na",
+  "results": "resultaten",
+  "disabled": "Uitgeschakeld",
+  "afterResults": "Na Resultaten",
+  "daily": "Dagelijks",
+  "weekly": "Wekelijks",
+  "numberOfResults": "Aantal Resultaten"
 }

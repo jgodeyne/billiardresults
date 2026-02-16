@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import '../models/user_settings.dart';
 import 'database_service.dart';
 
 class CloudBackupService {
@@ -281,6 +282,77 @@ class CloudBackupService {
       return null;
     } catch (e) {
       return null;
+    }
+  }
+
+  // ==================== Auto-Backup Scheduling ====================
+
+  /// Check if auto-backup should be triggered and perform it if needed
+  /// Call this after saving a new result
+  Future<bool> checkAndPerformAutoBackup() async {
+    try {
+      final settings = await DatabaseService.instance.getUserSettings();
+      if (settings == null || !settings.autoBackupEnabled) {
+        return false;
+      }
+
+      bool shouldBackup = false;
+
+      switch (settings.autoBackupFrequency) {
+        case AutoBackupFrequency.disabled:
+          return false;
+
+        case AutoBackupFrequency.afterResults:
+          // Check if result count threshold reached
+          shouldBackup = settings.resultCountSinceBackup >= settings.autoBackupResultCount;
+          break;
+
+        case AutoBackupFrequency.daily:
+          // Check if last backup was more than 24 hours ago
+          if (settings.lastBackupDate != null) {
+            final hoursSinceBackup = DateTime.now().difference(settings.lastBackupDate!).inHours;
+            shouldBackup = hoursSinceBackup >= 24;
+          } else {
+            shouldBackup = true; // Never backed up
+          }
+          break;
+
+        case AutoBackupFrequency.weekly:
+          // Check if last backup was more than 7 days ago
+          if (settings.lastBackupDate != null) {
+            final daysSinceBackup = DateTime.now().difference(settings.lastBackupDate!).inDays;
+            shouldBackup = daysSinceBackup >= 7;
+          } else {
+            shouldBackup = true; // Never backed up
+          }
+          break;
+      }
+
+      if (shouldBackup) {
+        await backupToCloud();
+        return true;
+      }
+
+      return false;
+    } catch (e) {
+      // Don't throw - auto-backup failures shouldn't block user actions
+      return false;
+    }
+  }
+
+  /// Increment the result count since last backup
+  /// Call this immediately after saving a result
+  Future<void> incrementResultCount() async {
+    try {
+      final settings = await DatabaseService.instance.getUserSettings();
+      if (settings != null && settings.autoBackupEnabled) {
+        final updated = settings.copyWith(
+          resultCountSinceBackup: settings.resultCountSinceBackup + 1,
+        );
+        await DatabaseService.instance.saveUserSettings(updated);
+      }
+    } catch (e) {
+      // Ignore errors - this is just tracking
     }
   }
 

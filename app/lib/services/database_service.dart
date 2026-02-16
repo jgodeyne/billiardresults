@@ -25,7 +25,7 @@ class DatabaseService {
 
     return await openDatabase(
       path,
-      version: 2,
+      version: 3,
       onCreate: _createDB,
       onUpgrade: _upgradeDB,
     );
@@ -41,7 +41,11 @@ class DatabaseService {
         season_start_day INTEGER NOT NULL,
         season_start_month INTEGER NOT NULL,
         language TEXT NOT NULL,
-        last_backup_date TEXT
+        last_backup_date TEXT,
+        auto_backup_enabled INTEGER NOT NULL DEFAULT 0,
+        auto_backup_frequency TEXT NOT NULL DEFAULT 'disabled',
+        auto_backup_result_count INTEGER NOT NULL DEFAULT 10,
+        result_count_since_backup INTEGER NOT NULL DEFAULT 0
       )
     ''');
 
@@ -95,6 +99,22 @@ class DatabaseService {
     if (oldVersion < 2) {
       await db.execute('''
         ALTER TABLE user_settings ADD COLUMN last_backup_date TEXT
+      ''');
+    }
+    
+    // Version 2 to 3: Add auto-backup settings
+    if (oldVersion < 3) {
+      await db.execute('''
+        ALTER TABLE user_settings ADD COLUMN auto_backup_enabled INTEGER NOT NULL DEFAULT 0
+      ''');
+      await db.execute('''
+        ALTER TABLE user_settings ADD COLUMN auto_backup_frequency TEXT NOT NULL DEFAULT 'disabled'
+      ''');
+      await db.execute('''
+        ALTER TABLE user_settings ADD COLUMN auto_backup_result_count INTEGER NOT NULL DEFAULT 10
+      ''');
+      await db.execute('''
+        ALTER TABLE user_settings ADD COLUMN result_count_since_backup INTEGER NOT NULL DEFAULT 0
       ''');
     }
   }

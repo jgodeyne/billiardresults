@@ -15,7 +15,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dashboard => 'Dashboard';
 
   @override
-  String get results => 'Results';
+  String get results => 'results';
 
   @override
   String get settings => 'Settings';
@@ -569,4 +569,35 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get resultUpdated => 'Result updated';
+
+  @override
+  String get autoBackupEnabled => 'Auto-Backup Enabled';
+
+  @override
+  String get autoBackupEnabledDescription =>
+      'Automatically backup your data to the cloud';
+
+  @override
+  String get autoBackupFrequency => 'Auto-Backup Frequency';
+
+  @override
+  String get autoBackupResultCount => 'Backup After Results';
+
+  @override
+  String get backupAfter => 'Backup after';
+
+  @override
+  String get disabled => 'Disabled';
+
+  @override
+  String get afterResults => 'After Results';
+
+  @override
+  String get daily => 'Daily';
+
+  @override
+  String get weekly => 'Weekly';
+
+  @override
+  String get numberOfResults => 'Number of Results';
 }

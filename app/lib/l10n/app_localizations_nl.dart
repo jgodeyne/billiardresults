@@ -15,7 +15,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get dashboard => 'Dashboard';
 
   @override
-  String get results => 'Resultaten';
+  String get results => 'resultaten';
 
   @override
   String get settings => 'Instellingen';
@@ -574,4 +574,35 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get resultUpdated => 'Resultaat bijgewerkt';
+
+  @override
+  String get autoBackupEnabled => 'Automatische Back-up Ingeschakeld';
+
+  @override
+  String get autoBackupEnabledDescription =>
+      'Maak automatisch een back-up van uw gegevens naar de cloud';
+
+  @override
+  String get autoBackupFrequency => 'Frequentie Automatische Back-up';
+
+  @override
+  String get autoBackupResultCount => 'Back-up na Resultaten';
+
+  @override
+  String get backupAfter => 'Back-up na';
+
+  @override
+  String get disabled => 'Uitgeschakeld';
+
+  @override
+  String get afterResults => 'Na Resultaten';
+
+  @override
+  String get daily => 'Dagelijks';
+
+  @override
+  String get weekly => 'Wekelijks';
+
+  @override
+  String get numberOfResults => 'Aantal Resultaten';
 }

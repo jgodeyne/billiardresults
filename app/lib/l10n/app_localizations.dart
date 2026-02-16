@@ -115,7 +115,7 @@ abstract class AppLocalizations {
   /// Results tab label
   ///
   /// In en, this message translates to:
-  /// **'Results'**
+  /// **'results'**
   String get results;
 
   /// Settings tab label
@@ -1161,6 +1161,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Result updated'**
   String get resultUpdated;
+
+  /// No description provided for @autoBackupEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-Backup Enabled'**
+  String get autoBackupEnabled;
+
+  /// No description provided for @autoBackupEnabledDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatically backup your data to the cloud'**
+  String get autoBackupEnabledDescription;
+
+  /// No description provided for @autoBackupFrequency.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-Backup Frequency'**
+  String get autoBackupFrequency;
+
+  /// No description provided for @autoBackupResultCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup After Results'**
+  String get autoBackupResultCount;
+
+  /// No description provided for @backupAfter.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup after'**
+  String get backupAfter;
+
+  /// No description provided for @disabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Disabled'**
+  String get disabled;
+
+  /// No description provided for @afterResults.
+  ///
+  /// In en, this message translates to:
+  /// **'After Results'**
+  String get afterResults;
+
+  /// No description provided for @daily.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily'**
+  String get daily;
+
+  /// No description provided for @weekly.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly'**
+  String get weekly;
+
+  /// No description provided for @numberOfResults.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of Results'**
+  String get numberOfResults;
 }
 
 class _AppLocalizationsDelegate

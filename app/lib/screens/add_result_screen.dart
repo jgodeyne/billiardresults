@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import '../l10n/app_localizations.dart';
 import '../models/result.dart';
 import '../services/database_service.dart';
+import '../services/cloud_backup_service.dart';
 import '../utils/constants.dart';
 
 class AddResultScreen extends StatefulWidget {
@@ -289,6 +290,12 @@ class _AddResultScreenState extends State<AddResultScreen> {
         await DatabaseService.instance.updateResult(result);
       } else {
         await DatabaseService.instance.createResult(result);
+        
+        // Trigger auto-backup for new results only
+        final backupService = CloudBackupService();
+        await backupService.incrementResultCount();
+        // Don't await - run in background
+        backupService.checkAndPerformAutoBackup();
       }
 
       if (!mounted) return;

@@ -179,5 +179,16 @@
   "confirmDeleteMessage": "Êtes-vous sûr de vouloir supprimer ce résultat? Cette action ne peut pas être annulée.",
   "resultDeleted": "Résultat supprimé",
   "resultUpdated": "Résultat mis à jour",
-  "average": "Moyenne"
+  "average": "Moyenne",
+  "autoBackupEnabled": "Sauvegarde Automatique Activée",
+  "autoBackupEnabledDescription": "Sauvegardez automatiquement vos données dans le cloud",
+  "autoBackupFrequency": "Fréquence de Sauvegarde Automatique",
+  "autoBackupResultCount": "Sauvegarde Après Résultats",
+  "backupAfter": "Sauvegarder après",
+  "results": "résultats",
+  "disabled": "Désactivé",
+  "afterResults": "Après les Résultats",
+  "daily": "Quotidien",
+  "weekly": "Hebdomadaire",
+  "numberOfResults": "Nombre de Résultats"
 }

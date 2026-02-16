@@ -9,6 +9,7 @@ This approach provides automatic cloud storage without requiring a dedicated bac
 
 ## Features
 
+✅ **Auto-Backup Scheduling** - Automatically backup based on user-defined schedules  
 ✅ **Manual Backup** - Users can backup their data on demand  
 ✅ **Manual Restore** - Users can restore from cloud backup  
 ✅ **Last Backup Timestamp** - Shows when data was last backed up  
@@ -17,6 +18,31 @@ This approach provides automatic cloud storage without requiring a dedicated bac
 ✅ **JSON Export** - Human-readable backup format  
 
 ## How It Works
+
+### Auto-Backup Scheduling
+
+**Frequency Options:**
+1. **Disabled** (Default) - No automatic backups, manual only
+2. **After Results** - Triggers backup after saving N new results (configurable threshold, default: 10)
+3. **Daily** - Triggers backup once per day (24 hours since last backup)
+4. **Weekly** - Triggers backup once per week (7 days since last backup)
+
+**Setup:**
+1. Navigate to **Settings → Cloud Backup**
+2. Toggle **Auto-Backup Enabled** to ON
+3. Select your preferred **Auto-Backup Frequency**
+4. If using "After Results", set the **Number of Results** threshold
+
+**Automatic Execution:**
+- Auto-backup is triggered **after saving a new result**
+- The system checks if backup should run based on your frequency setting
+- If conditions are met, backup runs silently in the background
+- Last backup timestamp is updated in settings
+
+**Result Counter (After Results mode):**
+- Counter increments with each new result added
+- Resets to 0 after successful backup
+- Editing existing results does NOT increment counter
 
 ### Data Export (Backup)
 1. User taps "Backup to Cloud" in Settings → Cloud Backup

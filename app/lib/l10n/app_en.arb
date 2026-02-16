@@ -275,5 +275,16 @@
   "confirmDeleteMessage": "Are you sure you want to delete this result? This action cannot be undone.",
   "resultDeleted": "Result deleted",
   "resultUpdated": "Result updated",
-  "average": "Average"
+  "average": "Average",
+  "autoBackupEnabled": "Auto-Backup Enabled",
+  "autoBackupEnabledDescription": "Automatically backup your data to the cloud",
+  "autoBackupFrequency": "Auto-Backup Frequency",
+  "autoBackupResultCount": "Backup After Results",
+  "backupAfter": "Backup after",
+  "results": "results",
+  "disabled": "Disabled",
+  "afterResults": "After Results",
+  "daily": "Daily",
+  "weekly": "Weekly",
+  "numberOfResults": "Number of Results"
 }

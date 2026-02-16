@@ -15,7 +15,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get dashboard => 'Tableau de bord';
 
   @override
-  String get results => 'Résultats';
+  String get results => 'résultats';
 
   @override
   String get settings => 'Paramètres';
@@ -578,4 +578,35 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get resultUpdated => 'Résultat mis à jour';
+
+  @override
+  String get autoBackupEnabled => 'Sauvegarde Automatique Activée';
+
+  @override
+  String get autoBackupEnabledDescription =>
+      'Sauvegardez automatiquement vos données dans le cloud';
+
+  @override
+  String get autoBackupFrequency => 'Fréquence de Sauvegarde Automatique';
+
+  @override
+  String get autoBackupResultCount => 'Sauvegarde Après Résultats';
+
+  @override
+  String get backupAfter => 'Sauvegarder après';
+
+  @override
+  String get disabled => 'Désactivé';
+
+  @override
+  String get afterResults => 'Après les Résultats';
+
+  @override
+  String get daily => 'Quotidien';
+
+  @override
+  String get weekly => 'Hebdomadaire';
+
+  @override
+  String get numberOfResults => 'Nombre de Résultats';
 }

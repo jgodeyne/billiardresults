@@ -495,6 +495,149 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
+  Future<void> _updateAutoBackupEnabled(bool enabled) async {
+    if (_settings == null) return;
+    
+    try {
+      final updated = _settings!.copyWith(autoBackupEnabled: enabled);
+      await DatabaseService.instance.saveUserSettings(updated);
+      await _loadSettings();
+    } catch (e) {
+      final l10n = AppLocalizations.of(context)!;
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('${l10n.errorSavingSettings}: $e')),
+        );
+      }
+    }
+  }
+
+  Future<void> _selectAutoBackupFrequency() async {
+    final l10n = AppLocalizations.of(context)!;
+    
+    final selected = await showDialog<AutoBackupFrequency>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.autoBackupFrequency),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            RadioListTile<AutoBackupFrequency>(
+              title: Text(l10n.disabled),
+              value: AutoBackupFrequency.disabled,
+              groupValue: _settings?.autoBackupFrequency ?? AutoBackupFrequency.disabled,
+              onChanged: (value) => Navigator.pop(context, value),
+            ),
+            RadioListTile<AutoBackupFrequency>(
+              title: Text(l10n.afterResults),
+              value: AutoBackupFrequency.afterResults,
+              groupValue: _settings?.autoBackupFrequency ?? AutoBackupFrequency.disabled,
+              onChanged: (value) => Navigator.pop(context, value),
+            ),
+            RadioListTile<AutoBackupFrequency>(
+              title: Text(l10n.daily),
+              value: AutoBackupFrequency.daily,
+              groupValue: _settings?.autoBackupFrequency ?? AutoBackupFrequency.disabled,
+              onChanged: (value) => Navigator.pop(context, value),
+            ),
+            RadioListTile<AutoBackupFrequency>(
+              title: Text(l10n.weekly),
+              value: AutoBackupFrequency.weekly,
+              groupValue: _settings?.autoBackupFrequency ?? AutoBackupFrequency.disabled,
+              onChanged: (value) => Navigator.pop(context, value),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(l10n.cancel),
+          ),
+        ],
+      ),
+    );
+    
+    if (selected != null && _settings != null) {
+      try {
+        final updated = _settings!.copyWith(autoBackupFrequency: selected);
+        await DatabaseService.instance.saveUserSettings(updated);
+        await _loadSettings();
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('${l10n.errorSavingSettings}: $e')),
+          );
+        }
+      }
+    }
+  }
+
+  Future<void> _selectAutoBackupResultCount() async {
+    final l10n = AppLocalizations.of(context)!;
+    final controller = TextEditingController(
+      text: (_settings?.autoBackupResultCount ?? 10).toString(),
+    );
+    
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.autoBackupResultCount),
+        content: TextField(
+          controller: controller,
+          keyboardType: TextInputType.number,
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+          decoration: InputDecoration(
+            labelText: l10n.numberOfResults,
+            hintText: '10',
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(l10n.save),
+          ),
+        ],
+      ),
+    );
+    
+    if (confirmed == true && _settings != null) {
+      final count = int.tryParse(controller.text) ?? 10;
+      if (count > 0) {
+        try {
+          final updated = _settings!.copyWith(autoBackupResultCount: count);
+          await DatabaseService.instance.saveUserSettings(updated);
+          await _loadSettings();
+        } catch (e) {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('${l10n.errorSavingSettings}: $e')),
+            );
+          }
+        }
+      }
+    }
+    
+    controller.dispose();
+  }
+
+  String _getFrequencyLabel(AutoBackupFrequency frequency) {
+    final l10n = AppLocalizations.of(context)!;
+    switch (frequency) {
+      case AutoBackupFrequency.disabled:
+        return l10n.disabled;
+      case AutoBackupFrequency.afterResults:
+        return l10n.afterResults;
+      case AutoBackupFrequency.daily:
+        return l10n.daily;
+      case AutoBackupFrequency.weekly:
+        return l10n.weekly;
+    }
+  }
+
   Future<void> _deleteAllData() async {
     final l10n = AppLocalizations.of(context)!;
     
@@ -892,6 +1035,36 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ),
           ),
+        
+        // Auto-Backup Settings
+        SwitchListTile(
+          title: Text(l10n.autoBackupEnabled),
+          subtitle: Text(l10n.autoBackupEnabledDescription),
+          value: _settings?.autoBackupEnabled ?? false,
+          onChanged: (value) => _updateAutoBackupEnabled(value),
+        ),
+        
+        if (_settings?.autoBackupEnabled ?? false) ...[
+          const SizedBox(height: 8),
+          ListTile(
+            leading: const Icon(Icons.schedule),
+            title: Text(l10n.autoBackupFrequency),
+            subtitle: Text(_getFrequencyLabel(_settings?.autoBackupFrequency ?? AutoBackupFrequency.disabled)),
+            onTap: _selectAutoBackupFrequency,
+          ),
+          
+          if (_settings?.autoBackupFrequency == AutoBackupFrequency.afterResults) ...[
+            const SizedBox(height: 8),
+            ListTile(
+              leading: const Icon(Icons.numbers),
+              title: Text(l10n.autoBackupResultCount),
+              subtitle: Text('${l10n.backupAfter} ${_settings?.autoBackupResultCount ?? 10} ${l10n.results}'),
+              onTap: _selectAutoBackupResultCount,
+            ),
+          ],
+        ],
+        
+        const SizedBox(height: 16),
         
         // Backup to Cloud
         ListTile(
