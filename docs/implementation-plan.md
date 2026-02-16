@@ -1,7 +1,7 @@
 # Billiard Results Tracker - Implementation Plan
 
 **Project Status:** ✅ Complete  
-**Last Updated:** February 15, 2026
+**Last Updated:** February 16, 2026
 
 ## Progress Overview
 
@@ -734,6 +734,16 @@ Each milestone is considered complete when:
   - Consistent spacing and typography throughout
   - All 32 tests passing
   - Full multi-language support (150+ strings in 3 languages)
+- **February 16, 2026** - Enhancement: Competition View Mode
+  - CompetitionStats model created for aggregating competition-specific statistics
+  - Generic StatsCard widget created (replaces DisciplineCard)
+  - Dashboard enhanced with view mode toggle (discipline/competition)
+  - SegmentedButton added for switching between discipline and competition views
+  - CompetitionDetailScreen created with same features as DisciplineDetailScreen
+  - Season and view mode selection now preserved when navigating to/from detail screens
+  - 5 new localization strings added (viewBy, viewByDiscipline, viewByCompetition, competitions, competitionDetails)
+  - All 32 tests still passing
+  - No classification level comparison for competition cards (discipline-only feature)
 
 ### Final Status
 - **Project:** ✅ Complete (100%)

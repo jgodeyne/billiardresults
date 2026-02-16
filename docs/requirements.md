@@ -48,38 +48,42 @@ Settings page includes:
 
 ### 3.1 Display Elements
 - Player's name & current season displayed at top
-- One card per discipline (only shown if there are results for the current season)
-- Cards appear in user-defined order (drag-and-drop directly on cards)
+- **View Mode Toggle**: Segmented button to switch between:
+  - **Discipline View**: One card per discipline (only shown if there are results for the current season)
+  - **Competition View**: One card per competition (only shown if there are results for the current season)
+- Cards appear in alphabetical order
+- Selected view mode is preserved when navigating to/from detail screens
 
 ### 3.2 Empty State
 - When user has no results: Display prompt to add first result
 
 ### 3.3 Card Content (Current Season)
-Each discipline card displays:
+Each card (discipline or competition) displays:
 - Current average (centrally displayed, large font)
 - Highest run (across all matches in the season) (below average, little smaller font)
 - Total points made (top left corner, small font)
 - Total innings played (top right corner, small font)
 - Number of won/lost/draw matches (bottom center, small font)
   - Shows counts for won/lost/draw/unknown (unknown marked with '?' for results without outcome)
-- Background: graph showing average per match over time (line chart)
-- Comparison to target average (from official classification level):
+- Comparison to target average (from official classification level) - **discipline cards only**:
   - Green indicator when above maximum target
   - Red indicator when below minimum target
   - No color when within range
   - Hidden if classification level not provided
 
-### 3.6 Card Interaction
-- **Tap card:** Navigate to discipline detail view (graphs and statistics)
+### 3.4 Card Interaction
+- **Tap discipline card:** Navigate to discipline detail view (graphs and statistics)
+- **Tap competition card:** Navigate to competition detail view (graphs and statistics)
 
-### 3.4 Performance Trends
+### 3.5 Performance Trends
 - Display trend arrows (up/down/stable) based on last 5 matches
 
-### 3.5 Actions
+### 3.6 Actions
 - **Add Result Button (+)**: Global floating action button that opens form to record a result
   - User selects discipline within the form
 - **Season Filter**: Allows switching between different seasons (if multiple seasons exist)
-  - Always defaults to current season on app launch (does not remember last selection)
+  - Remembers last selected season when navigating to/from detail screens
+  - Remembers view mode (discipline/competition) selection
 
 ## 4. Discipline Detail View
 
@@ -112,29 +116,61 @@ Multiple graph pages accessible via pager/tabs:
 ### 4.7 Navigation to Result List
 - **Tap any graph:** Navigate to result list view for that discipline
 
-## 5. Result List View
+## 5. Competition Detail View
 
-### 5.1 Display Format
+### 5.1 Navigation
+- Accessed by selecting a competition card from the main page
+
+### 5.2 Display Elements
+Multiple graph pages accessible via pager/tabs:
+- **Average evolution graph** (line chart showing average per match over time)
+- **Highest run graph** (line chart)
+- **Win/loss/draw ratio graph** (pie chart showing overall ratio)
+
+### 5.3 Graph Types
+- Line charts for average and highest run
+- Pie chart for win/loss/draw ratio
+- Simplified view when insufficient data (1-2 results)
+- No zoom, pan, or other interactions (future feature)
+
+### 5.4 Timeframe Selection
+- Default: Current season only
+- User can select other seasons or view all seasons
+
+### 5.5 Graph Interaction
+- Clicking any graph navigates to result list view filtered by competition
+
+### 5.6 Performance Trends
+- Display performance trends over the selected timeframe
+- Trend based on last 5 matches (arrows: up/down/stable)
+- No classification comparison (not applicable to competitions)
+
+### 5.7 Navigation to Result List
+- **Tap any graph:** Navigate to result list view for that competition
+
+## 6. Result List View
+
+### 6.1 Display Format
 - Summary view with option to expand for each result
 - Shows all fields when expanded: date, points, innings, average, highest run, adversary, outcome, competition
 
-### 5.2 Actions
+### 6.2 Actions
 - Edit result directly from list
 - Delete result directly from list (with confirmation dialog)
 
-### 5.3 Filtering & Sorting
+### 6.3 Filtering & Sorting
 - **Filter UI:** Filter icon/button that opens a filter sheet/modal
-  - Filter by competition
+Filter by competition
   - Filter by adversary
 - Sortable by date (default)
 
-### 5.4 Navigation
-- Accessible from discipline detail view by tapping any graph
-- Displays results for the selected discipline and timeframe
+### 6.4 Navigation
+- Accessible from discipline detail view or competition detail view by tapping any graph
+- Displays results for the selected discipline/competition and timeframe
 
-## 6. Result Entry & Management
+## 7. Result Entry & Management
 
-### 6.1 Adding Results
+### 7.1 Adding Results
 Users can record a single result via the global + button with the following fields:
 
 **Required fields:**
@@ -155,17 +191,17 @@ Users can record a single result via the global + button with the following fiel
 - Match outcome (won/lost/draw) - user determines the outcome
   - If not provided, result is counted as "unknown" in statistics
 
-### 6.2 Form Behavior
+### 7.2 Form Behavior
 - Auto-suggestions for discipline (from common disciplines) and competition (from previously entered competitions)
 - No auto-suggestions for adversary names
 - No pattern-based auto-completion
 
-### 6.3 Managing Results
+### 7.3 Managing Results
 - Users can edit results after entry
 - Users can delete results after entry
 - Confirmation dialogs for all destructive actions
 
-### 6.4 Validation Rules
+### 7.4 Validation Rules
 - Points made must be >= 0 (zero is allowed)
 - Number of innings must be > 0 (cannot be zero)
 - Highest run must be >= 0 and cannot exceed points made
@@ -175,9 +211,9 @@ Users can record a single result via the global + button with the following fiel
   - Number of innings > 200
   - Highest run > 300
 
-## 7. Data Definitions
+## 8. Data Definitions
 
-### 7.1 Season
+### 8.1 Season
 - **Start:** User-defined date (day and month only) configured during first-time setup
   - Example: If user sets "September 1st", every season starts on September 1st
 - **End:** Day before the next season start date (August 31st in the example above)
@@ -186,10 +222,10 @@ Users can record a single result via the global + button with the following fiel
 - No manual custom seasons
 - **Historical Access:** Users can view and edit results from any past season
 
-### 7.2 Average Calculation
+### 8.2 Average Calculation
 - Formula: Points made ÷ Number of innings (3 decimal places)
 
-### 7.3 Billiard Disciplines
+### 8.3 Billiard Disciplines
 **User-Defined:** Disciplines are free-text fields that users can define however they prefer.
 
 **Suggested Disciplines:** The app provides auto-complete suggestions based on common billiard disciplines:
@@ -207,40 +243,40 @@ Users can record a single result via the global + button with the following fiel
 
 **Note:** Each unique discipline name is tracked separately (e.g., "3-cushion - Small table" and "3-cushion - Match table" are different disciplines)
 
-### 7.4 Highest Run
+### 8.4 Highest Run
 - Display both highest run in a single match AND highest run across all matches
 
-## 8. Statistics & Analytics
+## 9. Statistics & Analytics
 
-### 8.1 Opponent Statistics
+### 9.1 Opponent Statistics
 - If adversary name is provided, track statistics against specific opponents
 - Show performance metrics per opponent
 
-### 8.2 Competition Statistics
+### 9.2 Competition Statistics
 - Competition name is required for all results
 - Track competition-specific statistics
 - Show performance metrics per competition
 
-### 8.3 Performance Tracking
+### 9.3 Performance Tracking
 - Display performance trends (arrows: up/down/stable)
 - Trends calculated based on last 5 matches
 - Compare current performance to target average (official classification level)
 - Show average per match evolution
 
-## 9. Data Storage
+## 10. Data Storage
 
-### 9.1 Local Storage
+### 10.1 Local Storage
 - Primary data storage on the device
 - All data stored locally with no automatic cleanup
 - Data retained indefinitely unless manually deleted by user
 - Users can completely reset/delete all their data via settings
 - Use SQLite for structured data storage
 
-### 9.2 Error Handling - Local Storage
+### 10.2 Error Handling - Local Storage
 - If local storage fails or becomes corrupted: Display error message with recovery options
 - If device storage is full: Show error message suggesting to delete old data or free up device storage
 
-### 9.3 Premium Features - OUT OF SCOPE
+### 10.3 Premium Features - OUT OF SCOPE
 **Note:** Cloud storage, cloud sync, premium payment, and sharing features are out-of-scope for the initial version of the app.
 
 The initial version includes:
@@ -248,30 +284,30 @@ The initial version includes:
 - No data export/import
 - No sharing capabilities
 
-## 10. Premium Features (Future Enhancement - Out of Scope)
+## 11. Premium Features (Future Enhancement - Out of Scope)
 
 The following features are planned for future versions but NOT included in the initial build:
 
-### 10.1 Payment Model (Future)
+### 11.1 Payment Model (Future)
 - One-time payment for premium features
 - Price range: €5-10
 - No trial period
 
-### 10.2 Premium Feature List (Future)
+### 11.2 Premium Feature List (Future)
 - Cloud storage and sync across devices
 - Share statistics with others (generate shareable image/screenshot)
 - Conflict resolution: Most recent edit wins
 
-### 10.3 Free Version (Current Scope)
+### 11.3 Free Version (Current Scope)
 - Local storage only
 - No cloud backup
 - No data export (CSV, PDF)
 - No data import from other sources
 - No sharing capabilities
 
-## 11. Navigation Flow
+## 12. Navigation Flow
 
-### 11.1 Screen Hierarchy
+### 12.1 Screen Hierarchy
 ```
 First Launch
 └─> Onboarding (required)
@@ -287,7 +323,7 @@ First Launch
             └─> Settings
 ```
 
-### 11.2 Navigation Details
+### 12.2 Navigation Details
 - **First Launch:** Show onboarding screen (name + season date setup)
 - **Main Navigation:** Bottom navigation bar (Dashboard, Results, Settings)
 - **Add Result:** Global floating action button (+) accessible from dashboard
@@ -296,48 +332,48 @@ First Launch
 - **Edit/Delete Result:** Available from result list view
 - **Back Navigation:** Standard back button/gesture on all screens
 
-## 12. Additional Features & Constraints
+## 13. Additional Features & Constraints
 
-### 12.1 Multi-Season View
+### 13.1 Multi-Season View
 - Option to view graphs across all seasons (not just current season)
 - User-selectable timeframe for all statistics and graphs
 - All past seasons are accessible and editable
 
-### 12.2 No Help/Tutorial Section
+### 13.2 No Help/Tutorial Section
 - No about/help section with instructions
 
-### 12.3 Data Privacy
+### 13.3 Data Privacy
 - No specific data privacy or compliance requirements
 - No GDPR compliance needed
 - No privacy policy required
 
-## 13. Internationalization (i18n)
+## 14. Internationalization (i18n)
 
-### 13.1 Supported Languages
+### 14.1 Supported Languages
 - Dutch (Nederlands)
 - French (Français)
 - English
 
-### 13.2 Language Selection
+### 14.2 Language Selection
 - Default language: Device system language (if supported), otherwise English
 - User can change language in Settings
 - Language preference saved locally
 - All UI text, labels, and messages must be translatable
 
-### 13.3 Localization Scope
+### 14.3 Localization Scope
 - All static UI text and labels
 - All error messages and dialogs
 - All hints and placeholder text
 - Graph labels and axis titles
 - Confirmation dialogs
 
-### 13.4 Non-Localized Content
+### 14.4 Non-Localized Content
 - User-entered data (discipline names, adversary names, competition names)
 - Dates follow device locale formatting
 - Numbers follow device locale formatting (decimal separators)
 
-## 14. Design & UI
-### 12.1 Color Scheme
+## 15. Design & UI
+### 15.1 Color Scheme
 - I want a light pastel color scheme with a clean and modern design
 - The colors related to carom billiards (blue, red, orange,white) can be used as accent colors for specific elements (e.g., indicators, buttons)
 - Overall, the design should be visually appealing and user-friendly, with a focus on simplicity and ease of use.
