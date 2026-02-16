@@ -45,6 +45,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
     await _loadData();
   }
 
+  /// Refresh dashboard while preserving current season/view selection
+  Future<void> _refreshCurrentView() async {
+    if (_isAllSeasonsView) {
+      await _onAllSeasonsSelected();
+    } else if (_selectedSeasonStart != null && _selectedSeasonEnd != null) {
+      await _onSeasonChanged((_selectedSeasonStart!, _selectedSeasonEnd!));
+    } else {
+      await _loadData();
+    }
+  }
+
   Future<void> _loadData() async {
     setState(() {
       _isLoading = true;
@@ -644,7 +655,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         
         // Refresh dashboard after returning (in case results were edited/deleted)
         if (mounted) {
-          _loadData();
+          _refreshCurrentView();
         }
       },
     );
@@ -676,7 +687,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         
         // Refresh dashboard after returning (in case results were edited/deleted)
         if (mounted) {
-          _loadData();
+          _refreshCurrentView();
         }
       },
     );

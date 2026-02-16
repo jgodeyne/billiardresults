@@ -7,17 +7,22 @@ A Flutter mobile application for billiards players to track competition results 
 ### Core Functionality
 - **Result Entry**: Track points made, number of innings, highest run, adversary, outcome (won/lost/draw), and competition
 - **CSV Import**: Import existing results from Numbers or Excel via CSV export
-- **Statistics Dashboard**: View aggregated statistics per discipline with visual indicators
+- **Statistics Dashboard**: View aggregated statistics per discipline or competition with visual indicators
+- **Flexible Grouping**: Toggle between viewing stats by discipline or by competition
 - **Detailed Graphs**: Three chart types showing average evolution, highest run progression, and win/loss/draw ratio
-- **Result Management**: Filter, edit, and delete results with confirmation dialogs
+- **Advanced Filtering**: Filter results by competition and/or adversary in result list view
+- **Result Management**: Edit and delete results with confirmation dialogs
 - **Multi-Discipline Support**: Track any billiard discipline with autocomplete suggestions for common types
+- **Cloud Backup**: Backup and restore your data using iCloud Drive (iOS) or Google Drive (Android)
 
 ### User Experience
 - **Offline-First**: All data stored locally, no internet required
 - **Multi-Language**: Full support for Dutch, French, and English
 - **Season Management**: User-defined season start date with automatic season calculations
+- **All Seasons View**: View statistics across all seasons or select specific seasons
 - **Classification Levels**: Set target average ranges per discipline with visual indicators (green/red)
 - **Performance Trends**: Automatic trend calculation from last 5 matches
+- **Competition Analytics**: Dedicated detail screens for competition-specific statistics
 
 ### Technical Features
 - Clean Material 3 design with light blue theme
@@ -76,10 +81,10 @@ flutter build ios --release
 
 ```
 lib/
-├── models/              # Data models (Result, UserSettings, etc.)
-├── screens/             # UI screens (Dashboard, AddResult, etc.)
-├── widgets/             # Reusable widgets (DisciplineCard, etc.)
-├── services/            # Business logic (DatabaseService, etc.)
+├── models/              # Data models (Result, UserSettings, DisciplineStats, CompetitionStats, etc.)
+├── screens/             # UI screens (Dashboard, AddResult, DisciplineDetail, CompetitionDetail, etc.)
+├── widgets/             # Reusable widgets (StatsCard, etc.)
+├── services/            # Business logic (DatabaseService, CloudBackupService, etc.)
 ├── utils/               # Helper functions (SeasonHelper, Constants)
 ├── l10n/                # Localization files (ARB format)
 └── main.dart            # App entry point
@@ -89,6 +94,7 @@ lib/
 
 - **State Management**: Provider for global app state
 - **Database**: SQLite (sqflite) for local data persistence
+- **Cloud Storage**: iCloud Drive (iOS) / Google Drive (Android) for backups
 - **Localization**: Flutter's built-in i18n with ARB files
 - **Charts**: fl_chart for data visualization
 - **Navigation**: Standard Flutter Navigator
@@ -111,7 +117,7 @@ The app suggests 11 common billiard disciplines (localized):
 
 Users can also enter custom discipline names.
 
-## Importing Data
+## Data Management
 
 ### CSV Import
 You can import existing results from Numbers, Excel, or other spreadsheet applications:
@@ -136,6 +142,15 @@ The import feature:
 - Imports valid rows even if some rows have errors
 - Supports multiple language variations for column names
 
+### Cloud Backup & Restore
+Protect your data with cloud backup:
+
+- **iOS**: Automatic backup to iCloud Drive
+- **Android**: Backup to Google Drive (requires sign-in)
+- **Restore**: Easily restore your data from the cloud on a new device
+
+Access via **Settings** → **Cloud Backup**
+
 ## Validation Rules
 
 - Points made: ≥ 0 (warning if > 500)
@@ -143,10 +158,32 @@ The import feature:
 - Highest run: ≥ 0 and ≤ points made (warning if > 300)
 - Warnings are non-blocking - users can still save
 
+## Dashboard Features
+
+### View Modes
+- **By Discipline**: See statistics grouped by billiard discipline
+- **By Competition**: See statistics grouped by competition name
+- Toggle between views using the segmented button at the top of the dashboard
+
+### Detail Screens
+Tap any card to view detailed statistics including:
+- Average evolution chart (line graph)
+- Highest run progression (line graph)
+- Win/Loss/Draw ratio (pie chart)
+- Performance trend indicators
+- Season-specific or all-time statistics
+
+### Filtering Results
+In the result list screen:
+- Filter by specific competition
+- Filter by specific adversary
+- Combined filters supported
+- Direct access to edit or delete results
+
 ## Known Limitations
 
 ### Current Version
-- No cloud sync or data export (CSV import supported)
+- No data export (CSV import and cloud backup supported)
 - No drag-and-drop card reordering (deferred to future version)
 - No dark mode support
 - No graph zoom/pan interactions
@@ -154,10 +191,11 @@ The import feature:
 
 ### Future Enhancements
 See [implementation-plan.md](../docs/implementation-plan.md) for planned features including:
-- Premium cloud sync
-- Data export/sharing
-- Advanced analytics
+- Data export/sharing capabilities
+- Advanced analytics and insights
 - Dark mode
+- Drag-and-drop card reordering
+- Graph zoom/pan interactions
 
 ## Contributing
 
@@ -184,4 +222,4 @@ This is a personal project. If you'd like to contribute:
 ---
 
 **Version**: 1.0.0  
-**Last Updated**: February 15, 2026
+**Last Updated**: February 16, 2026
