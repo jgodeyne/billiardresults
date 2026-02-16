@@ -11,11 +11,15 @@ import 'result_list_screen.dart';
 class DisciplineDetailScreen extends StatefulWidget {
   final String discipline;
   final String currentSeasonLabel;
+  final DateTime? selectedSeasonStart;
+  final DateTime? selectedSeasonEnd;
 
   const DisciplineDetailScreen({
     super.key,
     required this.discipline,
     required this.currentSeasonLabel,
+    this.selectedSeasonStart,
+    this.selectedSeasonEnd,
   });
 
   @override
@@ -23,7 +27,6 @@ class DisciplineDetailScreen extends StatefulWidget {
 }
 
 class _DisciplineDetailScreenState extends State<DisciplineDetailScreen> {
-  String _selectedTimeframe = 'current';
   List<Result> _results = [];
   ClassificationLevel? _classificationLevel;
   bool _isLoading = true;
@@ -46,10 +49,17 @@ class _DisciplineDetailScreenState extends State<DisciplineDetailScreen> {
     DateTime? seasonStart;
     DateTime? seasonEnd;
     
-    if (_selectedTimeframe == 'current' && settings != null) {
+    // Use the season passed from the dashboard, or fall back to current season
+    if (widget.selectedSeasonStart != null && widget.selectedSeasonEnd != null) {
+      seasonStart = widget.selectedSeasonStart;
+      seasonEnd = widget.selectedSeasonEnd;
+    } else if (settings != null) {
       final season = SeasonHelper.getCurrentSeason(settings);
       seasonStart = season.$1;
       seasonEnd = season.$2;
+    }
+    
+    if (seasonStart != null && seasonEnd != null) {
       results = await db.getResultsByDisciplineAndSeason(
         discipline: widget.discipline,
         seasonStart: seasonStart,
@@ -71,13 +81,6 @@ class _DisciplineDetailScreenState extends State<DisciplineDetailScreen> {
       _currentSeasonEnd = seasonEnd;
       _isLoading = false;
     });
-  }
-
-  void _onTimeframeChanged(String? value) {
-    if (value != null && value != _selectedTimeframe) {
-      setState(() => _selectedTimeframe = value);
-      _loadData();
-    }
   }
 
   String _getTrendText() {
@@ -171,31 +174,18 @@ class _DisciplineDetailScreenState extends State<DisciplineDetailScreen> {
       body: BackgroundWrapper(
         child: Column(
         children: [
-          // Timeframe selector
-          Padding(
-            padding: const EdgeInsets.all(16.0),
+          // Season header
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+            color: theme.colorScheme.inversePrimary.withValues(alpha: 0.2),
             child: Row(
               children: [
+                Icon(Icons.calendar_today, size: 20),
+                const SizedBox(width: 8),
                 Text(
-                  l10n.selectSeason,
-                  style: theme.textTheme.titleMedium,
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: DropdownButton<String>(
-                    value: _selectedTimeframe,
-                    isExpanded: true,
-                    items: [
-                      DropdownMenuItem(
-                        value: 'current',
-                        child: Text(widget.currentSeasonLabel),
-                      ),
-                      DropdownMenuItem(
-                        value: 'all',
-                        child: Text(l10n.allSeasons),
-                      ),
-                    ],
-                    onChanged: _onTimeframeChanged,
+                  widget.currentSeasonLabel,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ],

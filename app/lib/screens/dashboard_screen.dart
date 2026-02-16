@@ -286,6 +286,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 builder: (context) => DisciplineDetailScreen(
                   discipline: stats.discipline,
                   currentSeasonLabel: seasonLabel,
+                  selectedSeasonStart: _selectedSeasonStart,
+                  selectedSeasonEnd: _selectedSeasonEnd,
                 ),
               ),
             );
