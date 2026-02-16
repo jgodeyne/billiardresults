@@ -9,7 +9,7 @@ class AppLocalizationsFr extends AppLocalizations {
   AppLocalizationsFr([String locale = 'fr']) : super(locale);
 
   @override
-  String get appTitle => 'Résultats de Billard';
+  String get appTitle => 'CaromStats';
 
   @override
   String get dashboard => 'Tableau de bord';
@@ -21,7 +21,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settings => 'Paramètres';
 
   @override
-  String get onboardingWelcome => 'Bienvenue dans Résultats de Billard!';
+  String get onboardingWelcome => 'Bienvenue dans CaromStats!';
 
   @override
   String get onboardingSubtitle => 'Configurons votre profil';

@@ -1,6 +1,6 @@
 {
   "@@locale": "en",
-  "appTitle": "Billiard Results",
+  "appTitle": "CaromStats",
   "@appTitle": {
     "description": "The title of the application"
   },
@@ -16,7 +16,7 @@
   "@settings": {
     "description": "Settings tab label"
   },
-  "onboardingWelcome": "Welcome to Billiard Results!",
+  "onboardingWelcome": "Welcome to CaromStats!",
   "onboardingSubtitle": "Let's set up your profile",
   "nameLabel": "Your Name",
   "nameHint": "Enter your name",

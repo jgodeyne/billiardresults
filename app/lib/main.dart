@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       child: Consumer<AppState>(
         builder: (context, appState, _) {
           return MaterialApp(
-            title: 'Billiard Results',
+            title: 'CaromStats',
             theme: AppTheme.lightTheme,
             locale: appState.locale,
             localizationsDelegates: const [

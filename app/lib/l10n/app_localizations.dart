@@ -103,7 +103,7 @@ abstract class AppLocalizations {
   /// The title of the application
   ///
   /// In en, this message translates to:
-  /// **'Billiard Results'**
+  /// **'CaromStats'**
   String get appTitle;
 
   /// Dashboard tab label
@@ -127,7 +127,7 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingWelcome.
   ///
   /// In en, this message translates to:
-  /// **'Welcome to Billiard Results!'**
+  /// **'Welcome to CaromStats!'**
   String get onboardingWelcome;
 
   /// No description provided for @onboardingSubtitle.

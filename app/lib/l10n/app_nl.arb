@@ -1,10 +1,10 @@
 {
   "@@locale": "nl",
-  "appTitle": "Biljart Resultaten",
+  "appTitle": "CaromStats",
   "dashboard": "Dashboard",
   "results": "Resultaten",
   "settings": "Instellingen",
-  "onboardingWelcome": "Welkom bij Biljart Resultaten!",
+  "onboardingWelcome": "Welkom bij CaromStats!",
   "onboardingSubtitle": "Laten we je profiel instellen",
   "nameLabel": "Je Naam",
   "nameHint": "Voer je naam in",

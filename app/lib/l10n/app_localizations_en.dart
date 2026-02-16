@@ -9,7 +9,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'Billiard Results';
+  String get appTitle => 'CaromStats';
 
   @override
   String get dashboard => 'Dashboard';
@@ -21,7 +21,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settings => 'Settings';
 
   @override
-  String get onboardingWelcome => 'Welcome to Billiard Results!';
+  String get onboardingWelcome => 'Welcome to CaromStats!';
 
   @override
   String get onboardingSubtitle => 'Let\'s set up your profile';
