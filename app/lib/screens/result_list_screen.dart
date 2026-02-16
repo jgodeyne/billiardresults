@@ -378,18 +378,15 @@ class _ResultListItemState extends State<ResultListItem> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      TextButton.icon(
+                      IconButton(
                         icon: const Icon(Icons.edit),
-                        label: Text(l10n.editResult),
+                        tooltip: l10n.editResult,
                         onPressed: widget.onEdit,
                       ),
-                      const SizedBox(width: 8),
-                      TextButton.icon(
+                      IconButton(
                         icon: const Icon(Icons.delete),
-                        label: Text(l10n.deleteResult),
-                        style: TextButton.styleFrom(
-                          foregroundColor: Colors.red,
-                        ),
+                        tooltip: l10n.deleteResult,
+                        color: Colors.red,
                         onPressed: widget.onDelete,
                       ),
                     ],
