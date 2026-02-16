@@ -147,6 +147,13 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Image.asset(
+            'assets/CaromStatsBackground.png',
+            fit: BoxFit.contain,
+          ),
+        ),
         title: Text(l10n.appTitle),
       ),
       body: BackgroundWrapper(
