@@ -248,7 +248,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   
                   // Season start date - Month dropdown (first)
                   DropdownButtonFormField<int>(
-                    value: _selectedMonth,
+                    initialValue: _selectedMonth,
                     decoration: InputDecoration(
                       labelText: l10n.seasonStartLabel,
                       border: const OutlineInputBorder(),

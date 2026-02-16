@@ -584,8 +584,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       await DatabaseService.instance.saveUserSettings(updated);
       await _loadSettings();
     } catch (e) {
-      final l10n = AppLocalizations.of(context)!;
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('${l10n.errorSavingSettings}: $e')),
         );
@@ -598,44 +598,66 @@ class _SettingsScreenState extends State<SettingsScreen> {
     
     final selected = await showDialog<AutoBackupFrequency>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(l10n.autoBackupFrequency),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            RadioListTile<AutoBackupFrequency>(
-              title: Text(l10n.disabled),
-              value: AutoBackupFrequency.disabled,
-              groupValue: _settings?.autoBackupFrequency ?? AutoBackupFrequency.disabled,
-              onChanged: (value) => Navigator.pop(context, value),
+      builder: (context) {
+        AutoBackupFrequency? tempValue = _settings?.autoBackupFrequency ?? AutoBackupFrequency.disabled;
+        
+        return StatefulBuilder(
+          builder: (context, setState) => AlertDialog(
+            title: Text(l10n.autoBackupFrequency),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildFrequencyOption(
+                  context,
+                  l10n.disabled,
+                  AutoBackupFrequency.disabled,
+                  tempValue,
+                  (value) {
+                    setState(() => tempValue = value);
+                    Navigator.pop(context, value);
+                  },
+                ),
+                _buildFrequencyOption(
+                  context,
+                  l10n.afterResults,
+                  AutoBackupFrequency.afterResults,
+                  tempValue,
+                  (value) {
+                    setState(() => tempValue = value);
+                    Navigator.pop(context, value);
+                  },
+                ),
+                _buildFrequencyOption(
+                  context,
+                  l10n.daily,
+                  AutoBackupFrequency.daily,
+                  tempValue,
+                  (value) {
+                    setState(() => tempValue = value);
+                    Navigator.pop(context, value);
+                  },
+                ),
+                _buildFrequencyOption(
+                  context,
+                  l10n.weekly,
+                  AutoBackupFrequency.weekly,
+                  tempValue,
+                  (value) {
+                    setState(() => tempValue = value);
+                    Navigator.pop(context, value);
+                  },
+                ),
+              ],
             ),
-            RadioListTile<AutoBackupFrequency>(
-              title: Text(l10n.afterResults),
-              value: AutoBackupFrequency.afterResults,
-              groupValue: _settings?.autoBackupFrequency ?? AutoBackupFrequency.disabled,
-              onChanged: (value) => Navigator.pop(context, value),
-            ),
-            RadioListTile<AutoBackupFrequency>(
-              title: Text(l10n.daily),
-              value: AutoBackupFrequency.daily,
-              groupValue: _settings?.autoBackupFrequency ?? AutoBackupFrequency.disabled,
-              onChanged: (value) => Navigator.pop(context, value),
-            ),
-            RadioListTile<AutoBackupFrequency>(
-              title: Text(l10n.weekly),
-              value: AutoBackupFrequency.weekly,
-              groupValue: _settings?.autoBackupFrequency ?? AutoBackupFrequency.disabled,
-              onChanged: (value) => Navigator.pop(context, value),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(l10n.cancel),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text(l10n.cancel),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
     
     if (selected != null && _settings != null) {
@@ -651,6 +673,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
         }
       }
     }
+  }
+
+  Widget _buildFrequencyOption(
+    BuildContext context,
+    String title,
+    AutoBackupFrequency value,
+    AutoBackupFrequency? currentValue,
+    Function(AutoBackupFrequency) onTap,
+  ) {
+    final isSelected = value == currentValue;
+    return ListTile(
+      title: Text(title),
+      leading: Icon(
+        isSelected ? Icons.check_circle : Icons.circle_outlined,
+        color: isSelected ? Theme.of(context).colorScheme.primary : null,
+      ),
+      onTap: () => onTap(value),
+    );
   }
 
   Future<void> _selectAutoBackupResultCount() async {
@@ -939,7 +979,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         
         // Season start - Month dropdown (first)
         DropdownButtonFormField<int>(
-          value: _seasonStartMonth,
+          initialValue: _seasonStartMonth,
           decoration: InputDecoration(
             labelText: l10n.seasonStartLabel,
             border: const OutlineInputBorder(),
