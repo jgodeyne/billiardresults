@@ -5,6 +5,7 @@ import '../models/result.dart';
 import '../models/classification_level.dart';
 import '../services/database_service.dart';
 import '../utils/season_helper.dart';
+import '../widgets/background_wrapper.dart';
 import 'result_list_screen.dart';
 
 class DisciplineDetailScreen extends StatefulWidget {
@@ -167,7 +168,8 @@ class _DisciplineDetailScreenState extends State<DisciplineDetailScreen> {
               label: Text(l10n.resultList),
             )
           : null,
-      body: Column(
+      body: BackgroundWrapper(
+        child: Column(
         children: [
           // Timeframe selector
           Padding(
@@ -266,6 +268,7 @@ class _DisciplineDetailScreenState extends State<DisciplineDetailScreen> {
                       ),
           ),
         ],
+      ),
       ),
     );
   }

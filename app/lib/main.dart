@@ -6,6 +6,7 @@ import 'screens/dashboard_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/onboarding_screen.dart';
 import 'screens/add_result_screen.dart';
+import 'widgets/background_wrapper.dart';
 import 'l10n/app_localizations.dart';
 import 'services/database_service.dart';
 import 'models/user_settings.dart';
@@ -148,7 +149,9 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(l10n.appTitle),
       ),
-      body: _screens[_selectedIndex],
+      body: BackgroundWrapper(
+        child: _screens[_selectedIndex],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           // Navigate to add result screen

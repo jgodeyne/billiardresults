@@ -5,6 +5,7 @@ import '../models/result.dart';
 import '../services/database_service.dart';
 import '../services/cloud_backup_service.dart';
 import '../utils/constants.dart';
+import '../widgets/background_wrapper.dart';
 
 class AddResultScreen extends StatefulWidget {
   final Result? existingResult;
@@ -330,7 +331,8 @@ class _AddResultScreenState extends State<AddResultScreen> {
         title: Text(isEditing ? l10n.editResult : l10n.addResult),
         backgroundColor: theme.colorScheme.inversePrimary,
       ),
-      body: Form(
+      body: BackgroundWrapper(
+        child: Form(
         key: _formKey,
         child: ListView(
           padding: const EdgeInsets.all(16.0),
@@ -569,6 +571,8 @@ class _AddResultScreenState extends State<AddResultScreen> {
           ],
         ),
       ),
+      ),
     );
   }
 }
+

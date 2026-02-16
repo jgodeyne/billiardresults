@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import '../l10n/app_localizations.dart';
 import '../models/result.dart';
 import '../services/database_service.dart';
+import '../widgets/background_wrapper.dart';
 import 'add_result_screen.dart';
 
 class ResultListScreen extends StatefulWidget {
@@ -261,7 +262,8 @@ class _ResultListScreenState extends State<ResultListScreen> {
             ),
         ],
       ),
-      body: _isLoading
+      body: BackgroundWrapper(
+        child: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _filteredResults.isEmpty
               ? Center(
@@ -282,6 +284,7 @@ class _ResultListScreenState extends State<ResultListScreen> {
                     );
                   },
                 ),
+      ),
     );
   }
 }

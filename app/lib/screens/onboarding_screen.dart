@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../models/user_settings.dart';
 import '../services/database_service.dart';
+import '../widgets/background_wrapper.dart';
 
 /// First-time onboarding screen for setting up user profile
 class OnboardingScreen extends StatefulWidget {
@@ -197,9 +198,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
+      body: BackgroundWrapper(
+        child: SafeArea(
+          child: Center(
+            child: SingleChildScrollView(
             padding: const EdgeInsets.all(24.0),
             child: Form(
               key: _formKey,
@@ -207,14 +209,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // Welcome icon
-                  Image.asset(
-                    'assets/CaromStats.png',
-                    width: 120,
-                    height: 120,
-                  ),
-                  const SizedBox(height: 24),
-                  
                   // Welcome text
                   Text(
                     l10n.onboardingWelcome,
@@ -327,6 +321,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
           ),
         ),
+      ),
       ),
     );
   }
