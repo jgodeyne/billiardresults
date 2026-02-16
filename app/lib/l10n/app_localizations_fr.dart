@@ -154,6 +154,73 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get cloudBackup => 'Sauvegarde Cloud';
+
+  @override
+  String get backupToCloud => 'Sauvegarder vers le Cloud';
+
+  @override
+  String get restoreFromCloud => 'Restaurer depuis le Cloud';
+
+  @override
+  String get backupToICloud => 'Sauvegardez vos données vers iCloud Drive';
+
+  @override
+  String get backupToGoogleDrive => 'Sauvegardez vos données vers Google Drive';
+
+  @override
+  String get restoreFromICloud => 'Restaurez vos données depuis iCloud Drive';
+
+  @override
+  String get restoreFromGoogleDrive =>
+      'Restaurez vos données depuis Google Drive';
+
+  @override
+  String get lastBackup => 'Dernière Sauvegarde';
+
+  @override
+  String get never => 'Jamais';
+
+  @override
+  String get backingUp => 'Sauvegarde en cours...';
+
+  @override
+  String get restoring => 'Restauration en cours...';
+
+  @override
+  String get backupSuccessful => 'Sauvegarde réussie';
+
+  @override
+  String get backupFailed => 'Échec de la sauvegarde';
+
+  @override
+  String get restoreSuccessful => 'Restauration réussie';
+
+  @override
+  String get restoreFailed => 'Échec de la restauration';
+
+  @override
+  String get noBackupFound => 'Aucune sauvegarde trouvée dans le cloud';
+
+  @override
+  String get restoreConfirmTitle => 'Restaurer depuis le Cloud?';
+
+  @override
+  String get restoreConfirmMessage =>
+      'Cela remplacera toutes vos données actuelles par la sauvegarde. Cette action ne peut pas être annulée. Continuer?';
+
+  @override
+  String get signInToGoogle => 'Se connecter à Google';
+
+  @override
+  String signedInAs(String email) {
+    return 'Connecté en tant que $email';
+  }
+
+  @override
+  String get signOut => 'Se Déconnecter';
+
+  @override
   String get deleteAllData => 'Supprimer Toutes les Données';
 
   @override

@@ -153,6 +153,72 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get cloudBackup => 'Cloud Backup';
+
+  @override
+  String get backupToCloud => 'Backup to Cloud';
+
+  @override
+  String get restoreFromCloud => 'Restore from Cloud';
+
+  @override
+  String get backupToICloud => 'Backup your data to iCloud Drive';
+
+  @override
+  String get backupToGoogleDrive => 'Backup your data to Google Drive';
+
+  @override
+  String get restoreFromICloud => 'Restore your data from iCloud Drive';
+
+  @override
+  String get restoreFromGoogleDrive => 'Restore your data from Google Drive';
+
+  @override
+  String get lastBackup => 'Last Backup';
+
+  @override
+  String get never => 'Never';
+
+  @override
+  String get backingUp => 'Backing up...';
+
+  @override
+  String get restoring => 'Restoring...';
+
+  @override
+  String get backupSuccessful => 'Backup successful';
+
+  @override
+  String get backupFailed => 'Backup failed';
+
+  @override
+  String get restoreSuccessful => 'Restore successful';
+
+  @override
+  String get restoreFailed => 'Restore failed';
+
+  @override
+  String get noBackupFound => 'No backup found in cloud';
+
+  @override
+  String get restoreConfirmTitle => 'Restore from Cloud?';
+
+  @override
+  String get restoreConfirmMessage =>
+      'This will replace all your current data with the backup. This action cannot be undone. Continue?';
+
+  @override
+  String get signInToGoogle => 'Sign in to Google';
+
+  @override
+  String signedInAs(String email) {
+    return 'Signed in as $email';
+  }
+
+  @override
+  String get signOut => 'Sign Out';
+
+  @override
   String get deleteAllData => 'Delete All Data';
 
   @override

@@ -364,6 +364,132 @@ abstract class AppLocalizations {
   /// **'This will add {count} results to your database. Continue?'**
   String importConfirmMessage(int count);
 
+  /// No description provided for @cloudBackup.
+  ///
+  /// In en, this message translates to:
+  /// **'Cloud Backup'**
+  String get cloudBackup;
+
+  /// No description provided for @backupToCloud.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup to Cloud'**
+  String get backupToCloud;
+
+  /// No description provided for @restoreFromCloud.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore from Cloud'**
+  String get restoreFromCloud;
+
+  /// No description provided for @backupToICloud.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup your data to iCloud Drive'**
+  String get backupToICloud;
+
+  /// No description provided for @backupToGoogleDrive.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup your data to Google Drive'**
+  String get backupToGoogleDrive;
+
+  /// No description provided for @restoreFromICloud.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore your data from iCloud Drive'**
+  String get restoreFromICloud;
+
+  /// No description provided for @restoreFromGoogleDrive.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore your data from Google Drive'**
+  String get restoreFromGoogleDrive;
+
+  /// No description provided for @lastBackup.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Backup'**
+  String get lastBackup;
+
+  /// No description provided for @never.
+  ///
+  /// In en, this message translates to:
+  /// **'Never'**
+  String get never;
+
+  /// No description provided for @backingUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Backing up...'**
+  String get backingUp;
+
+  /// No description provided for @restoring.
+  ///
+  /// In en, this message translates to:
+  /// **'Restoring...'**
+  String get restoring;
+
+  /// No description provided for @backupSuccessful.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup successful'**
+  String get backupSuccessful;
+
+  /// No description provided for @backupFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup failed'**
+  String get backupFailed;
+
+  /// No description provided for @restoreSuccessful.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore successful'**
+  String get restoreSuccessful;
+
+  /// No description provided for @restoreFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore failed'**
+  String get restoreFailed;
+
+  /// No description provided for @noBackupFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No backup found in cloud'**
+  String get noBackupFound;
+
+  /// No description provided for @restoreConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore from Cloud?'**
+  String get restoreConfirmTitle;
+
+  /// No description provided for @restoreConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This will replace all your current data with the backup. This action cannot be undone. Continue?'**
+  String get restoreConfirmMessage;
+
+  /// No description provided for @signInToGoogle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to Google'**
+  String get signInToGoogle;
+
+  /// No description provided for @signedInAs.
+  ///
+  /// In en, this message translates to:
+  /// **'Signed in as {email}'**
+  String signedInAs(String email);
+
+  /// No description provided for @signOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Out'**
+  String get signOut;
+
   /// No description provided for @deleteAllData.
   ///
   /// In en, this message translates to:

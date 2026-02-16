@@ -5,6 +5,7 @@ class UserSettings {
   final int seasonStartDay; // 1-31
   final int seasonStartMonth; // 1-12
   final String language; // 'en', 'nl', 'fr'
+  final DateTime? lastBackupDate; // When data was last backed up to cloud
 
   UserSettings({
     this.id,
@@ -12,6 +13,7 @@ class UserSettings {
     required this.seasonStartDay,
     required this.seasonStartMonth,
     required this.language,
+    this.lastBackupDate,
   });
 
   /// Convert to Map for database storage
@@ -22,6 +24,7 @@ class UserSettings {
       'season_start_day': seasonStartDay,
       'season_start_month': seasonStartMonth,
       'language': language,
+      'last_backup_date': lastBackupDate?.toIso8601String(),
     };
   }
 
@@ -33,6 +36,9 @@ class UserSettings {
       seasonStartDay: map['season_start_day'] as int,
       seasonStartMonth: map['season_start_month'] as int,
       language: map['language'] as String,
+      lastBackupDate: map['last_backup_date'] != null 
+          ? DateTime.parse(map['last_backup_date'] as String)
+          : null,
     );
   }
 
@@ -43,6 +49,7 @@ class UserSettings {
     int? seasonStartDay,
     int? seasonStartMonth,
     String? language,
+    DateTime? lastBackupDate,
   }) {
     return UserSettings(
       id: id ?? this.id,
@@ -50,6 +57,7 @@ class UserSettings {
       seasonStartDay: seasonStartDay ?? this.seasonStartDay,
       seasonStartMonth: seasonStartMonth ?? this.seasonStartMonth,
       language: language ?? this.language,
+      lastBackupDate: lastBackupDate ?? this.lastBackupDate,
     );
   }
 

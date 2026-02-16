@@ -1,12 +1,15 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:intl/intl.dart';
 import '../l10n/app_localizations.dart';
 import '../models/user_settings.dart';
 import '../models/classification_level.dart';
 import '../services/database_service.dart';
 import '../services/csv_import_service.dart';
+import '../services/cloud_backup_service.dart';
 import '../main.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -21,6 +24,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   int? _seasonStartDay;
   int? _seasonStartMonth;
   String? _selectedLanguage;
+  UserSettings? _settings;
   List<String> _disciplines = [];
   Map<String, ClassificationLevel> _classifications = {};
   bool _isLoading = true;
@@ -45,6 +49,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
       if (mounted) {
         setState(() {
+          _settings = settings;
           if (settings != null) {
             _nameController.text = settings.name;
             _seasonStartDay = settings.seasonStartDay;
@@ -353,6 +358,141 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ],
       ),
     );
+  }
+
+  String _formatBackupDate(DateTime date) {
+    final now = DateTime.now();
+    final difference = now.difference(date);
+    
+    if (difference.inDays == 0) {
+      return DateFormat.Hm().format(date);
+    } else if (difference.inDays < 7) {
+      return '${difference.inDays}d ago';
+    } else {
+      return DateFormat.yMd().format(date);
+    }
+  }
+
+  Future<void> _backupToCloud() async {
+    final l10n = AppLocalizations.of(context)!;
+    
+    // Show loading dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        content: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const CircularProgressIndicator(),
+            const SizedBox(width: 20),
+            Expanded(child: Text(l10n.backingUp)),
+          ],
+        ),
+      ),
+    );
+    
+    try {
+      final backupService = CloudBackupService();
+      await backupService.backupToCloud();
+      
+      // Close loading dialog
+      if (mounted) Navigator.of(context).pop();
+      
+      // Reload settings to show updated timestamp
+      await _loadSettings();
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.backupSuccessful)),
+        );
+      }
+    } catch (e) {
+      // Close loading dialog
+      if (mounted) Navigator.of(context).pop();
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${l10n.backupFailed}: ${e.toString()}'),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _restoreFromCloud() async {
+    final l10n = AppLocalizations.of(context)!;
+    
+    // Show confirmation dialog
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.restoreConfirmTitle),
+        content: Text(l10n.restoreConfirmMessage),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: FilledButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.error,
+            ),
+            child: Text(l10n.restoreFromCloud),
+          ),
+        ],
+      ),
+    );
+    
+    if (confirmed != true || !mounted) return;
+    
+    // Show loading dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        content: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const CircularProgressIndicator(),
+            const SizedBox(width: 20),
+            Expanded(child: Text(l10n.restoring)),
+          ],
+        ),
+      ),
+    );
+    
+    try {
+      final backupService = CloudBackupService();
+      await backupService.restoreFromCloud(merge: false);
+      
+      // Close loading dialog
+      if (mounted) Navigator.of(context).pop();
+      
+      // Reload settings
+      await _loadSettings();
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.restoreSuccessful)),
+        );
+      }
+    } catch (e) {
+      // Close loading dialog
+      if (mounted) Navigator.of(context).pop();
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${l10n.restoreFailed}: ${e.toString()}'),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+      }
+    }
   }
 
   Future<void> _deleteAllData() async {
@@ -726,6 +866,52 @@ class _SettingsScreenState extends State<SettingsScreen> {
           onPressed: _showCsvFormatHelp,
           icon: const Icon(Icons.help_outline),
           label: Text(l10n.csvFormatHelp),
+        ),
+        
+        const SizedBox(height: 24),
+        const Divider(),
+        const SizedBox(height: 16),
+        
+        // Cloud Backup section
+        Text(
+          l10n.cloudBackup,
+          style: theme.textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 16),
+        
+        // Last backup timestamp
+        if (_settings != null && _settings!.lastBackupDate != null)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 16.0),
+            child: Text(
+              '${l10n.lastBackup}: ${_formatBackupDate(_settings!.lastBackupDate!)}',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+              ),
+            ),
+          ),
+        
+        // Backup to Cloud
+        ListTile(
+          leading: const Icon(Icons.cloud_upload),
+          title: Text(l10n.backupToCloud),
+          subtitle: Text(
+            Platform.isIOS ? l10n.backupToICloud : l10n.backupToGoogleDrive,
+          ),
+          onTap: _backupToCloud,
+        ),
+        const SizedBox(height: 8),
+        
+        // Restore from Cloud
+        ListTile(
+          leading: const Icon(Icons.cloud_download),
+          title: Text(l10n.restoreFromCloud),
+          subtitle: Text(
+            Platform.isIOS ? l10n.restoreFromICloud : l10n.restoreFromGoogleDrive,
+          ),
+          onTap: _restoreFromCloud,
         ),
         
         const SizedBox(height: 24),

@@ -84,6 +84,34 @@
       }
     }
   },
+  "cloudBackup": "Cloud Backup",
+  "backupToCloud": "Backup to Cloud",
+  "restoreFromCloud": "Restore from Cloud",
+  "backupToICloud": "Backup your data to iCloud Drive",
+  "backupToGoogleDrive": "Backup your data to Google Drive",
+  "restoreFromICloud": "Restore your data from iCloud Drive",
+  "restoreFromGoogleDrive": "Restore your data from Google Drive",
+  "lastBackup": "Last Backup",
+  "never": "Never",
+  "backingUp": "Backing up...",
+  "restoring": "Restoring...",
+  "backupSuccessful": "Backup successful",
+  "backupFailed": "Backup failed",
+  "restoreSuccessful": "Restore successful",
+  "restoreFailed": "Restore failed",
+  "noBackupFound": "No backup found in cloud",
+  "restoreConfirmTitle": "Restore from Cloud?",
+  "restoreConfirmMessage": "This will replace all your current data with the backup. This action cannot be undone. Continue?",
+  "signInToGoogle": "Sign in to Google",
+  "signedInAs": "Signed in as {email}",
+  "@signedInAs": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "signOut": "Sign Out",
   "deleteAllData": "Delete All Data",
   "deleteAllDataConfirmTitle": "Delete All Data?",
   "deleteAllDataConfirmMessage": "This will permanently delete all your results, classification levels, and settings. This action cannot be undone.",

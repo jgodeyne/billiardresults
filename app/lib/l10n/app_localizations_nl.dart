@@ -153,6 +153,73 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String get cloudBackup => 'Cloud Back-up';
+
+  @override
+  String get backupToCloud => 'Back-up naar Cloud';
+
+  @override
+  String get restoreFromCloud => 'Herstellen vanuit Cloud';
+
+  @override
+  String get backupToICloud => 'Back-up uw gegevens naar iCloud Drive';
+
+  @override
+  String get backupToGoogleDrive => 'Back-up uw gegevens naar Google Drive';
+
+  @override
+  String get restoreFromICloud => 'Herstel uw gegevens vanuit iCloud Drive';
+
+  @override
+  String get restoreFromGoogleDrive =>
+      'Herstel uw gegevens vanuit Google Drive';
+
+  @override
+  String get lastBackup => 'Laatste Back-up';
+
+  @override
+  String get never => 'Nooit';
+
+  @override
+  String get backingUp => 'Back-up maken...';
+
+  @override
+  String get restoring => 'Herstellen...';
+
+  @override
+  String get backupSuccessful => 'Back-up geslaagd';
+
+  @override
+  String get backupFailed => 'Back-up mislukt';
+
+  @override
+  String get restoreSuccessful => 'Herstel geslaagd';
+
+  @override
+  String get restoreFailed => 'Herstel mislukt';
+
+  @override
+  String get noBackupFound => 'Geen back-up gevonden in de cloud';
+
+  @override
+  String get restoreConfirmTitle => 'Herstellen vanuit Cloud?';
+
+  @override
+  String get restoreConfirmMessage =>
+      'Dit zal al uw huidige gegevens vervangen door de back-up. Deze actie kan niet ongedaan worden gemaakt. Doorgaan?';
+
+  @override
+  String get signInToGoogle => 'Aanmelden bij Google';
+
+  @override
+  String signedInAs(String email) {
+    return 'Aangemeld als $email';
+  }
+
+  @override
+  String get signOut => 'Afmelden';
+
+  @override
   String get deleteAllData => 'Alle Gegevens Verwijderen';
 
   @override

@@ -25,7 +25,7 @@ class DatabaseService {
 
     return await openDatabase(
       path,
-      version: 1,
+      version: 2,
       onCreate: _createDB,
       onUpgrade: _upgradeDB,
     );
@@ -40,7 +40,8 @@ class DatabaseService {
         name TEXT NOT NULL,
         season_start_day INTEGER NOT NULL,
         season_start_month INTEGER NOT NULL,
-        language TEXT NOT NULL
+        language TEXT NOT NULL,
+        last_backup_date TEXT
       )
     ''');
 
@@ -90,9 +91,11 @@ class DatabaseService {
 
   /// Handle database upgrades
   Future<void> _upgradeDB(Database db, int oldVersion, int newVersion) async {
-    // Handle future database migrations
-    if (oldVersion < newVersion) {
-      // Add migration logic here when needed
+    // Version 1 to 2: Add last_backup_date column to user_settings
+    if (oldVersion < 2) {
+      await db.execute('''
+        ALTER TABLE user_settings ADD COLUMN last_backup_date TEXT
+      ''');
     }
   }
 
@@ -464,5 +467,89 @@ class DatabaseService {
     }
     
     return orderedList;
+  }
+
+  // ==================== BACKUP & RESTORE ====================
+
+  /// Export all data to JSON format for cloud backup
+  Future<Map<String, dynamic>> exportData() async {
+    final allResults = await getAllResults();
+    final allClassifications = await getAllClassificationLevels();
+    final settings = await getUserSettings();
+    final disciplineOrder = await getDisciplineOrder();
+
+    return {
+      'version': 1,
+      'exportDate': DateTime.now().toIso8601String(),
+      'userSettings': settings?.toMap(),
+      'results': allResults.map((r) => r.toMap()).toList(),
+      'classificationLevels': allClassifications.map((c) => c.toMap()).toList(),
+      'disciplineOrder': disciplineOrder,
+    };
+  }
+
+  /// Import data from JSON format (cloud restore)
+  Future<void> importData(Map<String, dynamic> backup, {bool merge = false}) async {
+    final db = await database;
+
+    await db.transaction((txn) async {
+      if (!merge) {
+        // Clear existing data
+        await txn.delete('results');
+        await txn.delete('classification_levels');
+        await txn.delete('discipline_order');
+      }
+
+      // Import user settings (always overwrites)
+      if (backup['userSettings'] != null) {
+        final settings = UserSettings.fromMap(backup['userSettings']);
+        await txn.delete('user_settings');
+        await txn.insert('user_settings', settings.toMap());
+      }
+
+      // Import results
+      if (backup['results'] != null) {
+        for (final resultMap in backup['results']) {
+          // Remove id to let database auto-generate
+          final map = Map<String, dynamic>.from(resultMap);
+          map.remove('id');
+          await txn.insert('results', map);
+        }
+      }
+
+      // Import classification levels
+      if (backup['classificationLevels'] != null) {
+        for (final classMap in backup['classificationLevels']) {
+          final map = Map<String, dynamic>.from(classMap);
+          map.remove('id');
+          
+          // Check if already exists in merge mode
+          if (merge) {
+            final existing = await txn.query(
+              'classification_levels',
+              where: 'discipline = ?',
+              whereArgs: [map['discipline']],
+            );
+            
+            if (existing.isEmpty) {
+              await txn.insert('classification_levels', map);
+            }
+          } else {
+            await txn.insert('classification_levels', map);
+          }
+        }
+      }
+
+      // Import discipline order
+      if (backup['disciplineOrder'] != null) {
+        final disciplines = List<String>.from(backup['disciplineOrder']);
+        for (int i = 0; i < disciplines.length; i++) {
+          await txn.insert('discipline_order', {
+            'discipline': disciplines[i],
+            'order_index': i,
+          });
+        }
+      }
+    });
   }
 }
