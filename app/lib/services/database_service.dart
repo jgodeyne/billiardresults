@@ -25,7 +25,7 @@ class DatabaseService {
 
     return await openDatabase(
       path,
-      version: 3,
+      version: 4,
       onCreate: _createDB,
       onUpgrade: _upgradeDB,
     );
@@ -74,14 +74,22 @@ class DatabaseService {
       CREATE INDEX idx_results_date ON results(date)
     ''');
 
-    // Classification levels table
+    // Classification levels table (per season)
     await db.execute('''
       CREATE TABLE classification_levels (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        discipline TEXT NOT NULL UNIQUE,
+        discipline TEXT NOT NULL,
         min_average REAL NOT NULL,
-        max_average REAL NOT NULL
+        max_average REAL NOT NULL,
+        season_start_date TEXT,
+        season_end_date TEXT
       )
+    ''');
+    
+    // Create index for discipline and season queries
+    await db.execute('''
+      CREATE INDEX idx_classification_discipline_season 
+      ON classification_levels(discipline, season_start_date, season_end_date)
     ''');
 
     // Discipline ordering table (for drag-and-drop card order)
@@ -116,6 +124,26 @@ class DatabaseService {
       await db.execute('''
         ALTER TABLE user_settings ADD COLUMN result_count_since_backup INTEGER NOT NULL DEFAULT 0
       ''');
+    }
+    
+    // Version 3 to 4: Add season fields to classification_levels
+    if (oldVersion < 4) {
+      // Add new columns
+      await db.execute('''
+        ALTER TABLE classification_levels ADD COLUMN season_start_date TEXT
+      ''');
+      await db.execute('''
+        ALTER TABLE classification_levels ADD COLUMN season_end_date TEXT
+      ''');
+      
+      // Create new index for season queries
+      await db.execute('''
+        CREATE INDEX idx_classification_discipline_season 
+        ON classification_levels(discipline, season_start_date, season_end_date)
+      ''');
+      
+      // Note: existing classification levels will have null season dates,
+      // meaning they apply to all seasons (backwards compatible)
     }
   }
 
@@ -390,15 +418,31 @@ class DatabaseService {
 
   // ==================== CLASSIFICATION LEVELS ====================
 
-  /// Create or update classification level
+  /// Create or update classification level for a specific season
   Future<ClassificationLevel> saveClassificationLevel(ClassificationLevel level) async {
     final db = await database;
     
-    // Check if exists
+    // Check if exists for this discipline and season
+    String whereClause;
+    List<dynamic> whereArgs;
+    
+    if (level.seasonStartDate != null && level.seasonEndDate != null) {
+      whereClause = 'discipline = ? AND season_start_date = ? AND season_end_date = ?';
+      whereArgs = [
+        level.discipline,
+        level.seasonStartDate!.toIso8601String(),
+        level.seasonEndDate!.toIso8601String(),
+      ];
+    } else {
+      // For backwards compatibility: levels without season (apply to all)
+      whereClause = 'discipline = ? AND season_start_date IS NULL AND season_end_date IS NULL';
+      whereArgs = [level.discipline];
+    }
+    
     final existing = await db.query(
       'classification_levels',
-      where: 'discipline = ?',
-      whereArgs: [level.discipline],
+      where: whereClause,
+      whereArgs: whereArgs,
       limit: 1,
     );
     
@@ -406,54 +450,155 @@ class DatabaseService {
       final id = await db.insert('classification_levels', level.toMap());
       return level.copyWith(id: id);
     } else {
-      // For update, don't include id field
-      final updateMap = {
-        'discipline': level.discipline,
-        'min_average': level.minAverage,
-        'max_average': level.maxAverage,
-      };
+      // Update existing record
       await db.update(
         'classification_levels',
-        updateMap,
-        where: 'discipline = ?',
-        whereArgs: [level.discipline],
+        level.toMap(),
+        where: whereClause,
+        whereArgs: whereArgs,
       );
       return level.copyWith(id: existing.first['id'] as int);
     }
   }
 
-  /// Get classification level for a discipline
-  Future<ClassificationLevel?> getClassificationLevel(String discipline) async {
+  /// Get classification level for a discipline and season
+  /// If seasonStart/seasonEnd are provided, looks for season-specific level
+  /// If not found, falls back to legacy level (null seasons)
+  Future<ClassificationLevel?> getClassificationLevel(
+    String discipline, {
+    DateTime? seasonStart,
+    DateTime? seasonEnd,
+  }) async {
     final db = await database;
-    final maps = await db.query(
+    
+    // First try to find season-specific level
+    if (seasonStart != null && seasonEnd != null) {
+      final seasonMaps = await db.query(
+        'classification_levels',
+        where: 'discipline = ? AND season_start_date = ? AND season_end_date = ?',
+        whereArgs: [
+          discipline,
+          seasonStart.toIso8601String(),
+          seasonEnd.toIso8601String(),
+        ],
+        limit: 1,
+      );
+      
+      if (seasonMaps.isNotEmpty) {
+        return ClassificationLevel.fromMap(seasonMaps.first);
+      }
+    }
+    
+    // Fall back to legacy level (null seasons - applies to all seasons)
+    final legacyMaps = await db.query(
       'classification_levels',
-      where: 'discipline = ?',
+      where: 'discipline = ? AND season_start_date IS NULL AND season_end_date IS NULL',
       whereArgs: [discipline],
       limit: 1,
     );
     
-    if (maps.isEmpty) {
-      return null;
+    if (legacyMaps.isNotEmpty) {
+      return ClassificationLevel.fromMap(legacyMaps.first);
     }
     
-    return ClassificationLevel.fromMap(maps.first);
+    return null;
   }
 
-  /// Get all classification levels
-  Future<List<ClassificationLevel>> getAllClassificationLevels() async {
+  /// Get classification level from previous season (for inheritance)
+  Future<ClassificationLevel?> getPreviousSeasonClassification(
+    String discipline,
+    DateTime seasonStart,
+    DateTime seasonEnd,
+  ) async {
     final db = await database;
-    final maps = await db.query('classification_levels', orderBy: 'discipline');
-    return maps.map((map) => ClassificationLevel.fromMap(map)).toList();
-  }
-
-  /// Delete classification level
-  Future<int> deleteClassificationLevel(String discipline) async {
-    final db = await database;
-    return await db.delete(
+    
+    // Find the most recent classification level before this season
+    final maps = await db.query(
       'classification_levels',
-      where: 'discipline = ?',
-      whereArgs: [discipline],
+      where: 'discipline = ? AND season_start_date < ?',
+      whereArgs: [discipline, seasonStart.toIso8601String()],
+      orderBy: 'season_start_date DESC',
+      limit: 1,
     );
+    
+    if (maps.isNotEmpty) {
+      return ClassificationLevel.fromMap(maps.first);
+    }
+    
+    // Fall back to legacy level
+    return await getClassificationLevel(discipline);
+  }
+
+  /// Get all classification levels, optionally filtered by season
+  Future<List<ClassificationLevel>> getAllClassificationLevels({
+    DateTime? seasonStart,
+    DateTime? seasonEnd,
+  }) async {
+    final db = await database;
+    
+    if (seasonStart != null && seasonEnd != null) {
+      // Get season-specific and legacy (null season) levels
+      final maps = await db.rawQuery('''
+        SELECT * FROM classification_levels 
+        WHERE (season_start_date = ? AND season_end_date = ?)
+           OR (season_start_date IS NULL AND season_end_date IS NULL)
+        ORDER BY discipline
+      ''', [
+        seasonStart.toIso8601String(),
+        seasonEnd.toIso8601String(),
+      ]);
+      
+      return maps.map((map) => ClassificationLevel.fromMap(map)).toList();
+    } else {
+      // Get all levels
+      final maps = await db.query('classification_levels', orderBy: 'discipline');
+      return maps.map((map) => ClassificationLevel.fromMap(map)).toList();
+    }
+  }
+
+  /// Get all seasons that have classification levels for any discipline
+  Future<List<(DateTime, DateTime)>> getSeasonsWithClassifications() async {
+    final db = await database;
+    final maps = await db.rawQuery('''
+      SELECT DISTINCT season_start_date, season_end_date 
+      FROM classification_levels 
+      WHERE season_start_date IS NOT NULL AND season_end_date IS NOT NULL
+      ORDER BY season_start_date DESC
+    ''');
+    
+    return maps.map((map) {
+      final start = DateTime.parse(map['season_start_date'] as String);
+      final end = DateTime.parse(map['season_end_date'] as String);
+      return (start, end);
+    }).toList();
+  }
+
+  /// Delete classification level for a specific season
+  Future<int> deleteClassificationLevel(
+    String discipline, {
+    DateTime? seasonStart,
+    DateTime? seasonEnd,
+  }) async {
+    final db = await database;
+    
+    if (seasonStart != null && seasonEnd != null) {
+      return await db.delete(
+        'classification_levels',
+        where: 'discipline = ? AND season_start_date = ? AND season_end_date = ?',
+        whereArgs: [
+          discipline,
+          seasonStart.toIso8601String(),
+          seasonEnd.toIso8601String(),
+        ],
+      );
+    } else {
+      // Delete legacy level
+      return await db.delete(
+        'classification_levels',
+        where: 'discipline = ? AND season_start_date IS NULL AND season_end_date IS NULL',
+        whereArgs: [discipline],
+      );
+    }
   }
 
   // ==================== DISCIPLINE ORDERING ====================

@@ -10,6 +10,7 @@ import '../models/classification_level.dart';
 import '../services/database_service.dart';
 import '../services/csv_import_service.dart';
 import '../services/cloud_backup_service.dart';
+import '../utils/season_helper.dart';
 import '../main.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -28,6 +29,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
   List<String> _disciplines = [];
   Map<String, ClassificationLevel> _classifications = {};
   bool _isLoading = true;
+  
+  // Season selection for classification levels
+  DateTime? _selectedClassificationSeasonStart;
+  DateTime? _selectedClassificationSeasonEnd;
+  List<(DateTime, DateTime)> _availableSeasons = [];
 
   @override
   void initState() {
@@ -45,7 +51,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
     try {
       final settings = await DatabaseService.instance.getUserSettings();
       final disciplines = await DatabaseService.instance.getAllDisciplines();
-      final classifications = await DatabaseService.instance.getAllClassificationLevels();
+      
+      // Get available seasons
+      final firstResultDate = await DatabaseService.instance.getFirstResultDate();
+      final lastResultDate = DateTime.now();
+      final availableSeasons = firstResultDate != null
+          ? SeasonHelper.getAvailableSeasons(settings!, firstResultDate, lastResultDate)
+          : <(DateTime, DateTime)>[];
+      
+      // Default to current season
+      final currentSeason = settings != null 
+          ? SeasonHelper.getCurrentSeason(settings)
+          : null;
+      
+      // Load classifications for current season
+      final classifications = settings != null && currentSeason != null
+          ? await DatabaseService.instance.getAllClassificationLevels(
+              seasonStart: currentSeason.$1,
+              seasonEnd: currentSeason.$2,
+            )
+          : await DatabaseService.instance.getAllClassificationLevels();
 
       if (mounted) {
         setState(() {
@@ -60,6 +85,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           _classifications = {
             for (var c in classifications) c.discipline: c
           };
+          _availableSeasons = availableSeasons;
+          _selectedClassificationSeasonStart = currentSeason?.$1;
+          _selectedClassificationSeasonEnd = currentSeason?.$2;
           _isLoading = false;
         });
       }
@@ -809,15 +837,65 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
+  Future<void> _onClassificationSeasonChanged((DateTime, DateTime) season) async {
+    setState(() => _isLoading = true);
+    
+    try {
+      final classifications = await DatabaseService.instance.getAllClassificationLevels(
+        seasonStart: season.$1,
+        seasonEnd: season.$2,
+      );
+      
+      if (mounted) {
+        setState(() {
+          _selectedClassificationSeasonStart = season.$1;
+          _selectedClassificationSeasonEnd = season.$2;
+          _classifications = {
+            for (var c in classifications) c.discipline: c
+          };
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() => _isLoading = false);
+        final l10n = AppLocalizations.of(context)!;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('${l10n.errorLoadingSettings}: $e')),
+        );
+      }
+    }
+  }
+
   Future<void> _editClassification(String discipline) async {
     final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
     final existing = _classifications[discipline];
     
+    // If no existing level for this season, try to inherit from previous season
+    double? inheritedMin;
+    double? inheritedMax;
+    
+    if (existing == null && 
+        _selectedClassificationSeasonStart != null && 
+        _selectedClassificationSeasonEnd != null) {
+      final previousLevel = await DatabaseService.instance.getPreviousSeasonClassification(
+        discipline,
+        _selectedClassificationSeasonStart!,
+        _selectedClassificationSeasonEnd!,
+      );
+      
+      if (previousLevel != null) {
+        inheritedMin = previousLevel.minAverage;
+        inheritedMax = previousLevel.maxAverage;
+      }
+    }
+    
     final minController = TextEditingController(
-      text: existing?.minAverage.toString() ?? '',
+      text: existing?.minAverage.toString() ?? inheritedMin?.toString() ?? '',
     );
     final maxController = TextEditingController(
-      text: existing?.maxAverage.toString() ?? '',
+      text: existing?.maxAverage.toString() ?? inheritedMax?.toString() ?? '',
     );
 
     final result = await showDialog<ClassificationLevel>(
@@ -828,6 +906,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              if (inheritedMin != null && inheritedMax != null && existing == null)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: Text(
+                    'Values inherited from previous season',
+                    style: TextStyle(
+                      color: theme.colorScheme.primary,
+                      fontStyle: FontStyle.italic,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
               TextField(
                 controller: minController,
                 decoration: InputDecoration(
@@ -877,6 +967,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     discipline: discipline,
                     minAverage: min,
                     maxAverage: max,
+                    seasonStartDate: _selectedClassificationSeasonStart,
+                    seasonEndDate: _selectedClassificationSeasonEnd,
                   ),
                 );
               }
@@ -920,7 +1012,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
       );
 
       if (confirmed == true) {
-        await DatabaseService.instance.deleteClassificationLevel(discipline);
+        await DatabaseService.instance.deleteClassificationLevel(
+          discipline,
+          seasonStart: _selectedClassificationSeasonStart,
+          seasonEnd: _selectedClassificationSeasonEnd,
+        );
         setState(() {
           _classifications.remove(discipline);
         });
@@ -1082,6 +1178,34 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
         ),
         const SizedBox(height: 16),
+        
+        // Season selector for classification levels
+        if (_availableSeasons.isNotEmpty)
+          DropdownButtonFormField<(DateTime, DateTime)>(
+            value: _selectedClassificationSeasonStart != null && 
+                   _selectedClassificationSeasonEnd != null
+                ? (_selectedClassificationSeasonStart!, _selectedClassificationSeasonEnd!)
+                : null,
+            decoration: InputDecoration(
+              labelText: l10n.selectSeason,
+              border: const OutlineInputBorder(),
+            ),
+            items: _availableSeasons.map((season) {
+              final label = SeasonHelper.formatSeason(season.$1, season.$2);
+              return DropdownMenuItem(
+                value: season,
+                child: Text(label),
+              );
+            }).toList(),
+            onChanged: (season) {
+              if (season != null) {
+                _onClassificationSeasonChanged(season);
+              }
+            },
+          ),
+        
+        if (_availableSeasons.isNotEmpty)
+          const SizedBox(height: 16),
         
         if (_disciplines.isEmpty)
           Card(

@@ -988,6 +988,30 @@ abstract class AppLocalizations {
   /// **'Matches'**
   String get matches;
 
+  /// No description provided for @pointsAbbr.
+  ///
+  /// In en, this message translates to:
+  /// **'Pts'**
+  String get pointsAbbr;
+
+  /// No description provided for @inningsAbbr.
+  ///
+  /// In en, this message translates to:
+  /// **'Inn'**
+  String get inningsAbbr;
+
+  /// No description provided for @averageAbbr.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg'**
+  String get averageAbbr;
+
+  /// No description provided for @highestRunAbbr.
+  ///
+  /// In en, this message translates to:
+  /// **'HS'**
+  String get highestRunAbbr;
+
   /// No description provided for @won.
   ///
   /// In en, this message translates to:

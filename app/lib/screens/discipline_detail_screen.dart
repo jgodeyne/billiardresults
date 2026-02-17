@@ -82,7 +82,11 @@ class _DisciplineDetailScreenState extends State<DisciplineDetailScreen> {
     // Sort by date ascending for charts
     results.sort((a, b) => a.date.compareTo(b.date));
 
-    final classification = await db.getClassificationLevel(widget.discipline);
+    final classification = await db.getClassificationLevel(
+      widget.discipline,
+      seasonStart: seasonStart,
+      seasonEnd: seasonEnd,
+    );
 
     setState(() {
       _results = results;

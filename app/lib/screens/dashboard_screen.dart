@@ -113,8 +113,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
       // Sort by competition name
       competitionStats.sort((a, b) => a.competition.compareTo(b.competition));
 
-      // Get classification levels
-      final classificationsList = await DatabaseService.instance.getAllClassificationLevels();
+      // Get classification levels for current season
+      final classificationsList = await DatabaseService.instance.getAllClassificationLevels(
+        seasonStart: currentSeason.$1,
+        seasonEnd: currentSeason.$2,
+      );
       final classifications = {
         for (var c in classificationsList) c.discipline: c
       };
@@ -185,12 +188,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
       // Sort by competition name
       competitionStats.sort((a, b) => a.competition.compareTo(b.competition));
 
+      // Get classification levels for selected season
+      final classificationsList = await DatabaseService.instance.getAllClassificationLevels(
+        seasonStart: season.$1,
+        seasonEnd: season.$2,
+      );
+      final classifications = {
+        for (var c in classificationsList) c.discipline: c
+      };
+
       if (mounted) {
         setState(() {
           _selectedSeasonStart = season.$1;
           _selectedSeasonEnd = season.$2;
           _disciplineStats = disciplineStats;
           _competitionStats = competitionStats;
+          _classifications = classifications;
           _isAllSeasonsView = false;
           _isLoading = false;
         });

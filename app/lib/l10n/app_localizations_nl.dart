@@ -481,6 +481,18 @@ class AppLocalizationsNl extends AppLocalizations {
   String get matches => 'Partijen';
 
   @override
+  String get pointsAbbr => 'Car';
+
+  @override
+  String get inningsAbbr => 'Brt';
+
+  @override
+  String get averageAbbr => 'Gem';
+
+  @override
+  String get highestRunAbbr => 'HS';
+
+  @override
   String get won => 'W';
 
   @override

@@ -1,15 +1,19 @@
-/// Classification level (target average range) for a discipline
+/// Classification level (target average range) for a discipline per season
 class ClassificationLevel {
   final int? id;
   final String discipline;
   final double minAverage;
   final double maxAverage;
+  final DateTime? seasonStartDate;
+  final DateTime? seasonEndDate;
 
   ClassificationLevel({
     this.id,
     required this.discipline,
     required this.minAverage,
     required this.maxAverage,
+    this.seasonStartDate,
+    this.seasonEndDate,
   });
 
   /// Check if an average is within range
@@ -34,6 +38,8 @@ class ClassificationLevel {
       'discipline': discipline,
       'min_average': minAverage,
       'max_average': maxAverage,
+      'season_start_date': seasonStartDate?.toIso8601String(),
+      'season_end_date': seasonEndDate?.toIso8601String(),
     };
   }
 
@@ -44,6 +50,12 @@ class ClassificationLevel {
       discipline: map['discipline'] as String,
       minAverage: (map['min_average'] as num).toDouble(),
       maxAverage: (map['max_average'] as num).toDouble(),
+      seasonStartDate: map['season_start_date'] != null
+          ? DateTime.parse(map['season_start_date'] as String)
+          : null,
+      seasonEndDate: map['season_end_date'] != null
+          ? DateTime.parse(map['season_end_date'] as String)
+          : null,
     );
   }
 
@@ -53,17 +65,24 @@ class ClassificationLevel {
     String? discipline,
     double? minAverage,
     double? maxAverage,
+    DateTime? seasonStartDate,
+    DateTime? seasonEndDate,
   }) {
     return ClassificationLevel(
       id: id ?? this.id,
       discipline: discipline ?? this.discipline,
       minAverage: minAverage ?? this.minAverage,
       maxAverage: maxAverage ?? this.maxAverage,
+      seasonStartDate: seasonStartDate ?? this.seasonStartDate,
+      seasonEndDate: seasonEndDate ?? this.seasonEndDate,
     );
   }
 
   @override
   String toString() {
-    return 'ClassificationLevel{id: $id, discipline: $discipline, range: $minAverage-$maxAverage}';
+    final seasonInfo = seasonStartDate != null && seasonEndDate != null
+        ? ', season: ${seasonStartDate!.year}-${seasonEndDate!.year}'
+        : '';
+    return 'ClassificationLevel{id: $id, discipline: $discipline, range: $minAverage-$maxAverage$seasonInfo}';
   }
 }

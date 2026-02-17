@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../l10n/app_localizations.dart';
 import '../models/result.dart';
+import '../models/classification_level.dart';
 import '../services/database_service.dart';
 import '../widgets/background_wrapper.dart';
 import 'add_result_screen.dart';
@@ -30,6 +31,7 @@ class _ResultListScreenState extends State<ResultListScreen> {
   List<Result> _filteredResults = [];
   List<String> _competitions = [];
   List<String> _adversaries = [];
+  ClassificationLevel? _classificationLevel;
   
   String? _selectedCompetition;
   String? _selectedAdversary;
@@ -91,11 +93,22 @@ class _ResultListScreenState extends State<ResultListScreen> {
         .toList()
       ..sort();
 
+    // Load classification level if viewing by discipline
+    ClassificationLevel? classification;
+    if (widget.discipline != null) {
+      classification = await db.getClassificationLevel(
+        widget.discipline!,
+        seasonStart: widget.seasonStart,
+        seasonEnd: widget.seasonEnd,
+      );
+    }
+
     setState(() {
       _allResults = results;
       _filteredResults = results;
       _competitions = competitions;
       _adversaries = adversaries;
+      _classificationLevel = classification;
       _isLoading = false;
     });
   }
@@ -298,6 +311,7 @@ class _ResultListScreenState extends State<ResultListScreen> {
                     final result = _filteredResults[index];
                     return ResultListItem(
                       result: result,
+                      classification: _classificationLevel,
                       onEdit: () => _editResult(result),
                       onDelete: () => _deleteResult(result),
                     );
@@ -308,24 +322,19 @@ class _ResultListScreenState extends State<ResultListScreen> {
   }
 }
 
-class ResultListItem extends StatefulWidget {
+class ResultListItem extends StatelessWidget {
   final Result result;
+  final ClassificationLevel? classification;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
 
   const ResultListItem({
     super.key,
     required this.result,
+    this.classification,
     required this.onEdit,
     required this.onDelete,
   });
-
-  @override
-  State<ResultListItem> createState() => _ResultListItemState();
-}
-
-class _ResultListItemState extends State<ResultListItem> {
-  bool _isExpanded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -335,128 +344,226 @@ class _ResultListItemState extends State<ResultListItem> {
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      child: Column(
-        children: [
-          ListTile(
-            title: Text(dateFormat.format(widget.result.date)),
-            subtitle: Text(
-              '${l10n.average}: ${widget.result.average.toStringAsFixed(2)}${widget.result.outcome != null ? ' • ${_getOutcomeText(widget.result.outcome!, l10n)}' : ''}',
-            ),
-            trailing: IconButton(
-              icon: Icon(
-                _isExpanded ? Icons.expand_less : Icons.expand_more,
-              ),
-              onPressed: () {
-                setState(() => _isExpanded = !_isExpanded);
-              },
-            ),
-            onTap: () {
-              setState(() => _isExpanded = !_isExpanded);
-            },
-          ),
-          if (_isExpanded) ...[
-            const Divider(height: 1),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildDetailRow(
-                    l10n.pointsMadeLabel,
-                    widget.result.pointsMade.toString(),
-                    theme,
-                  ),
-                  _buildDetailRow(
-                    l10n.inningsLabel,
-                    widget.result.innings.toString(),
-                    theme,
-                  ),
-                  _buildDetailRow(
-                    l10n.highestRunLabel,
-                    widget.result.highestRun.toString(),
-                    theme,
-                  ),
-                  if (widget.result.adversary != null &&
-                      widget.result.adversary!.isNotEmpty)
-                    _buildDetailRow(
-                      l10n.adversaryLabel,
-                      widget.result.adversary!,
-                      theme,
-                    ),
-                  if (widget.result.outcome != null)
-                    _buildDetailRow(
-                      l10n.outcomeLabel,
-                      _getOutcomeText(widget.result.outcome!, l10n),
-                      theme,
-                    ),
-                  if (widget.result.competition != null &&
-                      widget.result.competition!.isNotEmpty)
-                    _buildDetailRow(
-                      l10n.competitionLabel,
-                      widget.result.competition!,
-                      theme,
-                    ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.edit),
-                        tooltip: l10n.editResult,
-                        onPressed: widget.onEdit,
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header row with date, outcome dot, and actions
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    if (result.outcome != null) ...[
+                      Container(
+                        width: 12,
+                        height: 12,
+                        decoration: BoxDecoration(
+                          color: _getOutcomeColor(result.outcome!),
+                          shape: BoxShape.circle,
+                        ),
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.delete),
-                        tooltip: l10n.deleteResult,
-                        color: Colors.red,
-                        onPressed: widget.onDelete,
-                      ),
+                      const SizedBox(width: 8),
                     ],
+                    Text(
+                      dateFormat.format(result.date),
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.edit, size: 20),
+                      tooltip: l10n.editResult,
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                      onPressed: onEdit,
+                    ),
+                    const SizedBox(width: 8),
+                    IconButton(
+                      icon: const Icon(Icons.delete, size: 20),
+                      tooltip: l10n.deleteResult,
+                      color: Colors.red,
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                      onPressed: onDelete,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            
+            // Main statistics in a single row with abbreviations
+            Row(
+              children: [
+                Expanded(
+                  child: _buildStatBox(
+                    l10n.pointsAbbr,  // Localized Points abbreviation
+                    result.pointsMade.toString(),
+                    theme,
                   ),
-                ],
-              ),
+                ),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: _buildStatBox(
+                    l10n.inningsAbbr,  // Localized Innings abbreviation
+                    result.innings.toString(),
+                    theme,
+                  ),
+                ),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: _buildStatBox(
+                    l10n.averageAbbr,  // Localized Average abbreviation
+                    result.average.toStringAsFixed(2),
+                    theme,
+                    isHighlight: true,
+                    classificationColor: _getAverageColor(),
+                  ),
+                ),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: _buildStatBox(
+                    l10n.highestRunAbbr,  // Localized Highest Series abbreviation
+                    result.highestRun.toString(),
+                    theme,
+                  ),
+                ),
+              ],
             ),
+            
+            // Competition and adversary info
+            if (result.competition != null && result.competition!.isNotEmpty) ...[
+              const SizedBox(height: 12),
+              _buildInfoRow(
+                Icons.emoji_events,
+                l10n.competitionLabel,
+                result.competition!,
+                theme,
+              ),
+            ],
+            if (result.adversary != null && result.adversary!.isNotEmpty) ...[
+              const SizedBox(height: 8),
+              _buildInfoRow(
+                Icons.person,
+                l10n.adversaryLabel,
+                result.adversary!,
+                theme,
+              ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }
 
-  Widget _buildDetailRow(String label, String value, ThemeData theme) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
+  Widget _buildStatBox(
+    String label,
+    String value,
+    ThemeData theme, {
+    bool isHighlight = false,
+    Color? classificationColor,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+      decoration: BoxDecoration(
+        color: classificationColor ?? (isHighlight
+            ? theme.primaryColor.withOpacity(0.1)
+            : theme.colorScheme.surfaceVariant),
+        borderRadius: BorderRadius.circular(8),
+        border: isHighlight && classificationColor == null
+            ? Border.all(color: theme.primaryColor.withOpacity(0.3))
+            : null,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(
-            width: 150,
-            child: Text(
-              label,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
+          Text(
+            label,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurface.withOpacity(0.6),
+              fontSize: 10,
             ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
-          Expanded(
-            child: Text(
-              value,
-              style: theme.textTheme.bodyMedium,
+          const SizedBox(height: 4),
+          Text(
+            value,
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.bold,
             ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),
     );
   }
 
-  String _getOutcomeText(String outcome, AppLocalizations l10n) {
+  Widget _buildInfoRow(
+    IconData icon,
+    String label,
+    String value,
+    ThemeData theme,
+  ) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(icon, size: 16, color: theme.colorScheme.onSurface.withOpacity(0.6)),
+        const SizedBox(width: 8),
+        Expanded(
+          child: RichText(
+            text: TextSpan(
+              style: theme.textTheme.bodyMedium,
+              children: [
+                TextSpan(
+                  text: '$label: ',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: theme.colorScheme.onSurface.withOpacity(0.7),
+                  ),
+                ),
+                TextSpan(
+                  text: value,
+                  style: TextStyle(color: theme.colorScheme.onSurface),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Color? _getAverageColor() {
+    if (classification == null) return null;
+
+    if (result.average > classification!.maxAverage) {
+      return Colors.green.shade100;
+    } else if (result.average < classification!.minAverage) {
+      return Colors.red.shade100;
+    }
+    return null;
+  }
+
+  Color? _getOutcomeColor(String outcome) {
     switch (outcome) {
       case 'won':
-        return l10n.won;
+        return Colors.green;
       case 'lost':
-        return l10n.lost;
+        return Colors.red;
       case 'draw':
-        return l10n.draw;
+        return Colors.orange;
       default:
-        return l10n.unknown;
+        return null;
     }
   }
 }

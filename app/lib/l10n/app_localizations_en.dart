@@ -477,6 +477,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get matches => 'Matches';
 
   @override
+  String get pointsAbbr => 'Pts';
+
+  @override
+  String get inningsAbbr => 'Inn';
+
+  @override
+  String get averageAbbr => 'Avg';
+
+  @override
+  String get highestRunAbbr => 'HS';
+
+  @override
   String get won => 'W';
 
   @override
