@@ -898,6 +898,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       text: existing?.maxAverage.toString() ?? inheritedMax?.toString() ?? '',
     );
 
+    if (!mounted) return;
+
     final result = await showDialog<ClassificationLevel>(
       context: context,
       builder: (context) => AlertDialog(
@@ -1182,7 +1184,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         // Season selector for classification levels
         if (_availableSeasons.isNotEmpty)
           DropdownButtonFormField<(DateTime, DateTime)>(
-            value: _selectedClassificationSeasonStart != null && 
+            initialValue: _selectedClassificationSeasonStart != null && 
                    _selectedClassificationSeasonEnd != null
                 ? (_selectedClassificationSeasonStart!, _selectedClassificationSeasonEnd!)
                 : null,

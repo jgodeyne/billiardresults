@@ -474,11 +474,11 @@ class ResultListItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
       decoration: BoxDecoration(
         color: classificationColor ?? (isHighlight
-            ? theme.primaryColor.withOpacity(0.1)
-            : theme.colorScheme.surfaceVariant),
+            ? theme.primaryColor.withValues(alpha: 0.1)
+            : theme.colorScheme.surfaceContainerHighest),
         borderRadius: BorderRadius.circular(8),
         border: isHighlight && classificationColor == null
-            ? Border.all(color: theme.primaryColor.withOpacity(0.3))
+            ? Border.all(color: theme.primaryColor.withValues(alpha: 0.3))
             : null,
       ),
       child: Column(
@@ -488,7 +488,7 @@ class ResultListItem extends StatelessWidget {
           Text(
             label,
             style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurface.withOpacity(0.6),
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
               fontSize: 10,
             ),
             maxLines: 1,
@@ -517,7 +517,7 @@ class ResultListItem extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, size: 16, color: theme.colorScheme.onSurface.withOpacity(0.6)),
+        Icon(icon, size: 16, color: theme.colorScheme.onSurface.withValues(alpha: 0.6)),
         const SizedBox(width: 8),
         Expanded(
           child: RichText(
@@ -528,7 +528,7 @@ class ResultListItem extends StatelessWidget {
                   text: '$label: ',
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
-                    color: theme.colorScheme.onSurface.withOpacity(0.7),
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                   ),
                 ),
                 TextSpan(
