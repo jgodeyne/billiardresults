@@ -1,0 +1,41 @@
+datum	kl	p	tnr	tegenstander	tcar	gcar	brt	moy	pnt	hs	alg.gem	pmoy
+1.	23-09-2023	D2	4	77369	Dany Boutet
+BC De Biljartacademie 3/Belgian coffee	35	14	23	0.608	0	3		 
+2.	29-09-2023	D2	4	77369	Ali Ibraimov
+Zwiers Aircoservice	35	35	46	0.760	2	3	0.710	 
+3.	13-10-2023	D2	4	77369	Nico van den Heuvel
+Van Melis Autobedrijf	35	27	29	0.931	0	7	0.775	 
+4.	20-10-2023	D2	4	77369	René Peters
+Eddies-hr.nl	35	35	45	0.777	2	4	0.776	 
+5.	25-10-2023	D2	4	77369	Stephan Rutten
+BC De Biljartacademie 4/4 Seasons Outdoor	35	17	43	0.395	0	2	0.688	 
+6.	10-11-2023	D2	4	77369	Erik van Loon
+De Molen	35	26	27	0.962	0	4	0.723	 
+7.	17-11-2023	D2	4	77369	Marcel van Berkel
+Café het Wapen van Strijp	35	35	31	1.129	1	9	0.774	 
+8.	25-11-2023	D2	4	77369	Roger Spijkers
+Biljartvereniging BC Goirle-1	35	26	33	0.787	0	5	0.776	 
+9.	07-12-2023	D2	4	77369	Hakan Gülter
+SIS Billiards 3 Internationaal	35	35	45	0.777	2	8	0.776	 
+10.	14-12-2023	D2	4	77369	Wilfrie Vermeer
+De Peel / Van Esch Biljarts	35	35	32	1.093	2	5	0.805	 
+11.	18-12-2023	D2	4	77369	Rick Sleddens
+Bandstoters - `t Caves	35	13	40	0.325	0	2	0.756	 
+12.	25-01-2024	D2	4	77369	Dany Boutet
+BC De Biljartacademie 3/Belgian coffee	35	26	28	0.928	0	4	0.767	 
+13.	09-02-2024	D2	4	77369	Nico van den Heuvel
+Van Melis Autobedrijf	35	19	28	0.678	0	5	0.762	 
+14.	26-02-2024	D2	4	77369	René Peters
+Eddies-hr.nl	35	19	33	0.575	0	4	0.749	 
+15.	08-03-2024	D2	4	77369	Peter van Houwelingen
+BC De Biljartacademie 4/4 Seasons Outdoor	35	35	40	0.875	2	5	0.759	 
+16.	15-03-2024	D2	4	77369	Erik van Loon
+De Molen	35	28	57	0.491	0	4	0.732	 
+17.	22-03-2024	D2	4	77369	Marcel van Berkel
+Café het Wapen van Strijp	35	35	32	1.093	2	7	0.751	 
+18.	13-04-2024	D2	4	77369	Mehmet Ceylan
+SIS Billiards 3 Internationaal	35	35	32	1.093	2	7	0.768	 
+19.	18-04-2024	D2	4	77369	Wilfrie Vermeer
+De Peel / Van Esch Biljarts	35	27	52	0.519	0	4	0.750	 
+20.	26-04-2024	D2	4	77369	Rick Sleddens
+Bandstoters - `t Caves	35	35	32	1.093	2	4	0.765

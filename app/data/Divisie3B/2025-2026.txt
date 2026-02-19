@@ -1,0 +1,37 @@
+	datum	kl	p	tnr	tegenstander	tcar	gcar	brt	moy	pnt	hs	alg.gem	pmoy
+1.	12-09-2025	D2	4	89373	Rick Sleddens
+Kouwenberg Schilderwerken Helmond	35	35	40	0.875	1	4		 
+2.	13-09-2025	D1	2	89369	Nick Loenen
+Hello Drydocks / Capelle SPC	35	29	43	0.674	0	5	0.771	 
+3.	16-09-2025	D2	4	89373	Wilfrie Vermeer
+Van Esch Biljarts / WiegersXL	35	35	47	0.744	2	4	0.761	 
+4.	26-09-2025	D2	4	89373	Marcel van Berkel
+ADC Nederland	35	31	34	0.911	0	8	0.792	 
+5.	03-10-2025	D2	4	89373	Benny Smits
+De Gouden Leeuw	35	35	42	0.833	2	4	0.800	 
+6.	17-10-2025	D2	4	89373	Rob Mans
+De Molen	35	35	42	0.833	2	6	0.806	 
+7.	24-10-2025	D2	4	89373	Jean Bessems
+BC De Biljartacademie 5 / Vikings	35	28	39	0.717	0	6	0.794	 
+8.	31-10-2025	D2	4	89373	Christ van der Smissen
+Cues&Darts 1	35	17	34	0.500	0	4	0.763	 
+9.	13-11-2025	D2	4	89373	Kenny Miatton
+Bonanza 1 / Deroy Financiële Diensten	35	13	19	0.684	0	5	0.758	 
+10.	21-11-2025	D2	4	89373	Kevin Adams
+Biljartclub Goirle-2	35	35	41	0.853	1	8	0.769	 
+11.	28-11-2025	D2	4	89373	Karl Heinz Gertzen
+Verkeersschool De Bruijn / BC Tegelen	35	35	27	1.296	2	5	0.803	 
+12.	30-11-2025	D1	2	89369	Dirk Mourik van
+WBV Zaanbouw 1N	40	21	29	0.724	0	3	0.798	 
+13.	20-12-2025	D2	4	89373	Roger Spijkers
+Biljartclub Goirle-1	35	35	40	0.875	1	5	0.805	 
+14.	15-01-2026	D2	4	89373	Wilfrie Vermeer
+Van Esch Biljarts / WiegersXL	35	32	46	0.695	0	4	0.795	 
+15.	23-01-2026	D2	4	89373	Rick Sleddens
+Kouwenberg Schilderwerken Helmond	35	25	25	1.000	0	5	0.804	 
+16.	30-01-2026	D2	4	89373	Marcel van Berkel
+ADC Nederland	35	35	26	1.346	2	4	0.829	 
+17.	06-02-2026	D2	4	89373	Benny Smits
+De Gouden Leeuw	35	35	29	1.206	2	5	0.847	 
+18.	13-02-2026	D2	4	89373	Erik van Loon
+De Molen	35	30	43	0.697	0	4	0.837	 

@@ -1,0 +1,41 @@
+	datum	kl	p	tnr	tegenstander	tcar	gcar	brt	moy	pnt	hs	alg.gem	pmoy
+1.	13-09-2024	D2	4	83329	Joop Baars
+Bonanza 1/LS Elektro.nl	35	35	24	1.458	2	8		 
+2.	19-09-2024	D2	4	83329	Stephan Rutten
+BC De Biljartacademie 4/4 Seasons Outdoor	35	24	34	0.705	0	5	1.017	 
+3.	11-10-2024	D2	4	83329	Ton Rovers
+BV `t Ivoor - 3Banden.nl	35	35	47	0.744	2	3	0.895	 
+4.	18-10-2024	D2	4	83329	Karina Jetten
+BC De Biljartacademie 3/ Belgian Coffee	35	34	52	0.653	0	3	0.815	 
+5.	02-11-2024	D2	4	83329	Murat Kosar
+SIS Billiards 3 Internationaal	35	35	26	1.346	2	5	0.890	 
+6.	07-11-2024	D2	4	83329	Jos Bongers
+Park Tivoli	35	21	24	0.875	0	5	0.888	 
+7.	15-11-2024	D2	4	83329	Marcel van Berkel
+ADC Nederland	35	35	45	0.777	1	4	0.869	 
+8.	22-11-2024	D2	4	83329	Lucien Tabbers
+Cues&Darts 1	35	35	38	0.921	2	4	0.875	 
+9.	29-11-2024	D2	4	83329	René Peters
+De Gouden Leeuw	35	35	57	0.614	2	4	0.832	 
+10.	13-12-2024	D2	4	83329	Rick Sleddens
+Kouwenberg Schilderwerken Helmond	35	34	32	1.062	0	6	0.852	 
+11.	08-01-2025	D2	4	83329	Kenny Miatton
+Bonanza 1/LS Elektro.nl	35	26	46	0.565	0	4	0.821	 
+12.	17-01-2025	D2	4	83329	Stephan Rutten
+BC De Biljartacademie 4/4 Seasons Outdoor	35	35	41	0.853	2	5	0.824	 
+13.	31-01-2025	D2	4	83329	Kevin Adams
+Biljartclub Goirle-2	35	35	27	1.296	2	4	0.849	 
+14.	07-02-2025	D2	4	83329	Marc Roofthooft
+BV `t Ivoor - 3Banden.nl	35	35	23	1.521	2	7	0.879	 
+15.	15-02-2025	D2	4	83329	Dany Boutet
+BC De Biljartacademie 3/ Belgian Coffee	35	22	35	0.628	0	3	0.863	 
+16.	21-03-2025	D2	4	83329	Jos Bongers
+Park Tivoli	35	35	40	0.875	2	7	0.864	 
+17.	28-03-2025	D2	4	83329	Freddy Staelens
+ADC Nederland	35	28	48	0.583	0	5	0.843	 
+18.	04-04-2025	D2	4	83329	Kevin Vasseur
+Cues&Darts 1	35	30	34	0.882	0	5	0.845	 
+19.	11-04-2025	D2	4	83329	René Peters
+De Gouden Leeuw	35	35	44	0.795	2	8	0.842	 
+20.	18-04-2025	D2	4	83329	Christian Steenbakkers
+Kouwenberg Schilderwerken Helmond	35	35	41	0.853	2	5	0.843
