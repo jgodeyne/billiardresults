@@ -38,12 +38,36 @@ for file in "$DESKTOP"/*.png; do
         else
             echo "  ✗ Failed to resize"
         fi
+    elif [ "$WIDTH" = "1206" ] && [ "$HEIGHT" = "2622" ]; then
+        echo "Processing: $FILENAME (1206x2622 → 1284x2778) [iPhone 17 Pro]"
+
+        # Upscale iPhone 17 Pro screenshots to App Store iPhone size
+        sips -z 2778 1284 "$file" --out "$OUTPUT_DIR/$FILENAME" >/dev/null 2>&1
+
+        if [ $? -eq 0 ]; then
+            echo "  ✓ Resized to 1284x2778"
+            PROCESSED=$((PROCESSED + 1))
+        else
+            echo "  ✗ Failed to resize"
+        fi
     elif [ "$WIDTH" = "2796" ] && [ "$HEIGHT" = "1290" ]; then
         echo "Processing: $FILENAME (2796x1290 → 2778x1284) [landscape]"
         
         # Resize landscape version
         sips -z 1284 2778 "$file" --out "$OUTPUT_DIR/$FILENAME" >/dev/null 2>&1
         
+        if [ $? -eq 0 ]; then
+            echo "  ✓ Resized to 2778x1284"
+            PROCESSED=$((PROCESSED + 1))
+        else
+            echo "  ✗ Failed to resize"
+        fi
+    elif [ "$WIDTH" = "2622" ] && [ "$HEIGHT" = "1206" ]; then
+        echo "Processing: $FILENAME (2622x1206 → 2778x1284) [iPhone 17 Pro landscape]"
+
+        # Upscale landscape iPhone 17 Pro screenshots to App Store iPhone size
+        sips -z 1284 2778 "$file" --out "$OUTPUT_DIR/$FILENAME" >/dev/null 2>&1
+
         if [ $? -eq 0 ]; then
             echo "  ✓ Resized to 2778x1284"
             PROCESSED=$((PROCESSED + 1))
