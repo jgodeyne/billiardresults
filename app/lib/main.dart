@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
         builder: (context, appState, _) {
           return MaterialApp(
             title: 'CaromStats',
+            debugShowCheckedModeBanner: false,
             theme: AppTheme.lightTheme,
             locale: appState.locale,
             localizationsDelegates: const [
